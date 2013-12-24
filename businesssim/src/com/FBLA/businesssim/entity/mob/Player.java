@@ -15,12 +15,12 @@ public class Player extends Mob{
         super(v,"Player");
         keys = k;
         screen = sc;
-        s = Sprite.sprites[0];
+        sprite = Sprite.sprites[0];
     }
     
     public void render(Screen screen)
     {
-        screen.renderPlayer(v.getX(), v.getY(), s);
+        screen.renderPlayer(v.getX(), v.getY(), sprite);
     }
     
     public void update() {
