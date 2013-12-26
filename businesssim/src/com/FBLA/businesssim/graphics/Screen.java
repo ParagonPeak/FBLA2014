@@ -107,4 +107,29 @@ public class Screen {
             pixels[i] = 0;
         }
     }
+    
+    /**
+     * xp and yp are the Sprite's position on the screen, not the map, and are without offset
+     */
+    public void renderSprite(int xp, int yp, Sprite s) {
+        int w = s.W;
+        int h = s.H;
+        xp -= xOffs;
+        yp -= yOffs;
+        for (int y = 0; y < h; y++) {
+            int ya = y + yp; // absolute position
+            for (int x = 0; x < w; x++) {
+                int xa = x + xp;
+                if (xa < 0 - w || xa >= width || ya < 0 || ya >= height) {
+                    break;
+                }
+                if (xa < 0) {
+                    xa = 0;
+                }
+                if (s.pixels[x + (y * w)] != 0xffFF00FF) {
+                    pixels[xa + (ya * width)] = s.pixels[x + (y * w)];
+                }
+            }
+        }
+    }
 }

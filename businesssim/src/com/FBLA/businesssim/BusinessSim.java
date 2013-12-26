@@ -180,6 +180,7 @@ public class BusinessSim extends Canvas implements Runnable{
         player.update();
         Sprite.update();
         level.update();
+        key.update();
     }
 
 }

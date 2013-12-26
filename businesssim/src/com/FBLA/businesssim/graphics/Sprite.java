@@ -3,7 +3,7 @@ package com.FBLA.businesssim.graphics;
 /**
  * Sprite purpose: Hold images, animations, and an array for the program.
  * -----
- * @author  Tripp
+ * @author  Tripp and Raphael
  * @date    11/12/13
  * @update  Wrote/commented class
  * -----
@@ -18,6 +18,7 @@ public class Sprite {
     public static Sprite[] sprites = new Sprite[0];
     public static Sprite voidSprite = new Sprite(16, 0x00A0FF);
     public static Sprite playerSprite = new Sprite(16,32,0,0,SpriteSheet.characters, 2);
+    public static Sprite grass = new Sprite(32, 32, 368, 304, SpriteSheet.sample, 1);
     private byte update;
     
     

@@ -1,6 +1,7 @@
 package com.FBLA.businesssim.graphics;
 
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,7 +10,7 @@ import javax.imageio.ImageIO;
 /**
  * SpriteSheet Purpose: handle initial loading of outside images.
  * ----
- * @author  Tripp
+ * @author  Tripp and Raphael
  * @date    11/12/13
  * @update  Wrote bulk of code and commented methods for SpriteSheet
  * -----
@@ -19,7 +20,8 @@ public class SpriteSheet {
     private String path;
     public final int SIZE;
     public int[] pixels;
-    public static SpriteSheet characters = new SpriteSheet("Textures/Characters/Player.png",128,64);
+    public static SpriteSheet characters = new SpriteSheet("Resources/Textures/Characters/Player.png",128,64);
+    public static SpriteSheet sample = new SpriteSheet("Resources/Textures/Tiles/sample.gif", 768, 576);
     //Example for loading a spritesheet. All should be static
     //public static SpriteSheet tiles = new SpriteSheet("textures/spritesheet.png", 256);
 
@@ -62,8 +64,7 @@ public class SpriteSheet {
      */
     private void load() {
         try {
-            BufferedImage image = ImageIO.read(this.getClass().getClassLoader().getResource(path));//ResGrabber.grab(path));//this.getClass().getResource(path));//
-
+            BufferedImage image = ImageIO.read(new FileInputStream(path));
             int w = image.getWidth();
             int h = image.getHeight();
             image.getRGB(0, 0, w, h, pixels, 0, w);
