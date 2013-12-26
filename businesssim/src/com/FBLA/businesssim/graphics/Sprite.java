@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Sprite purpose: Hold images, animations, and an array for the program.
  * -----
  * @author  Tripp and Raphael
- * @date    Dec 25, 2013
+ * @date    Dec 26, 2013
  * @update  Wrote/commented class
  * -----
  */
@@ -14,13 +14,19 @@ public class Sprite {
     public final int W, H;
     private int xInSheet, yInSheet,//coords of sprite in sprite sheet
             frame = 0;
+    private boolean flipped = false;
     private final int MAX_FRAMES;
     public int[] pixels;
     private SpriteSheet sheet;
     public static ArrayList<Sprite> sprites = new ArrayList<>();
     public static Sprite voidSprite = new Sprite(32, 32, 0x00A0CC);
     public static Sprite playerSprite = new Sprite(32,64,0,0,SpriteSheet.characters, 4);
+    public static Sprite playerSpriteFlip = new Sprite(playerSprite);
     public static Sprite grass = new Sprite(32, 32, 352/32, 320/32, SpriteSheet.sample, 1);
+    public static Sprite checkerboardFloor = new Sprite(64, 32, 1, 2, SpriteSheet.carpet, 1);
+    
+    public static Sprite cubicleSW = new Sprite(64, 128, 0, 0, SpriteSheet.walls, 1);
+    public static Sprite cubicleSE = new Sprite(64, 128, 1, 0, SpriteSheet.walls, 1);
     private byte update;
     
     
@@ -71,6 +77,34 @@ public class Sprite {
         pixels = new int[W * H];
         setColor(color);
     }
+    
+    /**
+     * Loads a horizontally flipped version of s
+     * @param s Sprite to flip
+     */
+    public Sprite(Sprite s) {
+        W = s.W;
+        H = s.H;
+        pixels = new int[W*H];
+        MAX_FRAMES = s.MAX_FRAMES;
+        sheet = s.sheet;
+        xInSheet = s.xInSheet;
+        yInSheet = s.yInSheet;
+        flipped = true;
+        loadFlippedSprite();
+        sprites.add(this);
+    }
+    
+    /**
+     * Pulls the image from the sprite sheet
+     */
+    private void load() {
+        for (int y = 0; y < H; y++) {
+            for (int x = 0; x < W; x++) {
+                pixels[x + y * W] = sheet.pixels[(x + (frame * W) + this.xInSheet) + (this.yInSheet + y)*sheet.WIDTH]; // should frames be frames - 1? if changed, max frames constructor -1ing should change.
+            }
+        }
+    }
 
     /**
      * Set the color of sprite to a solid color
@@ -85,10 +119,10 @@ public class Sprite {
     /**
      * Pulls the image from the sprite sheet
      */
-    private void load() {
+    private void loadFlippedSprite() {
         for (int y = 0; y < H; y++) {
             for (int x = 0; x < W; x++) {
-                pixels[x + y * W] = sheet.pixels[(x + (frame * W) + this.xInSheet) + (this.yInSheet + y)*sheet.WIDTH]; // should frames be frames - 1? if changed, max frames constructor -1ing should change.
+                pixels[(W - 1 - x) + y * W] = sheet.pixels[(x + (frame * W) + this.xInSheet) + (this.yInSheet + y)*sheet.WIDTH]; // should frames be frames - 1? if changed, max frames constructor -1ing should change.
             }
         }
     }
@@ -116,7 +150,11 @@ public class Sprite {
             }
             update = 0;
         } 
-        load();
+        if(flipped) {
+            loadFlippedSprite();
+        } else {
+            load();
+        }
     }
     
     /**
@@ -140,6 +178,10 @@ public class Sprite {
         if (!moving) {
             frame = 0;
         }
-        load();
+        if(flipped) {
+            loadFlippedSprite();
+        } else {
+            load();
+        }
     }
 }

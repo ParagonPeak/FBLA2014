@@ -27,7 +27,7 @@ public class Player extends Mob{
         double dx = 0, dy = 0;
         if (keys.up) {
             dy -= speed;
-            sprite = Sprite.playerSprite;
+            sprite = Sprite.playerSpriteFlip;
         }
         if (keys.down) {
             dy += speed;
@@ -39,7 +39,7 @@ public class Player extends Mob{
         }
         if (keys.right) {
             dx += speed;
-            sprite = Sprite.playerSprite;
+            sprite = Sprite.playerSpriteFlip;
         }
 
         moving = (dx != 0 || dy != 0);

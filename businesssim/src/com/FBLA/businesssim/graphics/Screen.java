@@ -3,8 +3,8 @@ package com.FBLA.businesssim.graphics;
 /**
  * Class purpose: Create the bulk of the screen that has to load/render sprites
  * -----
- * @author    Tripp
- * @date      11/12/2013
+ * @author    Tripp and Raphael
+ * @date      Dec 26, 2013
  * @update    Wrote the bulk of code and commented in method uses. Still need to 
  *            create Tile class. Will be changed to use higher res rendering.
  * -----
@@ -30,34 +30,6 @@ public class Screen {
         pixels = new int[w * h];
     }
 
-    //Commented out until Tile class is written
-    /**
-     * Renders a tile to the screen. 
-     * 
-     * @param xp the X Position of the tile's left most pixel
-     * @param yp the Y position of the tile's top most pixel
-     * @param t the image that will be drawn
-     */
-//    public void renderTile(int xp, int yp, Tile t) {
-//        int size = t.sprite.SIZE; //used for the array to draw image
-//        //positions become relative to where the user is looking
-//        xp -= xOffs; 
-//        yp -= yOffs;
-//
-//        for (int y = 0; y < size; y++) {
-//            int ya = y + yp; // absolute position
-//            for (int x = 0; x < size; x++) {
-//                int xa = x + xp;
-//                if (xa < 0 - size || xa >= width || ya < 0 || ya >= height) {
-//                    break;
-//                }
-//                if (xa < 0) {
-//                    xa = 0;
-//                }
-//                pixels[xa + (ya * width)] = t.sprite.pixels[x + (y * size)];
-//            }
-//        }
-//    }
 
     /**
      * Renders a player in the middle
@@ -66,7 +38,7 @@ public class Screen {
      * @param sprite The image to be drawn
      */
     public void renderPlayer(int xp, int yp, Sprite sprite) {
-        renderSprite(xp, yp, sprite);
+        renderRaisedSprite(xp, yp, sprite);
     }
 
     /**
@@ -86,7 +58,8 @@ public class Screen {
      */
     public void clear() {
         for (int i = 0; i < pixels.length; i++) {
-            pixels[i] = 0x000000;
+            //pixels[i] = 0x000000;
+            pixels[i] = Sprite.voidSprite.pixels[0]; // figured it should be cleared with the same color as the voidSprite
         }
     }
     
@@ -98,8 +71,63 @@ public class Screen {
         int h = s.H;
         xp -= xOffs;
         yp -= yOffs;
+        
+        int[] iso = twoDToIso(xp, yp);
+        xp = iso[0];
+        yp = iso[1];
+        
         for (int y = 0; y < h; y++) {
             int ya = y + yp; // absolute position
+            for (int x = 0; x < w; x++) {
+                int xa = x + xp;
+                if (xa < 0 - w || xa >= width || ya < 0 || ya >= height) {
+                    break;
+                }
+                if (xa < 0) {
+                    xa = 0;
+                }
+                if (s.pixels[x + (y * w)] != 0xffFF00FF) {
+                    pixels[xa + (ya * width)] = s.pixels[x + (y * w)];
+                }
+            }
+        }
+    }
+    
+    /**
+     * Renders a sprite as one on the screen not on the level, could be used for GUI
+     */
+    public void renderSpriteOnScreen(int x, int y, Sprite s) {
+        renderSprite(x + xOffs, y + yOffs, s);
+    }
+    
+    /**
+     * for use in translating mouse clicks in isometric view to 2d coordinates
+     */
+    public int[] isoTo2D(double x, double y) {
+        int[] twoD = {(int) ((2*y + x)/2), (int) ((2*y - x)/2)};
+        return twoD;
+    }
+    
+    /**
+     * used in rendering to adjust normal top-down coordinates to ones used in isometric rendering
+     */
+    public int[] twoDToIso(double x, double y) {
+        int[] iso = {(int) (x-y), (int) ((x+y)/2)};
+        return iso;
+    }
+
+    public void renderRaisedSprite(int xp, int yp, Sprite s) {
+        int w = s.W;
+        int h = s.H;
+        xp -= xOffs;
+        yp -= yOffs;
+        
+        int[] iso = twoDToIso(xp, yp);
+        xp = iso[0];
+        yp = iso[1];
+        
+        for (int y = 0; y < h; y++) {
+            int ya = y + yp - h; // absolute position
             for (int x = 0; x < w; x++) {
                 int xa = x + xp;
                 if (xa < 0 - w || xa >= width || ya < 0 || ya >= height) {

@@ -148,7 +148,7 @@ public class BusinessSim extends Canvas implements Runnable{
     {
         BufferStrategy bs = getBufferStrategy();
         int xScroll = (int) (player.v.getX() - screen.width/2);
-        int yScroll = (int) (player.v.getY() - screen.height/2);
+        int yScroll = (int) (player.v.getY());
         
         if(bs == null)
         {
@@ -160,7 +160,8 @@ public class BusinessSim extends Canvas implements Runnable{
         screen.clear();
         level.render(xScroll, yScroll, screen);
         player.render(screen);
-    
+        // screen.renderSpriteOnScreen(0, 0, Sprite.grass); // example of what renderSpriteOnScreen does
+        
         System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
 
         Graphics g = bs.getDrawGraphics();

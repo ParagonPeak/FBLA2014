@@ -8,16 +8,20 @@ import com.FBLA.businesssim.graphics.Sprite;
  * @author Tripp and Raphael
  */
 public class Tile {
-    public static int size = 32; 
+    public static int width = 64; 
+    public static int height = 32; 
     public Sprite sprite;
     public static Tile voidTile = new Tile(Sprite.voidSprite);
     public static Tile grassTile = new Tile(Sprite.grass);
+    public static Tile chkFloorTile = new Tile(Sprite.checkerboardFloor);
     
     public static final int voidTileNum = 0;
     public static final int grassTileNum = 1;
+    public static final int chkFloorTileNum = 2;
     
     public static final int voidTileRGB = 0xFFFF00FF;
     public static final int grassTileRGB = 0xFF00FF00;
+    public static final int chkFloorTileRGB = 0xD4FB1A;
     
     public Tile(Sprite s)
     {
