@@ -9,9 +9,10 @@ import com.FBLA.businesssim.entity.Entity;
  *
  * @needs Movement, collision, actions, AI, tracking, stats, etc 
  * -----
- * @author Tripp
- * @date 11/12/13
+ * @author Tripp and Raphael
+ * @date Dec 25, 2013
  * @update Created the class and some constructors. 
+ *          added collision and move methods
  * -----
  */
 public class Mob extends Entity {
@@ -62,5 +63,13 @@ public class Mob extends Entity {
     }
 
     public void aMove(Node end) {
+    }
+    
+    public boolean collision(double d, boolean isDy) {
+        return false;
+    }
+    
+    public void move(double dx, double dy) {
+        v.add(dx, dy);
     }
 }

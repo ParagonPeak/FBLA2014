@@ -45,6 +45,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import com.FBLA.businesssim.level.Level;
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
@@ -132,7 +133,7 @@ public class BusinessSim extends Canvas implements Runnable{
             }
             render();
             frames++;
-
+ 
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
 
@@ -146,8 +147,8 @@ public class BusinessSim extends Canvas implements Runnable{
     public void render()
     {
         BufferStrategy bs = getBufferStrategy();
-        int xPos = player.v.getX();
-        int yPos = player.v.getY();
+        int xPos = (int) (player.v.getX());
+        int yPos = (int) (player.v.getY());
         
         if(bs == null)
         {
@@ -165,6 +166,8 @@ public class BusinessSim extends Canvas implements Runnable{
         Graphics g = bs.getDrawGraphics();
         {
             g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+            g.setColor(Color.WHITE);
+            g.drawString("X: " + xPos + "\n Y: " + yPos, 50, 250);
         }
         
         g.dispose();

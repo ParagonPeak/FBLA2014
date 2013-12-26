@@ -20,11 +20,11 @@ public class Player extends Mob{
     
     public void render(Screen screen)
     {
-        screen.renderPlayer(v.getX(), v.getY(), sprite);
+        screen.renderPlayer((int) (v.getX()), (int) (v.getY()), sprite);
     }
     
     public void update() {
-        int dx = 0, dy = 0;
+        double dx = 0, dy = 0;
         if (keys.up) {
             dy -= speed;
             sprite = Sprite.playerSprite;

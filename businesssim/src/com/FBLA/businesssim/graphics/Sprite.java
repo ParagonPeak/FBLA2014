@@ -20,7 +20,7 @@ public class Sprite {
     public static Sprite playerSprite = new Sprite(16,32,0,0,SpriteSheet.characters, 2);
     private byte update;
     
-    @SuppressWarnings("LeakingThisInConstructor")
+    
     /** 
      * Creates a Sprite object, which allows easy access to drawn images to be 
      * used as characters, NPC, or Entities later in the game.

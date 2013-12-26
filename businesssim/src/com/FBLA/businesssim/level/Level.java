@@ -12,7 +12,7 @@ import java.awt.Rectangle;
 
 /**
  *
- * @author Tripp
+ * @author Tripp and Raphael
  */
 public class Level {
 
@@ -44,17 +44,14 @@ public class Level {
     public void render(int xPos, int yPos, Screen screen) {
         screen.setOffset(xPos, yPos);
 
-        //corner pins
-        int x0 = (xPos >> 5);
-        int x1 = (xPos + screen.width) >> 5;
-        int y0 = yPos >> 5;
-        int y1 = (yPos + screen.height) >> 5;
+        //corner pins (tile not pixel array)
+        int x0 = (xPos >> 4);
+        int x1 = (xPos + screen.width) >> 4;
+        int y0 = yPos >> 4;
+        int y1 = (yPos + screen.height) >> 4;
 
-        x1++;
-        y1++;
-
-        for (int y = y0; y < y1; y++) {
-            for (int x = x0; x < x1; x++) {
+        for (int y = y0; y <= y1; y++) {
+            for (int x = x0; x <= x1; x++) {
                 getTile(x, y).render(x, y, screen);
             }
         }
