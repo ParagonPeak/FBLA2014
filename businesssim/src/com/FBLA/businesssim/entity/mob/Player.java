@@ -15,7 +15,7 @@ public class Player extends Mob{
         super(v,"Player");
         keys = k;
         screen = sc;
-        sprite = Sprite.sprites[0];
+        sprite = Sprite.sprites.get(0);
     }
     
     public void render(Screen screen)

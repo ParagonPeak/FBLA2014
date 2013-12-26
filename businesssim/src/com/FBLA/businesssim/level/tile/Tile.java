@@ -10,7 +10,7 @@ import com.FBLA.businesssim.graphics.Sprite;
 public class Tile {
     public static int size = 32; 
     public Sprite sprite;
-    public static Tile voidTile = new Tile(new Sprite(Tile.size, 0x00ffff));
+    public static Tile voidTile = new Tile(Sprite.voidSprite);
     public static Tile grassTile = new Tile(Sprite.grass);
     
     public static final int voidTileNum = 0;

@@ -60,31 +60,13 @@ public class Screen {
 //    }
 
     /**
-     * Renders a player to their relative position.
+     * Renders a player in the middle
      * @param xp The left most pixel location of the object
      * @param yp The upper most pixel location of the object
      * @param sprite The image to be drawn
      */
     public void renderPlayer(int xp, int yp, Sprite sprite) {
-        int w = sprite.W;
-        int h = sprite.H;
-        xp -= xOffs;
-        yp -= yOffs;
-        for (int y = 0; y < h; y++) {
-            int ya = y + yp; // absolute position
-            for (int x = 0; x < w; x++) {
-                int xa = x + xp;
-                if (xa < 0 - w || xa >= width || ya < 0 || ya >= height) {
-                    break;
-                }
-                if (xa < 0) {
-                    xa = 0;
-                }
-                if (sprite.pixels[x + (y * w)] != 0xffFF00FF) {
-                    pixels[xa + (ya * width)] = sprite.pixels[x + (y * w)];
-                }
-            }
-        }
+        renderSprite(xp, yp, sprite);
     }
 
     /**
@@ -104,7 +86,7 @@ public class Screen {
      */
     public void clear() {
         for (int i = 0; i < pixels.length; i++) {
-            pixels[i] = 0;
+            pixels[i] = 0x000000;
         }
     }
     

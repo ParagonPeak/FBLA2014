@@ -26,7 +26,7 @@
  * -FIFTH NEED??
  * 
  * Player
- * -Controlable entity
+ * -Controllable entity
  * 
  * AI
  * -A* Path finding
@@ -147,8 +147,8 @@ public class BusinessSim extends Canvas implements Runnable{
     public void render()
     {
         BufferStrategy bs = getBufferStrategy();
-        int xPos = (int) (player.v.getX());
-        int yPos = (int) (player.v.getY());
+        int xScroll = (int) (player.v.getX() - screen.width/2);
+        int yScroll = (int) (player.v.getY() - screen.height/2);
         
         if(bs == null)
         {
@@ -158,7 +158,7 @@ public class BusinessSim extends Canvas implements Runnable{
             
             
         screen.clear();
-        level.render(xPos, yPos, screen);
+        level.render(xScroll, yScroll, screen);
         player.render(screen);
     
         System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
@@ -167,7 +167,7 @@ public class BusinessSim extends Canvas implements Runnable{
         {
             g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
             g.setColor(Color.WHITE);
-            g.drawString("X: " + xPos + "\n Y: " + yPos, 50, 250);
+            g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
         }
         
         g.dispose();
@@ -176,7 +176,6 @@ public class BusinessSim extends Canvas implements Runnable{
     
     public void update()
     {
-        System.out.println("update");
         player.update();
         Sprite.update();
         level.update();

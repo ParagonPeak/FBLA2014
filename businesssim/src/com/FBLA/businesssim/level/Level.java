@@ -27,7 +27,7 @@ public class Level {
     public int spawnX = 0;
     public int spawnY = 0;
 //    public Vector2i playerV = new Vector2i(spawnX + (BusinessSim.bs.player.s.W / 2), spawnY + (BusinessSim.bs.player.s.H /2));
-    public Vector2i playerV = new Vector2i(0,0);
+    public Vector2i playerV = new Vector2i(0,0); // why is this here?
     public static Rectangle[] rects;
 
     public Level(String path) {
@@ -40,7 +40,8 @@ public class Level {
         height = h;
         tiles = new int[w*h];
         for(int i = 0; i < w * h; i++) {
-            tiles[i] = Tile.grassTileNum;
+            tiles[i] = (int) (Math.random()*2);
+            //tiles[i] = Tile.grassTileNum;
         }
     }
 

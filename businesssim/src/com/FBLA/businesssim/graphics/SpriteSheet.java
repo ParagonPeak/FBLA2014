@@ -18,10 +18,10 @@ import javax.imageio.ImageIO;
 public class SpriteSheet {
 
     private String path;
-    public final int SIZE;
+    public final int WIDTH, HEIGHT;
     public int[] pixels;
-    public static SpriteSheet characters = new SpriteSheet("Resources/Textures/Characters/Player.png",128,64);
-    public static SpriteSheet sample = new SpriteSheet("Resources/Textures/Tiles/sample.gif", 768, 576);
+    public static SpriteSheet characters = new SpriteSheet("Resources/Textures/Characters/Player.png",128, 64);
+    public static SpriteSheet sample = new SpriteSheet("Resources/Textures/Tiles/sample.gif", 736, 544);
     //Example for loading a spritesheet. All should be static
     //public static SpriteSheet tiles = new SpriteSheet("textures/spritesheet.png", 256);
 
@@ -36,8 +36,9 @@ public class SpriteSheet {
      */
     public SpriteSheet(String p, int size) {
         path = p;
-        SIZE = size;
-        pixels = new int[SIZE * SIZE];
+        WIDTH = size;
+        HEIGHT = size;
+        pixels = new int[size * size];
         load();
     }
 
@@ -53,8 +54,9 @@ public class SpriteSheet {
     public SpriteSheet(String p, int width, int height)
     {
         path = p;
-        SIZE = width * height;
-        pixels = new int[SIZE];
+        WIDTH = width;
+        HEIGHT = height;
+        pixels = new int[width * height];
         load();
     }
     

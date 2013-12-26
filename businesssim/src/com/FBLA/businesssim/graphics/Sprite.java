@@ -1,24 +1,26 @@
 package com.FBLA.businesssim.graphics;
 
+import java.util.ArrayList;
+
 /**
  * Sprite purpose: Hold images, animations, and an array for the program.
  * -----
  * @author  Tripp and Raphael
- * @date    11/12/13
+ * @date    Dec 25, 2013
  * @update  Wrote/commented class
  * -----
  */
 public class Sprite {
-    public final int SIZE, W, H;
-    private int x, y,//cords of sprite in sprite sheet
+    public final int W, H;
+    private int xInSheet, yInSheet,//coords of sprite in sprite sheet
             frame = 0;
     private final int MAX_FRAMES;
     public int[] pixels;
     private SpriteSheet sheet;
-    public static Sprite[] sprites = new Sprite[0];
-    public static Sprite voidSprite = new Sprite(16, 0x00A0FF);
-    public static Sprite playerSprite = new Sprite(16,32,0,0,SpriteSheet.characters, 2);
-    public static Sprite grass = new Sprite(32, 32, 368, 304, SpriteSheet.sample, 1);
+    public static ArrayList<Sprite> sprites = new ArrayList<>();
+    public static Sprite voidSprite = new Sprite(32, 32, 0x00A0CC);
+    public static Sprite playerSprite = new Sprite(32,64,0,0,SpriteSheet.characters, 4);
+    public static Sprite grass = new Sprite(32, 32, 352/32, 320/32, SpriteSheet.sample, 1);
     private byte update;
     
     
@@ -33,22 +35,16 @@ public class Sprite {
      * @param frames How long animations are for said Sprite. (Min 1)
      */
     public Sprite(int width, int height, int x, int y, SpriteSheet ss, int frames) {
-        
-        SIZE = width * height;
         W = width;
         H = height;
-        this.x = x * width;
-        this.y = y * height;
-        pixels = new int[SIZE * SIZE];
+        this.xInSheet = x * width;
+        this.yInSheet = y * height;
+        pixels = new int[W * H];
         if(frames < 1) frames = 1;
         MAX_FRAMES = frames - 1;
         sheet = ss;
         load();
-
-        Sprite[] temp = sprites;
-        sprites = new Sprite[temp.length + 1];
-        System.arraycopy(temp, 0, sprites, 0, temp.length);
-        sprites[sprites.length - 1] = this;
+        sprites.add(this);
     }
 
     /**
@@ -65,16 +61,14 @@ public class Sprite {
     }
     
     /**
-     * Square Sprite of a solid color
-     * @param size the length/height of solid sprite
+     * Sprite of a solid color
      * @param color the integer of the color to turn sprite
      */
-    public Sprite(int size, int color) {
-        MAX_FRAMES = 1;
-        W = (int) Math.sqrt(size);
-        H = W;  
-        SIZE = size;
-        pixels = new int[SIZE * SIZE];
+    public Sprite(int width, int height, int color) {
+        MAX_FRAMES = 1 - 1;
+        W = width;
+        H = height;  
+        pixels = new int[W * H];
         setColor(color);
     }
 
@@ -94,7 +88,7 @@ public class Sprite {
     private void load() {
         for (int y = 0; y < H; y++) {
             for (int x = 0; x < W; x++) {
-                pixels[x + y * W] = sheet.pixels[(x + (frame * W) + this.x) + (this.y + y * H)];
+                pixels[x + y * W] = sheet.pixels[(x + (frame * W) + this.xInSheet) + (this.yInSheet + y)*sheet.WIDTH]; // should frames be frames - 1? if changed, max frames constructor -1ing should change.
             }
         }
     }
@@ -104,8 +98,8 @@ public class Sprite {
      * to only animate what's on screen. Could be unnecessary.
      */
     public static void update() {
-        for (int i = 0; i < sprites.length; i++) {
-            sprites[i].animate();
+        for (int i = 0; i < sprites.size(); i++) {
+                sprites.get(i).animate();
             }
         }
 
