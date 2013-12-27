@@ -115,7 +115,7 @@ public class Level {
         for (int y = y0; y < y1; y++) {
             for (int x = x0; x < x1; x++) {
                 getTile(x, y).render(x, y, screen);
-                // getObject(x, y).render(x, y, screen); // To be fixed next! 
+                getObject(x, y).render(x, y, screen);
             }
         }
     }

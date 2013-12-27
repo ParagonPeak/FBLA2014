@@ -20,6 +20,7 @@ public class Sprite {
     private SpriteSheet sheet;
     public static ArrayList<Sprite> sprites = new ArrayList<>();
     public static Sprite voidSprite = new Sprite(32, 32, 0x00A0CC);
+    public static Sprite emptySprite = new Sprite(32, 32, 0xFFFF00FF);
     public static Sprite playerSprite = new Sprite(32,64,0,0,SpriteSheet.characters, 4);
     public static Sprite playerSpriteFlip = new Sprite(playerSprite);
     public static Sprite grass = new Sprite(32, 32, 352/32, 320/32, SpriteSheet.sample, 1);

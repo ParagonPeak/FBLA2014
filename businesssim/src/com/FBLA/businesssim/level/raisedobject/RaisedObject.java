@@ -10,7 +10,7 @@ import com.FBLA.businesssim.graphics.Sprite;
 public class RaisedObject {
     public Sprite sprite;
     
-    public static RaisedObject voidObject = new RaisedObject(Sprite.voidSprite);
+    public static RaisedObject voidObject = new RaisedObject(Sprite.emptySprite);
     public static RaisedObject cubicleSWObject = new RaisedObject(Sprite.cubicleSW);
     public static RaisedObject cubicleSEObject = new RaisedObject(Sprite.cubicleSE);
     
