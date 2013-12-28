@@ -1,10 +1,5 @@
 /*
  * What we'll need:
- * High Res rendering
- * -Load more than a 1:1 pixel ration (anti-alias?)
- * 
- * Screen
- * -Display Images
  * 
  * Entity
  * -Player
@@ -12,7 +7,7 @@
  * -Boss**
  * 
  * Zoning
- * -Zone areas for tasts
+ * -Zone areas for tasks
  * --Work
  * --Break
  * --Bathroom
@@ -23,10 +18,17 @@
  * -Social
  * -Work
  * -Office standings
- * -FIFTH NEED??
+ * 
+ * FBLA Things
+ * -Find Tech Competitions
+ * --Figure out how to implement them into the game
+ * -Make it fun
+ * -???
+ * -Profit
  * 
  * Player
  * -Controllable entity
+ * -Switch to four degrees of movement instead of 8?
  * 
  * AI
  * -A* Path finding
