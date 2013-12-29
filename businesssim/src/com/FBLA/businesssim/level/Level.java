@@ -5,8 +5,10 @@
 package com.FBLA.businesssim.level;
 
 import com.FBLA.businesssim.BusinessSim;
+import com.FBLA.businesssim.entity.mob.Player;
 import com.FBLA.businesssim.util.Vector2i;
 import com.FBLA.businesssim.graphics.Screen;
+import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.graphics.SpriteSheet;
 import com.FBLA.businesssim.level.raisedobject.RaisedObject;
 import com.FBLA.businesssim.level.tile.Tile;
@@ -46,7 +48,7 @@ public class Level {
             //tiles[i] = (int) (Math.random()*3);
             //tiles[i] = Tile.grassTileNum;
             tiles[i] = Tile.chkFloorTileNum;
-            objects[i] = (int) (Math.random() * 3);
+            objects[i] = (int) (Math.random() * 10);
         }
     }
 
@@ -75,7 +77,7 @@ public class Level {
     private void time() {
     }
 
-    public void render(int xPos, int yPos, Screen screen) {
+    public void render(int xPos, int yPos, Screen screen, Player p) {
         screen.setOffset(xPos, yPos);
 
         //corner pins (tile not pixel array)
@@ -112,12 +114,73 @@ public class Level {
         int x1 = width;
         int y1 = height;
         
-        for (int y = y0; y < y1; y++) {
-            for (int x = x0; x < x1; x++) {
+//        for (int y = y1 - 1; y >= y0; y--) {
+//            for (int x = x0; x < x1; x++) {
+//                getTile(x, y).render(x, y, screen);
+//            }
+//        }
+        for (int x = x0; x < x1; x++) {
+            for (int y = y0; y < y1; y++) {
                 getTile(x, y).render(x, y, screen);
-                getObject(x, y).render(x, y, screen);
             }
         }
+        
+        for(int y = 0; y < (int) (p.v.getY()) >> 5; y++) {
+            
+        }
+        
+        // declared outside loop for speed
+//        int[] pCoords = screen.twoDToIso(p.v.getX(), p.v.getY());
+//        int px = pCoords[0];
+//        int py = pCoords[1];
+//        int pw = p.sprite.W;
+//        int ph = p.sprite.H;
+////        px = (int) (p.v.getX());
+////        py = (int) (p.v.getY());
+//        
+//        double xRange = 1280;
+//        double yRange = 640;
+//        double minX = -640;
+//        double maxX = 640;
+//        double minY = 0;
+//        double maxY = 640;
+//        double xScale = 256;
+//        double yScale = 128;
+//        int xShift = 200;
+//        int yShift = 0;
+//        
+//        boolean renderPlayer = true;
+//        for (int y = y0; y < y1; y++) {
+//            for (int x = x0; x < x1; x++) {
+//                RaisedObject ro = getObject(x, y);
+//                ro.render(x, y, screen);
+//                
+//                if(true) {
+//                    int[] xy = screen.twoDToIso(x << 5, y << 5);
+//                    int sx = xy[0];
+//                    int sy = xy[1];
+////                    sx = x << 5;
+////                    sy = y << 5;
+//                    int sw = ro.sprite.W;
+//                    int sh = ro.sprite.H;
+//                    // only render player if they're behind what's being rendered and they're close to what's being rendered
+//                    boolean inXBounds = ((px >= sx - 10) &&  (px <= sx + sw + 10)); 
+//                    boolean inYBounds = ((py < sy - sh));// &&   (py > sy - sh));
+//                    //System.out.println(inXBounds + "\t" + inYBounds + " px: " + px + " py: " + py + " ");
+//                    if(!ro.sprite.equals(Sprite.emptySprite)) {
+//                        screen.renderSpriteOnScreen((int) ((sx-minX+minX)/xRange*xScale) + xShift, (int) (sy/yRange*yScale) + yShift, Sprite.smallRedSprite);
+//                    }
+//                    if(inYBounds && inXBounds) {
+//                        p.render(screen);
+//                    } else {
+//                        renderPlayer = false;
+//                    }
+//                }
+//                
+//            }
+//        }
+//        screen.renderSpriteOnScreen((int) ((px-minX+minX)/xRange*xScale) + xShift, (int) (py/yRange*yScale) + yShift, Sprite.smallYellowSprite);
+        // x [-640, 640] y [0, 640]
     }
 
     public Tile getTile(int x, int y) {

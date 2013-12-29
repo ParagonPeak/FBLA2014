@@ -1,6 +1,12 @@
 package com.FBLA.businesssim.graphics;
 
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  * Sprite purpose: Hold images, animations, and an array for the program.
@@ -20,14 +26,62 @@ public class Sprite {
     private SpriteSheet sheet;
     public static ArrayList<Sprite> sprites = new ArrayList<>();
     public static Sprite voidSprite = new Sprite(32, 32, 0x00A0CC);
+    public static Sprite smallRedSprite = new Sprite(2, 2, 0xff0000);
+    public static Sprite smallYellowSprite = new Sprite(2, 2, 0xffff00);
     public static Sprite emptySprite = new Sprite(32, 32, 0xFFFF00FF);
     public static Sprite playerSprite = new Sprite(32,64,0,0,SpriteSheet.characters, 4);
     public static Sprite playerSpriteFlip = new Sprite(playerSprite);
     public static Sprite grass = new Sprite(32, 32, 352/32, 320/32, SpriteSheet.sample, 1);
     public static Sprite checkerboardFloor = new Sprite(64, 32, 1, 2, SpriteSheet.carpet, 1);
     
-    public static Sprite cubicleSW = new Sprite(64, 128, 0, 0, SpriteSheet.walls, 1);
-    public static Sprite cubicleSE = new Sprite(64, 128, 1, 0, SpriteSheet.walls, 1);
+//    public static Sprite cubicleSW = new Sprite(64, 128, 0, 0, SpriteSheet.walls, 1);
+//    public static Sprite cubicleSE = new Sprite(64, 128, 1, 0, SpriteSheet.walls, 1);
+//    public static Sprite cubicleSW = new Sprite(64, 128, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/sheets/cubicles3.png", 1);
+//    public static Sprite cubicleSE = new Sprite(64, 128, 1, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/sheets/cubicles3.png", 1);
+    public static Sprite cubicleSW          = new Sprite(21, 81, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0001.png", 1);
+    public static Sprite cubicleSE          = new Sprite(21, 81, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0002.png", 1);
+        
+    public static Sprite smallWallSW        = new Sprite(35, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0001.png", 1);
+    public static Sprite smallWallSE        = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0002.png", 1);
+    public static Sprite smallWallSW2       = new Sprite(50, 88, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0003.png", 1);
+    public static Sprite smallWallSE2       = new Sprite(35, 88, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0004.png", 1);
+        
+    public static Sprite bigWallSW          = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0005.png", 1);
+    public static Sprite bigWallSE          = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0006.png", 1);
+        
+    public static Sprite cornerE            = new Sprite(35, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0007.png", 1);
+    public static Sprite cornerS            = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0008.png", 1);
+    public static Sprite cornerW            = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0009.png", 1);
+    public static Sprite cornerN            = new Sprite(50, 88, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0010.png", 1);
+        
+    public static Sprite tWallSW            = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0011.png", 1);
+    public static Sprite tWallNW            = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0012.png", 1);
+    public static Sprite tWallNE            = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0013.png", 1);
+    public static Sprite tWallSE            = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0014.png", 1);
+    public static Sprite crossWall          = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0015.png", 1);
+        
+    public static Sprite platformWallSW     = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0016.png", 1);
+    public static Sprite platformWallSE     = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0017.png", 1);
+        
+    public static Sprite cornerPlatformE    = new Sprite(35, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0018.png", 1);
+    public static Sprite cornerPlatformN    = new Sprite(50, 88, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0019.png", 1);
+    public static Sprite cornerPlatformW    = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0020.png", 1);
+        
+    public static Sprite tPlatformSW        = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0021.png", 1);
+    public static Sprite tPlatformSE        = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0022.png", 1);
+    public static Sprite platformCross      = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0023.png", 1);
+    public static Sprite crossSidePlatforms = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0024.png", 1);
+    
+    public static Sprite computerWallSW     = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0025.png", 1);
+    public static Sprite computerWallSE     = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0026.png", 1);
+     
+    public static Sprite deskWallSE         = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0027.png", 1);
+    public static Sprite deskWallSW         = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0028.png", 1);
+    public static Sprite raisedCabinetSE    = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0029.png", 1);
+    public static Sprite raisedCabinetSW    = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0030.png", 1);
+    public static Sprite paperPlatformS     = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0031.png", 1);
+    public static Sprite paperPlatformSW    = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0032.png", 1);
+    
     private byte update;
     
     
@@ -105,6 +159,25 @@ public class Sprite {
                 pixels[x + y * W] = sheet.pixels[(x + (frame * W) + this.xInSheet) + (this.yInSheet + y)*sheet.WIDTH]; // should frames be frames - 1? if changed, max frames constructor -1ing should change.
             }
         }
+    }
+    
+    /**
+     * This creates a sprite from a file indicated by p
+     * Besides not requiring an already made SpriteSheet object it's like all the other constructors
+     */
+    public Sprite(int width, int height, int x, int y, String p, int frames) {
+//        W = width;
+//        H = height;
+        MAX_FRAMES = frames - 1;
+//        pixels = new int[W*H];
+        sheet = new SpriteSheet(p);
+        W = sheet.WIDTH;
+        H = sheet.HEIGHT;
+        pixels = new int[W*H];
+        xInSheet = x * W;
+        yInSheet = y * H;
+        load();
+        sprites.add(this);
     }
 
     /**

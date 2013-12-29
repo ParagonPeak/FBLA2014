@@ -160,8 +160,8 @@ public class BusinessSim extends Canvas implements Runnable{
             
             
         screen.clear();
-        level.render(xScroll, yScroll, screen);
-        player.render(screen);
+        level.render(xScroll, yScroll, screen, player);
+        //player.render(screen); // player.render() called by level.render() because Sprite ordering
         // screen.renderSpriteOnScreen(0, 0, Sprite.grass); // example of what renderSpriteOnScreen does
         
         System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
