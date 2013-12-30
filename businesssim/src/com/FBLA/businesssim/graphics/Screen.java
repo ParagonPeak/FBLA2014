@@ -1,26 +1,41 @@
 package com.FBLA.businesssim.graphics;
 
+import com.FBLA.businesssim.input.Keyboard;
+import java.awt.Graphics;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Class purpose: Create the bulk of the screen that has to load/render sprites
  * -----
+<<<<<<< HEAD
  * @author    Tripp and Raphael
  * @date      Dec 29, 2013
  * @update    Wrote the bulk of code and commented in method uses. Still need to 
  *            create Tile class. Will be changed to use higher res rendering.
  * -----
+=======
+ *
+ * @author Tripp and Raphael
+ * @date Dec 26, 2013
+ * @update Wrote the bulk of code and commented in method uses. Still need to
+ * create Tile class. Will be changed to use higher res rendering. -----
+>>>>>>> Adding Text
  */
 public class Screen {
+
     public int width, height; //of screen
     public int[] pixels;
     public int mapwidth = 64; //image file should be 64 px by 64 px
     private int mapsize = mapwidth * mapwidth;
     public int[] tiles = new int[mapsize]; //64 tiles in both directions
     public int xOffs, yOffs; //position to look at
+    public Graphics g;
 
-    
     /**
      * Creates a Screen object, used to fill the GUI that presents the graphics
      * of our game.
+     *
      * @param w the width of the screen
      * @param h the height of the screen
      */
@@ -30,9 +45,9 @@ public class Screen {
         pixels = new int[w * h];
     }
 
-
     /**
      * Renders a player in the middle
+     *
      * @param xp The left most pixel location of the object
      * @param yp The upper most pixel location of the object
      * @param sprite The image to be drawn
@@ -44,6 +59,7 @@ public class Screen {
     /**
      * Sets the offsets of the world so that a player can manipulate the virtual
      * world
+     *
      * @param xOffs The offset in the x direction
      * @param yOffs The offset in the y direction
      */
@@ -62,20 +78,23 @@ public class Screen {
             pixels[i] = Sprite.voidSprite.pixels[0]; // figured it should be cleared with the same color as the voidSprite
         }
     }
-    
+
     /**
-     * xp and yp are the Sprite's position on the screen, not the map, and are without offset
+     * @param xp is the Sprite's X position on the screen, not the map, and are
+     * without offset
+     * @param yp is the Sprite's Y position on the screen, not the map, and are
+     * without offset
      */
     public void renderSprite(int xp, int yp, Sprite s) {
         int w = s.W;
         int h = s.H;
         xp -= xOffs;
         yp -= yOffs;
-        
+
         int[] iso = twoDToIso(xp, yp);
         xp = iso[0];
         yp = iso[1];
-        
+
         for (int y = 0; y < h; y++) {
             int ya = y + yp; // absolute position
             for (int x = 0; x < w; x++) {
@@ -93,40 +112,87 @@ public class Screen {
             }
         }
     }
-    
+
     /**
-     * Renders a sprite as one on the screen not on the level, could be used for GUI
+     * Renders a sprite as one on the screen not on the level, could be used for
+     * GUI
      */
     public void renderSpriteOnScreen(int x, int y, Sprite s) {
         renderSprite(x + xOffs, y + yOffs, s);
     }
-    
+
     /**
-     * for use in translating mouse clicks in isometric view to 2d coordinates
+     * For use in translating mouse clicks in isometric view to 2d coordinates
+     *
+     * @param x
+     * @param y
+     * @return
      */
     public int[] isoTo2D(double x, double y) {
-        int[] twoD = {(int) ((2*y + x)/2), (int) ((2*y - x)/2)};
+        int[] twoD = {(int) ((2 * y + x) / 2), (int) ((2 * y - x) / 2)};
         return twoD;
     }
-    
+
     /**
-     * used in rendering to adjust normal top-down coordinates to ones used in isometric rendering
+     * Used in rendering to adjust normal top-down coordinates to ones used in
+     * isometric rendering
+     *
+     * @param x
+     * @param y
+     * @return
      */
     public int[] twoDToIso(double x, double y) {
-        int[] iso = {(int) (x-y), (int) ((x+y)/2)};
+        int[] iso = {(int) (x - y), (int) ((x + y) / 2)};
         return iso;
     }
+
+    /**
+     * This method will display a line of text in a text box for the player to
+     * read.
+     *
+     * @param lines is the array of all the text to display.
+     * @param key keyboard to check if the key is pressed.
+     */
+    public synchronized void displayText(String[] lines, Keyboard key) {
+        //The lines currently on the screen, with a max of three to following convention
+        if(g == null || lines == null) return;
+        String[] displayedLines = new String[3];
+        int index = 0;
+        for (int i = 0; i < lines.length; i++) {
+            if (index < 3) {
+                displayedLines[index++] = lines[i];
+            } else {
+                displayedLines[0] = displayedLines[1];
+                displayedLines[1] = displayedLines[2];
+                displayedLines[2] = lines[i];
+            }
+            drawText(displayedLines);
+            while (!key.action) {
+            }
+        }
+    }
+    
+    public synchronized void drawText(String[] lines)
+    {
+        for(int i = 0; i < lines.length; i++)
+        {
+            if(lines[i] == null)
+                return;
+            g.drawString(lines[i], 30, ((i + 1) * 25 + 375));
+        }
+    }
+    
 
     public void renderRaisedSprite(int xp, int yp, Sprite s) {
         int w = s.W;
         int h = s.H;
         xp -= xOffs;
         yp -= yOffs;
-        
+
         int[] iso = twoDToIso(xp, yp);
         xp = iso[0];
         yp = iso[1];
-        
+
         for (int y = 0; y < h; y++) {
             int ya = y + yp - h; // absolute position
             for (int x = 0; x < w; x++) {

@@ -43,6 +43,7 @@ import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.input.Keyboard;
 import com.FBLA.businesssim.level.Level;
+import com.FBLA.businesssim.util.TextDisplayer;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -52,9 +53,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import javax.swing.JFrame;
 
-public class BusinessSim extends Canvas implements Runnable{
+public class BusinessSim extends Canvas implements Runnable {
 
-    
     public int width = 800, height = 500;
     private int updates = 0;
     public byte scale = 1;
@@ -69,8 +69,10 @@ public class BusinessSim extends Canvas implements Runnable{
     public Player player;
     public static BusinessSim bs;
     private Level level;
-    
+    public static TextDisplayer textDisplay;
+    String[] test = {"Test1", "Test 2", "Test 3", "Replace"};
     //Starts the game, used for frame set up
+
     public static void main(String[] args) {
         bs = new BusinessSim();
         bs.frame.setResizable(false);
@@ -84,9 +86,8 @@ public class BusinessSim extends Canvas implements Runnable{
 
         bs.start();
     }
-    
-    public BusinessSim()
-    {
+
+    public BusinessSim() {
         Dimension size = new Dimension(width * scale, height * scale);
         setPreferredSize(size);
         key = new Keyboard();
@@ -94,8 +95,10 @@ public class BusinessSim extends Canvas implements Runnable{
         addKeyListener(key);
         level = new Level("level/Floor1.png");
         player = new Player(level.playerV, screen, key);
+        textDisplay = new TextDisplayer(new TextDisplayer(screen, key));
+        textDisplay.setText(test);
     }
-    
+
     //start applet
     public synchronized void start() {
         running = true;
@@ -135,7 +138,7 @@ public class BusinessSim extends Canvas implements Runnable{
             }
             render();
             frames++;
- 
+
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
 
@@ -145,44 +148,42 @@ public class BusinessSim extends Canvas implements Runnable{
         }
         stop();
     }
-    
-    public void render()
-    {
+
+    public void render() {
         BufferStrategy bs = getBufferStrategy();
-        int xScroll = (int) (player.v.getX() - screen.width/2);
+        int xScroll = (int) (player.v.getX() - screen.width / 2);
         int yScroll = (int) (player.v.getY());
-        
-        if(bs == null)
-        {
+
+        if (bs == null) {
             createBufferStrategy(3);
             return;
         }
-            
-            
+
+
         screen.clear();
         level.render(xScroll, yScroll, screen, player);
         //player.render(screen); // player.render() called by level.render() because Sprite ordering
         // screen.renderSpriteOnScreen(0, 0, Sprite.grass); // example of what renderSpriteOnScreen does
-        
+
         System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
 
         Graphics g = bs.getDrawGraphics();
         {
+            screen.g = g;
+            textDisplay.start();
             g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
             g.setColor(Color.WHITE);
             g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
         }
-        
+        screen.g.dispose();
         g.dispose();
         bs.show();
     }
-    
-    public void update()
-    {
+
+    public void update() {
         player.update();
         Sprite.update();
         level.update();
         key.update();
     }
-
 }
