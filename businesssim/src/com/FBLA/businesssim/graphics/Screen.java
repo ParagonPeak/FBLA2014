@@ -4,7 +4,7 @@ package com.FBLA.businesssim.graphics;
  * Class purpose: Create the bulk of the screen that has to load/render sprites
  * -----
  * @author    Tripp and Raphael
- * @date      Dec 26, 2013
+ * @date      Dec 29, 2013
  * @update    Wrote the bulk of code and commented in method uses. Still need to 
  *            create Tile class. Will be changed to use higher res rendering.
  * -----
@@ -86,8 +86,9 @@ public class Screen {
                 if (xa < 0) {
                     xa = 0;
                 }
-                if (s.pixels[x + (y * w)] != 0xffFF00FF) {
-                    pixels[xa + (ya * width)] = s.pixels[x + (y * w)];
+                int color = s.pixels[x + (y * w)];
+                if (color != 0xffFF00FF) {
+                    pixels[xa + (ya * width)] = color;
                 }
             }
         }

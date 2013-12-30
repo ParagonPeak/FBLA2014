@@ -1,19 +1,12 @@
 package com.FBLA.businesssim.graphics;
 
-import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 
 /**
  * Sprite purpose: Hold images, animations, and an array for the program.
  * -----
  * @author  Tripp and Raphael
- * @date    Dec 26, 2013
- * @update  Wrote/commented class
+ * @date    Dec 29, 2013
  * -----
  */
 public class Sprite {
@@ -31,56 +24,53 @@ public class Sprite {
     public static Sprite emptySprite = new Sprite(32, 32, 0xFFFF00FF);
     public static Sprite playerSprite = new Sprite(32,64,0,0,SpriteSheet.characters, 4);
     public static Sprite playerSpriteFlip = new Sprite(playerSprite);
-    public static Sprite grass = new Sprite(32, 32, 352/32, 320/32, SpriteSheet.sample, 1);
+//    public static Sprite grass = new Sprite(32, 32, 352/32, 320/32, SpriteSheet.sample, 1);
+    
     public static Sprite checkerboardFloor = new Sprite(64, 32, 1, 2, SpriteSheet.carpet, 1);
+    public static Sprite solidLightFloor = new Sprite(64, 32, 0, 0, SpriteSheet.carpet, 1);
+    public static Sprite solidDarkFloor = new Sprite(64, 32, 3, 3, SpriteSheet.carpet, 1);
     
-//    public static Sprite cubicleSW = new Sprite(64, 128, 0, 0, SpriteSheet.walls, 1);
-//    public static Sprite cubicleSE = new Sprite(64, 128, 1, 0, SpriteSheet.walls, 1);
-//    public static Sprite cubicleSW = new Sprite(64, 128, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/sheets/cubicles3.png", 1);
-//    public static Sprite cubicleSE = new Sprite(64, 128, 1, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/sheets/cubicles3.png", 1);
-    public static Sprite cubicleSW          = new Sprite(21, 81, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0001.png", 1);
-    public static Sprite cubicleSE          = new Sprite(21, 81, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0002.png", 1);
-        
-    public static Sprite smallWallSW        = new Sprite(35, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0001.png", 1);
-    public static Sprite smallWallSE        = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0002.png", 1);
-    public static Sprite smallWallSW2       = new Sprite(50, 88, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0003.png", 1);
-    public static Sprite smallWallSE2       = new Sprite(35, 88, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0004.png", 1);
-        
-    public static Sprite bigWallSW          = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0005.png", 1);
-    public static Sprite bigWallSE          = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0006.png", 1);
-        
-    public static Sprite cornerE            = new Sprite(35, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0007.png", 1);
-    public static Sprite cornerS            = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0008.png", 1);
-    public static Sprite cornerW            = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0009.png", 1);
-    public static Sprite cornerN            = new Sprite(50, 88, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0010.png", 1);
-        
-    public static Sprite tWallSW            = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0011.png", 1);
-    public static Sprite tWallNW            = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0012.png", 1);
-    public static Sprite tWallNE            = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0013.png", 1);
-    public static Sprite tWallSE            = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0014.png", 1);
-    public static Sprite crossWall          = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0015.png", 1);
-        
-    public static Sprite platformWallSW     = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0016.png", 1);
-    public static Sprite platformWallSE     = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0017.png", 1);
-        
-    public static Sprite cornerPlatformE    = new Sprite(35, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0018.png", 1);
-    public static Sprite cornerPlatformN    = new Sprite(50, 88, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0019.png", 1);
-    public static Sprite cornerPlatformW    = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0020.png", 1);
-        
-    public static Sprite tPlatformSW        = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0021.png", 1);
-    public static Sprite tPlatformSE        = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0022.png", 1);
-    public static Sprite platformCross      = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0023.png", 1);
-    public static Sprite crossSidePlatforms = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0024.png", 1);
-    
-    public static Sprite computerWallSW     = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0025.png", 1);
-    public static Sprite computerWallSE     = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0026.png", 1);
-     
-    public static Sprite deskWallSE         = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0027.png", 1);
-    public static Sprite deskWallSW         = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0028.png", 1);
-    public static Sprite raisedCabinetSE    = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0029.png", 1);
-    public static Sprite raisedCabinetSW    = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0030.png", 1);
-    public static Sprite paperPlatformS     = new Sprite(64, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0031.png", 1);
-    public static Sprite paperPlatformSW    = new Sprite(50, 96, 0, 0, "Resources/Textures/Tiles/office_tiles/office/out_walls/edits/noWS/0032.png", 1);
+    public static Sprite smallWallSW        = new Sprite(64, 128, 0, 0, SpriteSheet.walls, 1);
+    public static Sprite smallWallSE        = new Sprite(64, 128, 1, 0, SpriteSheet.walls, 1);
+    public static Sprite smallWallSW2       = new Sprite(64, 128, 2, 0, SpriteSheet.walls, 1);
+    public static Sprite smallWallSE2       = new Sprite(64, 128, 3, 0, SpriteSheet.walls, 1);
+    public static Sprite bigWallSW          = new Sprite(64, 128, 0, 1, SpriteSheet.walls, 1);
+    public static Sprite bigWallSE          = new Sprite(64, 128, 1, 1, SpriteSheet.walls, 1);
+    public static Sprite cornerE            = new Sprite(64, 128, 2, 1, SpriteSheet.walls, 1);
+    public static Sprite cornerS            = new Sprite(64, 128, 3, 1, SpriteSheet.walls, 1);
+    public static Sprite cornerW            = new Sprite(64, 128, 0, 2, SpriteSheet.walls, 1);
+    public static Sprite cornerN            = new Sprite(64, 128, 1, 2, SpriteSheet.walls, 1);
+    public static Sprite tWallSW            = new Sprite(64, 128, 2, 2, SpriteSheet.walls, 1);
+    public static Sprite tWallNW            = new Sprite(64, 128, 3, 2, SpriteSheet.walls, 1);
+    public static Sprite tWallNE            = new Sprite(64, 128, 0, 3, SpriteSheet.walls, 1);
+    public static Sprite tWallSE            = new Sprite(64, 128, 1, 3, SpriteSheet.walls, 1);
+    public static Sprite crossWall          = new Sprite(64, 128, 2, 3, SpriteSheet.walls, 1);
+    public static Sprite platformWallSW     = new Sprite(64, 128, 3, 3, SpriteSheet.walls, 1);
+    public static Sprite platformWallSE     = new Sprite(64, 128, 0, 4, SpriteSheet.walls, 1);
+    public static Sprite cornerPlatformE    = new Sprite(64, 128, 1, 4, SpriteSheet.walls, 1);
+    public static Sprite cornerPlatformN    = new Sprite(64, 128, 2, 4, SpriteSheet.walls, 1);
+    public static Sprite cornerPlatformW    = new Sprite(64, 128, 3, 4, SpriteSheet.walls, 1);
+    public static Sprite tPlatformSW        = new Sprite(64, 128, 0, 5, SpriteSheet.walls, 1);
+    public static Sprite tPlatformSE        = new Sprite(64, 128, 1, 5, SpriteSheet.walls, 1);
+    public static Sprite platformCross      = new Sprite(64, 128, 2, 5, SpriteSheet.walls, 1);
+    public static Sprite crossSidePlatforms = new Sprite(64, 128, 3, 5, SpriteSheet.walls, 1);
+    public static Sprite computerWallSW     = new Sprite(64, 128, 0, 6, SpriteSheet.walls, 1);
+    public static Sprite computerWallSE     = new Sprite(64, 128, 1, 6, SpriteSheet.walls, 1);
+    public static Sprite deskWallSE         = new Sprite(64, 128, 2, 6, SpriteSheet.walls, 1);
+    public static Sprite deskWallSW         = new Sprite(64, 128, 3, 6, SpriteSheet.walls, 1);
+    public static Sprite raisedCabinetSE    = new Sprite(64, 128, 0, 7, SpriteSheet.walls, 1);
+    public static Sprite raisedCabinetSW    = new Sprite(64, 128, 1, 7, SpriteSheet.walls, 1);
+    public static Sprite paperPlatformS     = new Sprite(64, 128, 2, 7, SpriteSheet.walls, 1);
+    public static Sprite paperPlatformSW    = new Sprite(64, 128, 3, 7, SpriteSheet.walls, 1);
+    public static Sprite chair    = new Sprite(64, 77, 0, 0, SpriteSheet.chair, 8); // we'll have to make chairs into entities
+//    public static Sprite chairSE    = new Sprite(64, 77, 0, 0, SpriteSheet.chair, 1);
+//    public static Sprite chairS    = new Sprite(64, 77, 1, 0, SpriteSheet.chair, 1);
+//    public static Sprite chairSW    = new Sprite(64, 77, 2, 0, SpriteSheet.chair, 1);
+//    public static Sprite chairW    = new Sprite(64, 77, 3, 0, SpriteSheet.chair, 1);
+//    public static Sprite chairNW    = new Sprite(64, 77, 4, 0, SpriteSheet.chair, 1);
+//    public static Sprite chairN    = new Sprite(64, 77, 5, 0, SpriteSheet.chair, 1);
+//    public static Sprite chairNE    = new Sprite(64, 77, 6, 0, SpriteSheet.chair, 1);
+//    public static Sprite chairE    = new Sprite(64, 77, 7, 0, SpriteSheet.chair, 1);
     
     private byte update;
     

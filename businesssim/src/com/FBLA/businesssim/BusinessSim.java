@@ -42,14 +42,14 @@ import com.FBLA.businesssim.entity.mob.Player;
 import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.input.Keyboard;
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
 import com.FBLA.businesssim.level.Level;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import javax.swing.JFrame;
 
 public class BusinessSim extends Canvas implements Runnable{

@@ -1,8 +1,8 @@
 package com.FBLA.businesssim.entity.mob;
 
+import com.FBLA.businesssim.entity.Entity;
 import com.FBLA.businesssim.util.Node;
 import com.FBLA.businesssim.util.Vector2i;
-import com.FBLA.businesssim.entity.Entity;
 
 /**
  * Mob Purpose: The template for all moving entities

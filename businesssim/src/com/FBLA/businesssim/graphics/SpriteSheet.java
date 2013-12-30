@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
  * SpriteSheet Purpose: handle initial loading of outside images.
  * ----
  * @author  Tripp and Raphael
- * @date   Dec 26, 2013
+ * @date   Dec 29, 2013
  * @update  Wrote bulk of code and commented methods for SpriteSheet
  * -----
  */
@@ -23,7 +23,8 @@ public class SpriteSheet {
     public static SpriteSheet characters = new SpriteSheet("Resources/Textures/Characters/Player.png");
     public static SpriteSheet sample = new SpriteSheet("Resources/Textures/Tiles/sample.gif");
     public static SpriteSheet carpet = new SpriteSheet("Resources/Textures/Tiles/office_tiles/office/out_floor/carpetff00ff.png");
-    public static SpriteSheet walls = new SpriteSheet("Resources/Textures/Tiles/office_tiles/office/out_walls/edits/sheets/cubicles3.png");
+    public static SpriteSheet walls = new SpriteSheet("Resources/Textures/Tiles/office_tiles/office/out_walls/cubiclesff00ff.png");
+    public static SpriteSheet chair = new SpriteSheet("Resources/Textures/Tiles/office_tiles/office/out_chair/chairff00ffline.png");
     //Example for loading a spritesheet. All should be static
     //public static SpriteSheet tiles = new SpriteSheet("textures/spritesheet.png", 256);
 
@@ -56,7 +57,7 @@ public class SpriteSheet {
             image.getRGB(0, 0, w, h, pixels, 0, w);
             return w;
         } catch (IOException ex) {
-            Logger.getLogger(SpriteSheet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SpriteSheet.class.getName()).log(Level.SEVERE, "Could not load SpriteSheet " + path, ex);
         }
         return 0;
     }

@@ -1,9 +1,9 @@
 package com.FBLA.businesssim.entity;
 
-import com.FBLA.businesssim.util.Vector2i;
 import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.level.Level;
+import com.FBLA.businesssim.util.Vector2i;
 import java.awt.Rectangle;
 
 /**

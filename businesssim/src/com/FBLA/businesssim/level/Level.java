@@ -4,14 +4,12 @@
  */
 package com.FBLA.businesssim.level;
 
-import com.FBLA.businesssim.BusinessSim;
 import com.FBLA.businesssim.entity.mob.Player;
-import com.FBLA.businesssim.util.Vector2i;
 import com.FBLA.businesssim.graphics.Screen;
-import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.graphics.SpriteSheet;
 import com.FBLA.businesssim.level.raisedobject.RaisedObject;
 import com.FBLA.businesssim.level.tile.Tile;
+import com.FBLA.businesssim.util.Vector2i;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
@@ -35,8 +33,10 @@ public class Level {
     public static Rectangle[] rects;
 
     public Level(String path) {
-        //loadLevel(path);
-        generateLevel(20, 20);
+//        generateLevel(20, 20);
+        loadLevelTiles("Resources/Textures/Levels/ExampleLevelTiles.png");
+        loadLevelObjects("Resources/Textures/Levels/ExampleLevelObjects.png");
+//        generateLevel(40, 40);
     }
 
     protected void generateLevel(int w, int h) {
@@ -47,28 +47,53 @@ public class Level {
         for(int i = 0; i < w * h; i++) {
             //tiles[i] = (int) (Math.random()*3);
             //tiles[i] = Tile.grassTileNum;
-            tiles[i] = Tile.chkFloorTileNum;
-            objects[i] = (int) (Math.random() * 10);
+            tiles[i] = Tile.getNum(Tile.chkFloorTile);
+            objects[i] = (int) (Math.random() * 50);
         }
     }
-
-    protected void loadLevel(String path) {
+    
+    protected void loadLevelTiles(String path) {
         try {
             BufferedImage image = ImageIO.read(new FileInputStream(path));
             width = image.getWidth();
             height = image.getHeight();
+            tiles = new int[width * height];
             int[] tilePixels = new int[width*height];
             image.getRGB(0, 0, width, height, tilePixels, 0, width);
             
             for(int i = 0; i < tilePixels.length; i++) {
-                if(tilePixels[i] == Tile.voidTileRGB) tiles[i] = Tile.voidTileNum;
-                else if(tilePixels[i] == Tile.grassTileRGB) tiles[i] = Tile.grassTileNum;
-                else tiles[i] = Tile.voidTileNum;
+                Tile t = Tile.getTileFromColor(tilePixels[i]);
+                if(t != null) {
+                    tiles[i] = Tile.getNum(t);
+                } else {
+                    tiles[i] = Tile.getNum(Tile.voidTile);
+                }
             }
         } catch (IOException ex) {
-            Logger.getLogger(SpriteSheet.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(SpriteSheet.class.getName()).log(java.util.logging.Level.SEVERE, "Could not load level tiles", ex);
         }
-        // add another try catch here for raisedobjects
+    }
+    
+    protected void loadLevelObjects(String path) {
+        try {
+            BufferedImage image = ImageIO.read(new FileInputStream(path));
+            width = image.getWidth();
+            height = image.getHeight();
+            objects = new int[width * height];
+            int[] objPixels = new int[width*height];
+            image.getRGB(0, 0, width, height, objPixels, 0, width);
+            
+            for(int i = 0; i < objPixels.length; i++) {
+                RaisedObject r = RaisedObject.getRaisedObjectFromColor(objPixels[i]);
+                if(r != null) {
+                    objects[i] = RaisedObject.getNum(r);
+                } else {
+                    objects[i] = RaisedObject.getNum(RaisedObject.voidObject);
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(SpriteSheet.class.getName()).log(java.util.logging.Level.SEVERE, "Could not load level objects", ex);
+        }
     }
 
     public void update() {
@@ -121,7 +146,7 @@ public class Level {
 //        }
         for (int x = x0; x < x1; x++) {
             for (int y = y0; y < y1; y++) {
-                getTile(x, y).render(x, y, screen);
+                getTile(x, y).render(x - 1, y - 1, screen); // shifted over 1 to account for raised objects being 1 space higher than they should be
             }
         }
         int px = (int) (p.v.getX()) >> 5;
@@ -144,11 +169,13 @@ public class Level {
 
         int spot = tiles[x + y * width];
         
-        if(spot == Tile.voidTileNum) return Tile.voidTile;
-        if(spot == Tile.grassTileNum) return Tile.grassTile;
-        if(spot == Tile.chkFloorTileNum) return Tile.chkFloorTile;
+        Tile t = Tile.getTileFromNumber(spot);
         
-        return Tile.voidTile;
+        if(t != null) {
+            return t;
+        } else {
+            return Tile.voidTile;
+        }
     }
     
     public RaisedObject getObject(int x, int y) {
@@ -159,10 +186,12 @@ public class Level {
 
         int spot = objects[x + y * width];
         
-        if(spot == RaisedObject.voidObjectNum) return RaisedObject.voidObject;
-        if(spot == RaisedObject.cubicleSWObjectNum) return RaisedObject.cubicleSWObject;
-        if(spot == RaisedObject.cubicleSEObjectNum) return RaisedObject.cubicleSEObject;
+        RaisedObject r = RaisedObject.getRaisedObjectFromNumber(spot);
         
-        return RaisedObject.voidObject;
+        if(r != null) {
+            return r;
+        } else {
+            return RaisedObject.voidObject;
+        }
     }
 }
