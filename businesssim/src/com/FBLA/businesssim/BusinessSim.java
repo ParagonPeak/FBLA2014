@@ -170,7 +170,7 @@ public class BusinessSim extends Canvas implements Runnable {
         Graphics g = bs.getDrawGraphics();
         {
             screen.g = g;
-            textDisplay.start();
+//            textDisplay.start();
             g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
             g.setColor(Color.WHITE);
             g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);

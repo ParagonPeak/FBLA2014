@@ -22,8 +22,10 @@ public class Sprite {
     public static Sprite smallRedSprite = new Sprite(2, 2, 0xff0000);
     public static Sprite smallYellowSprite = new Sprite(2, 2, 0xffff00);
     public static Sprite emptySprite = new Sprite(32, 32, 0xFFFF00FF);
-    public static Sprite playerSprite = new Sprite(32,64,0,0,SpriteSheet.characters, 4);
+    public static Sprite playerSprite = new Sprite(32,82,0,0,SpriteSheet.player, 4);
     public static Sprite playerSpriteFlip = new Sprite(playerSprite);
+    public static Sprite backwardsPlayerSprite = new Sprite(32,82,0,1,SpriteSheet.player, 4);
+    public static Sprite backwardsPlayerSpriteFlip = new Sprite(backwardsPlayerSprite);
 //    public static Sprite grass = new Sprite(32, 32, 352/32, 320/32, SpriteSheet.sample, 1);
     
     public static Sprite checkerboardFloor = new Sprite(64, 32, 1, 2, SpriteSheet.carpet, 1);
