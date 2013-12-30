@@ -1,6 +1,9 @@
 package com.FBLA.businesssim.entity.mob;
 
+import com.FBLA.businesssim.BusinessSim;
 import com.FBLA.businesssim.entity.Entity;
+import com.FBLA.businesssim.graphics.Sprite;
+import com.FBLA.businesssim.level.Level;
 import com.FBLA.businesssim.util.Node;
 import com.FBLA.businesssim.util.Vector2i;
 
@@ -66,7 +69,25 @@ public class Mob extends Entity {
     }
     
     public boolean collision(double d, boolean isDy) {
-        return false;
+        int tileX;
+        int tileY;
+        if(isDy) {
+            tileX = (int) (v.getX()) >> 5;
+            tileY = (int) (v.getY() + d) >> 5;
+        } else {
+            tileX = (int) (v.getX() + d) >> 5;
+            tileY = (int) (v.getY()) >> 5;
+        }
+        if(tileX < 0 || tileX >= BusinessSim.level.width) {
+            return true;
+        }
+        if(tileY < 0 || tileY >= BusinessSim.level.height) {
+            return true;
+        }
+        if(BusinessSim.level.getObject(tileX, tileY).sprite.equals(Sprite.emptySprite)) { // if it's empty
+            return false;
+        }
+        return true; // if it's not empty
     }
     
     public void move(double dx, double dy) {

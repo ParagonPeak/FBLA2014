@@ -68,7 +68,7 @@ public class BusinessSim extends Canvas implements Runnable {
     private JFrame frame = new JFrame();
     public Player player;
     public static BusinessSim bs;
-    private Level level;
+    public static Level level;
     public static TextDisplayer textDisplay;
     String[] test = {"Test1", "Test 2", "Test 3", "Replace"};
     //Starts the game, used for frame set up

@@ -24,12 +24,12 @@ import javax.imageio.ImageIO;
 public class Level {
 
     public int width, height;
-    public int[] tiles; // floor
-    public int[] objects; // walls and other 3d things
+    public static int[] tiles; // floor
+    public static int[] objects; // walls and other 3d things
     public int spawnX = 0;
     public int spawnY = 0;
 //    public Vector2i playerV = new Vector2i(spawnX + (BusinessSim.bs.player.s.W / 2), spawnY + (BusinessSim.bs.player.s.H /2));
-    public Vector2i playerV = new Vector2i(0,0); // why is this here?
+    public Vector2i playerV = new Vector2i(0, 128); // why is this here?
     public static Rectangle[] rects;
 
     public Level(String path) {
