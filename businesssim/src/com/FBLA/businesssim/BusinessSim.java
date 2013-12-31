@@ -43,7 +43,6 @@ import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.input.Keyboard;
 import com.FBLA.businesssim.level.Level;
-import com.FBLA.businesssim.util.TextDisplayer;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -69,8 +68,7 @@ public class BusinessSim extends Canvas implements Runnable {
     public Player player;
     public static BusinessSim bs;
     public static Level level;
-    public static TextDisplayer textDisplay;
-    String[] test = {"Test1", "Test 2", "Test 3", "Replace"};
+    String[] test = {"Test1", "Test 2", "Test 3", "Replace", "Test1", "Test 2", "Test 3", "Replace"};
     //Starts the game, used for frame set up
 
     public static void main(String[] args) {
@@ -95,8 +93,6 @@ public class BusinessSim extends Canvas implements Runnable {
         addKeyListener(key);
         level = new Level("level/Floor1.png");
         player = new Player(level.playerV, screen, key);
-        textDisplay = new TextDisplayer(new TextDisplayer(screen, key));
-        textDisplay.setText(test);
     }
 
     //start applet
@@ -169,13 +165,11 @@ public class BusinessSim extends Canvas implements Runnable {
 
         Graphics g = bs.getDrawGraphics();
         {
-            screen.g = g;
-//            textDisplay.start();
             g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
             g.setColor(Color.WHITE);
             g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
+            g = screen.displayText(test, key, g);
         }
-        screen.g.dispose();
         g.dispose();
         bs.show();
     }

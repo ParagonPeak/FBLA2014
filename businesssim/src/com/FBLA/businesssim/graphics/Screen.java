@@ -1,26 +1,26 @@
 package com.FBLA.businesssim.graphics;
 
 import com.FBLA.businesssim.input.Keyboard;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * Class purpose: Create the bulk of the screen that has to load/render sprites
- * -----
-<<<<<<< HEAD
- * @author    Tripp and Raphael
- * @date      Dec 29, 2013
- * @update    Wrote the bulk of code and commented in method uses. Still need to 
- *            create Tile class. Will be changed to use higher res rendering.
- * -----
-=======
+ * ----- <<<<<<< HEAD @a
+ *
+ *
+ * uthor Tripp and Raphael
+ * @date Dec 29, 2013
+ * @update Wrote the bulk of code and commented in method uses. Still need to
+ * create Tile class. Will be changed to use higher res rendering. ----- =======
  *
  * @author Tripp and Raphael
  * @date Dec 26, 2013
  * @update Wrote the bulk of code and commented in method uses. Still need to
- * create Tile class. Will be changed to use higher res rendering. -----
->>>>>>> Adding Text
+ * create Tile class. Will be changed to use higher res rendering. ----- >>>>>>>
+ * Adding Text
  */
 public class Screen {
 
@@ -145,7 +145,6 @@ public class Screen {
         int[] iso = {(int) (x - y), (int) ((x + y) / 2)};
         return iso;
     }
-
     /**
      * This method will display a line of text in a text box for the player to
      * read.
@@ -153,35 +152,49 @@ public class Screen {
      * @param lines is the array of all the text to display.
      * @param key keyboard to check if the key is pressed.
      */
-    public synchronized void displayText(String[] lines, Keyboard key) {
+    int index = 0;
+    boolean textRequiresUpdate = false;
+    private boolean lastKeyAction = false;
+
+    public Graphics displayText(String[] lines, Keyboard key, Graphics g) {
         //The lines currently on the screen, with a max of three to following convention
-        if(g == null || lines == null) return;
-        String[] displayedLines = new String[3];
-        int index = 0;
-        for (int i = 0; i < lines.length; i++) {
-            if (index < 3) {
-                displayedLines[index++] = lines[i];
-            } else {
-                displayedLines[0] = displayedLines[1];
-                displayedLines[1] = displayedLines[2];
-                displayedLines[2] = lines[i];
-            }
-            drawText(displayedLines);
-            while (!key.action) {
-            }
+        if (g == null || lines == null || key == null || textRequiresUpdate) {
+            lastKeyAction = false;
+            return g;
         }
+        g.setColor(Color.gray);
+        g.fillRect(25, 375, width - 50, height - 400);
+        g.setColor(Color.BLACK);
+        String[] displayedLines = new String[3];
+        for (int i = index; i < index + 3 && i < lines.length; i++) {
+            displayedLines[i - index] = lines[i];
+        }
+        if (!lastKeyAction && key.action) {
+            index++;
+            System.out.println("INCREASE");
+        }
+        lastKeyAction = key.action;
+        if (index >= lines.length - 3) {
+            textRequiresUpdate = true;
+            index = 0;
+            System.out.println("Waiting for update!");
+        }
+        return drawText(displayedLines, g);
     }
-    
-    public synchronized void drawText(String[] lines)
-    {
-        for(int i = 0; i < lines.length; i++)
-        {
-            if(lines[i] == null)
-                return;
+
+    public Graphics drawText(String[] lines, Graphics g) {
+        if (g == null || lines == null) {
+            return g;
+        }
+//        System.out.println(lines.length);
+        for (int i = 0; i < lines.length; i++) {
+            if (lines[i] == null) {
+                return g;
+            }
             g.drawString(lines[i], 30, ((i + 1) * 25 + 375));
         }
+        return g;
     }
-    
 
     public void renderRaisedSprite(int xp, int yp, Sprite s) {
         int w = s.W;
