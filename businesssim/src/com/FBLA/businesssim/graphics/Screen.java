@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  * ----- <<<<<<< HEAD @a
  *
  *
- * uthor Tripp and Raphael
+ * @author Tripp and Raphael
  * @date Dec 29, 2013
  * @update Wrote the bulk of code and commented in method uses. Still need to
  * create Tile class. Will be changed to use higher res rendering. ----- =======
@@ -162,8 +162,9 @@ public class Screen {
             lastKeyAction = false;
             return g;
         }
-        g.setColor(Color.gray);
-        g.fillRect(25, 375, width - 50, height - 400);
+        g.setColor(new Color(128, 192, 128, 100));
+        //g.fillRect(25, 375, width - 50, height - 400);
+        g.fillRoundRect(25, 375, width-50, height-400, 10, 10);
         g.setColor(Color.BLACK);
         String[] displayedLines = new String[3];
         for (int i = index; i < index + 3 && i < lines.length; i++) {
