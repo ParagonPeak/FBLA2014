@@ -63,12 +63,13 @@ public class BusinessSim extends Canvas implements Runnable {
     private Thread mThread;
     private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-    private static String title = "The Little Man", version = "0.01 alpha";
+    private static String title = "The Little Man", version = "0.1 alpha";
     private JFrame frame = new JFrame();
     public Player player;
     public static BusinessSim bs;
     public static Level level;
-    String[] test = {"Test1", "Test 2", "Test 3", "Replace", "Test1", "Test 2", "Test 3", "Replace"};
+    public static int gameState = 0;
+    String[] test = {"Test1", "Test 2", "Test 3", "Replace", "Test11", "Test 32", "Test 73", "Replace"};
     //Starts the game, used for frame set up
 
     public static void main(String[] args) {
@@ -132,6 +133,7 @@ public class BusinessSim extends Canvas implements Runnable {
                 updates++;
                 delta--;
             }
+            loadGameState();
             render();
             frames++;
 
@@ -179,5 +181,27 @@ public class BusinessSim extends Canvas implements Runnable {
         Sprite.update();
         level.update();
         key.update();
+    }
+
+    public void loadGameState() {
+        switch (gameState) {
+            case 0:
+                //Menu
+                break;
+            case 1:
+                //About
+                break;
+            case 2:
+                //Credits
+                break;
+            case 3:
+                //Controls
+                break;
+            case 4:
+                //Don'tations
+                break;
+            case 5:
+                //Game
+        }
     }
 }

@@ -162,10 +162,13 @@ public class Screen {
             lastKeyAction = false;
             return g;
         }
-        g.setColor(new Color(128, 192, 128, 100));
+        g.setColor(new Color(0xcc, 0xcc, 0xcc, 150));
         //g.fillRect(25, 375, width - 50, height - 400);
-        g.fillRoundRect(25, 375, width-50, height-400, 10, 10);
+
+        int top = 375, bottom = height - top - 25, right = width - 50, left = 25;
+        g.fillRect(left, top, right, bottom);
         g.setColor(Color.BLACK);
+        g.drawRect(left, top, right, bottom);
         String[] displayedLines = new String[3];
         for (int i = index; i < index + 3 && i < lines.length; i++) {
             displayedLines[i - index] = lines[i];
