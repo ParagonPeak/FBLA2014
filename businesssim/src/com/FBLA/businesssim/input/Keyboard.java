@@ -14,7 +14,7 @@ import java.awt.event.KeyListener;
 public class Keyboard implements KeyListener{
     
     public boolean[] keys = new boolean[120];
-    public boolean up, down, right, left, action, escape;
+    public boolean up, down, right, left, action, escape, inc;
     
     /**
      * Called on every update to make sure data is accurate and easy calling.
@@ -28,7 +28,7 @@ public class Keyboard implements KeyListener{
         left = keys[KeyEvent.VK_LEFT] | keys[KeyEvent.VK_A];
         action = keys[KeyEvent.VK_SPACE] | keys[KeyEvent.VK_X];
         escape = keys[KeyEvent.VK_ESCAPE];
-        
+        inc = keys[KeyEvent.VK_P];
         if(escape) System.exit(3);
     }
     

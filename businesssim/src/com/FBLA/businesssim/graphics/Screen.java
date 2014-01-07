@@ -8,19 +8,6 @@ import java.util.logging.Logger;
 
 /**
  * Class purpose: Create the bulk of the screen that has to load/render sprites
- * ----- <<<<<<< HEAD @a
- *
- *
- * @author Tripp and Raphael
- * @date Dec 29, 2013
- * @update Wrote the bulk of code and commented in method uses. Still need to
- * create Tile class. Will be changed to use higher res rendering. ----- =======
- *
- * @author Tripp and Raphael
- * @date Dec 26, 2013
- * @update Wrote the bulk of code and commented in method uses. Still need to
- * create Tile class. Will be changed to use higher res rendering. ----- >>>>>>>
- * Adding Text
  */
 public class Screen {
 
@@ -29,8 +16,11 @@ public class Screen {
     public int mapwidth = 64; //image file should be 64 px by 64 px
     private int mapsize = mapwidth * mapwidth;
     public int[] tiles = new int[mapsize]; //64 tiles in both directions
-    public int xOffs, yOffs; //position to look at
-    public Graphics g;
+    public int xOffs, yOffs; //position to look at    
+    //Variables used for the text box
+    int index = 0;
+    public boolean textRequiresUpdate = false;
+    private boolean lastKeyAction = false;
 
     /**
      * Creates a Screen object, used to fill the GUI that presents the graphics
@@ -145,6 +135,8 @@ public class Screen {
         int[] iso = {(int) (x - y), (int) ((x + y) / 2)};
         return iso;
     }
+    
+    
     /**
      * This method will display a line of text in a text box for the player to
      * read.
@@ -152,10 +144,6 @@ public class Screen {
      * @param lines is the array of all the text to display.
      * @param key keyboard to check if the key is pressed.
      */
-    int index = 0;
-    boolean textRequiresUpdate = false;
-    private boolean lastKeyAction = false;
-
     public Graphics displayText(String[] lines, Keyboard key, Graphics g) {
         //The lines currently on the screen, with a max of three to following convention
         if (g == null || lines == null || key == null || textRequiresUpdate) {
@@ -163,25 +151,25 @@ public class Screen {
             return g;
         }
         g.setColor(new Color(0xcc, 0xcc, 0xcc, 150));
-        //g.fillRect(25, 375, width - 50, height - 400);
 
         int top = 375, bottom = height - top - 25, right = width - 50, left = 25;
         g.fillRect(left, top, right, bottom);
         g.setColor(Color.BLACK);
         g.drawRect(left, top, right, bottom);
+        g.drawString("Press X or Space...", right - 90, top + 90);
         String[] displayedLines = new String[3];
         for (int i = index; i < index + 3 && i < lines.length; i++) {
             displayedLines[i - index] = lines[i];
         }
         if (!lastKeyAction && key.action) {
             index++;
-            System.out.println("INCREASE");
+            System.out.println("INCREASE"); //Remove in the end
         }
         lastKeyAction = key.action;
         if (index >= lines.length - 3) {
             textRequiresUpdate = true;
             index = 0;
-            System.out.println("Waiting for update!");
+            System.out.println("Waiting for update!"); //Remove in the end
         }
         return drawText(displayedLines, g);
     }
@@ -190,7 +178,6 @@ public class Screen {
         if (g == null || lines == null) {
             return g;
         }
-//        System.out.println(lines.length);
         for (int i = 0; i < lines.length; i++) {
             if (lines[i] == null) {
                 return g;

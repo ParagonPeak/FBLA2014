@@ -1,4 +1,6 @@
 /*
+ *
+ * 
  * What we'll need:
  * 
  * Entity
@@ -52,6 +54,11 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import javax.swing.JFrame;
 
+/*
+ * @author Tripp Weiner and Raphaels Kats
+ * To see the full progress of the game build, go to www.github.com/paragonpeak/FBLA2014
+ */
+
 public class BusinessSim extends Canvas implements Runnable {
 
     public int width = 800, height = 500;
@@ -63,7 +70,7 @@ public class BusinessSim extends Canvas implements Runnable {
     private Thread mThread;
     private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-    private static String title = "The Little Man", version = "0.1 alpha";
+    private static String title = "The Little Man", version = " 0.1 alpha";
     private JFrame frame = new JFrame();
     public Player player;
     public static BusinessSim bs;
@@ -169,7 +176,7 @@ public class BusinessSim extends Canvas implements Runnable {
         {
             g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
             g.setColor(Color.WHITE);
-            g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
+//            g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
             g = screen.displayText(test, key, g);
         }
         g.dispose();
@@ -181,12 +188,22 @@ public class BusinessSim extends Canvas implements Runnable {
         Sprite.update();
         level.update();
         key.update();
+        if (key.inc) {
+            test = new String[++gameState];
+            for (int i = 0; i < test.length; i++) {
+                test[i] = "";
+                for(int b = 0; b < 50; b++)
+                    test[i] += "" + (char) ((int)(Math.random() * 500));
+            }
+            screen.textRequiresUpdate = false;
+        }
     }
 
     public void loadGameState() {
         switch (gameState) {
             case 0:
-                //Menu
+                this.getGraphics().drawImage(image, width, width, bs);
+                this.getGraphics().dispose();
                 break;
             case 1:
                 //About
@@ -201,7 +218,7 @@ public class BusinessSim extends Canvas implements Runnable {
                 //Don'tations
                 break;
             case 5:
-                //Game
+            //Game
         }
     }
 }
