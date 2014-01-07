@@ -135,8 +135,7 @@ public class Screen {
         int[] iso = {(int) (x - y), (int) ((x + y) / 2)};
         return iso;
     }
-    
-    
+
     /**
      * This method will display a line of text in a text box for the player to
      * read.
@@ -161,16 +160,16 @@ public class Screen {
         for (int i = index; i < index + 3 && i < lines.length; i++) {
             displayedLines[i - index] = lines[i];
         }
-        if (key.actionPressed) {
+        if (key.action && !lastKeyAction) {
             index++;
             System.out.println("INCREASE"); //Remove in the end
         }
-        lastKeyAction = key.action;
-        if (index > lines.length - 3 &&key.actionPressed) {
+        if (index > lines.length - 3 && (key.action & !lastKeyAction)) {
             textRequiresUpdate = true;
             index = 0;
             System.out.println("Waiting for update!"); //Remove in the end
         }
+        lastKeyAction = key.action;
         return drawText(displayedLines, g);
     }
 
