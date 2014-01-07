@@ -28,6 +28,8 @@ public class Keyboard implements KeyListener{
         left = keys[KeyEvent.VK_LEFT] | keys[KeyEvent.VK_A];
         action = keys[KeyEvent.VK_SPACE] | keys[KeyEvent.VK_X];
         escape = keys[KeyEvent.VK_ESCAPE];
+        
+        if(escape) System.exit(3);
     }
     
     /**
