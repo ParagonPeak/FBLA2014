@@ -47,18 +47,22 @@ import com.FBLA.businesssim.input.Keyboard;
 import com.FBLA.businesssim.level.Level;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.awt.image.MemoryImageSource;
 import javax.swing.JFrame;
 
 /*
  * @author Tripp Weiner and Raphaels Kats
  * To see the full progress of the game build, go to www.github.com/paragonpeak/FBLA2014
  */
-
 public class BusinessSim extends Canvas implements Runnable {
 
     public int width = 800, height = 500;
@@ -77,8 +81,9 @@ public class BusinessSim extends Canvas implements Runnable {
     public static Level level;
     public static int gameState = 0;
     String[] test = {"Test1", "Test 2", "Test 3", "Replace", "Test11", "Test 32", "Test 73", "Replace"};
-    //Starts the game, used for frame set up
+    public boolean isPaused = false;
 
+    //Starts the game, used for frame set up
     public static void main(String[] args) {
         bs = new BusinessSim();
         bs.frame.setResizable(false);
@@ -94,6 +99,7 @@ public class BusinessSim extends Canvas implements Runnable {
     }
 
     public BusinessSim() {
+        setCursor(Toolkit.getDefaultToolkit().createCustomCursor(createImage(new MemoryImageSource(16, 16, new int[16 * 16], 0, 16)), new Point(0, 0), ""));
         Dimension size = new Dimension(width * scale, height * scale);
         setPreferredSize(size);
         key = new Keyboard();
@@ -188,12 +194,17 @@ public class BusinessSim extends Canvas implements Runnable {
         Sprite.update();
         level.update();
         key.update();
-        if (key.inc) {
+        if (key.pausePressed && gameState == 5) {
+            isPaused = !isPaused;
+            System.out.println("isPaused = " + isPaused);
+        }
+        if (key.incPressed) {
             test = new String[++gameState];
             for (int i = 0; i < test.length; i++) {
                 test[i] = "";
-                for(int b = 0; b < 50; b++)
-                    test[i] += "" + (char) ((int)(Math.random() * 500));
+                for (int b = 0; b < 50; b++) {
+                    test[i] += "" + (char) ((int) (Math.random() * 500));
+                }
             }
             screen.textRequiresUpdate = false;
         }

@@ -161,12 +161,12 @@ public class Screen {
         for (int i = index; i < index + 3 && i < lines.length; i++) {
             displayedLines[i - index] = lines[i];
         }
-        if (!lastKeyAction && key.action) {
+        if (key.actionPressed) {
             index++;
             System.out.println("INCREASE"); //Remove in the end
         }
         lastKeyAction = key.action;
-        if (index >= lines.length - 3) {
+        if (index > lines.length - 3 &&key.actionPressed) {
             textRequiresUpdate = true;
             index = 0;
             System.out.println("Waiting for update!"); //Remove in the end
