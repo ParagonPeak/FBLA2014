@@ -50,7 +50,6 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
@@ -79,7 +78,7 @@ public class BusinessSim extends Canvas implements Runnable {
     public Player player;
     public static BusinessSim bs;
     public static Level level;
-    public static int gameState = 0;
+    public static int gameState = 5;
     String[] test = {"Test1", "Test 2", "Test 3", "Replace", "Test11", "Test 32", "Test 73", "Replace"};
     public boolean isPaused = false;
 
@@ -194,11 +193,11 @@ public class BusinessSim extends Canvas implements Runnable {
         Sprite.update();
         level.update();
         key.update();
-        if (key.pausePressed && gameState == 5) {
+        if (key.pause && !key.last_pause && gameState == 5) {
             isPaused = !isPaused;
             System.out.println("isPaused = " + isPaused);
         }
-        if (key.incPressed) {
+        if (key.inc && !key.last_inc) {
             test = new String[++gameState];
             for (int i = 0; i < test.length; i++) {
                 test[i] = "";
