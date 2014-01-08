@@ -21,6 +21,7 @@ public class SpriteSheet {
     public final int WIDTH, HEIGHT;
     public int[] pixels;
     public static SpriteSheet player = new SpriteSheet("Resources/Textures/Characters/Player.png");
+    //public static SpriteSheet player = new SpriteSheet("Resources/Textures/Characters/RaphSprites/PlayerRaph2.png");
     public static SpriteSheet sample = new SpriteSheet("Resources/Textures/Tiles/sample.gif");
     public static SpriteSheet carpet = new SpriteSheet("Resources/Textures/Tiles/office_tiles/office/out_floor/carpetff00ff.png");
     public static SpriteSheet walls = new SpriteSheet("Resources/Textures/Tiles/office_tiles/office/out_walls/cubiclesff00ff.png");
