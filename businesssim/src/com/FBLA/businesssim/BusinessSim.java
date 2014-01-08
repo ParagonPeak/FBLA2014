@@ -56,11 +56,21 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.awt.image.MemoryImageSource;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-/*
- * @author Tripp Weiner and Raphaels Kats
- * To see the full progress of the game build, go to www.github.com/paragonpeak/FBLA2014
+/**
+ * @author Tripp Weiner and Raphael Rouvinov-Kats To see the full progress of
+ * the game build, go to
+ * @url www.github.com/paragonpeak/FBLA2014 Raphael's github:
+ * www.github.com/coolcade284
+ *
+ * Tripp's github: www.github.com/TrippW
+ *
  */
 public class BusinessSim extends Canvas implements Runnable {
 
@@ -71,16 +81,16 @@ public class BusinessSim extends Canvas implements Runnable {
     public Screen screen;
     private boolean running;
     private Thread mThread;
-    private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB), screenImage = image;
     private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
     private static String title = "The Little Man", version = " 0.1 alpha";
     private JFrame frame = new JFrame();
     public Player player;
     public static BusinessSim bs;
     public static Level level;
-    public static int gameState = 5;
+    public static int gameState = 0;
     String[] test = {"Test1", "Test 2", "Test 3", "Replace", "Test11", "Test 32", "Test 73", "Replace"};
-    public boolean isPaused = false;
+    public boolean isPaused = false, loaded = false;
 
     //Starts the game, used for frame set up
     public static void main(String[] args) {
@@ -135,6 +145,7 @@ public class BusinessSim extends Canvas implements Runnable {
         double delta = 0;
         int frames = 0;
         requestFocus();
+        loadGameState();
 
         while (running) {
             long now = System.nanoTime();
@@ -145,7 +156,6 @@ public class BusinessSim extends Canvas implements Runnable {
                 updates++;
                 delta--;
             }
-            loadGameState();
             render();
             frames++;
 
@@ -168,7 +178,12 @@ public class BusinessSim extends Canvas implements Runnable {
             createBufferStrategy(3);
             return;
         }
-
+        if (gameState != 5) {
+            bs.getDrawGraphics().drawImage(screenImage, 0, 0, null);
+            bs.getDrawGraphics().dispose();
+            bs.show();
+            return;
+        }
 
         screen.clear();
         level.render(xScroll, yScroll, screen, player);
@@ -179,7 +194,7 @@ public class BusinessSim extends Canvas implements Runnable {
 
         Graphics g = bs.getDrawGraphics();
         {
-            g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+            g.drawImage(image, 0, 0, null);
             g.setColor(Color.WHITE);
 //            g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
             g = screen.displayText(test, key, g);
@@ -189,10 +204,21 @@ public class BusinessSim extends Canvas implements Runnable {
     }
 
     public void update() {
-        player.update();
-        Sprite.update();
-        level.update();
+        if (!isPaused) {
+            player.update();
+            Sprite.update();
+            level.update();
+        }
         key.update();
+        if (key.action && !key.last_action) {
+            System.out.println(gameState);
+            System.out.println(gameState + 1);
+            System.out.println((gameState + 1) % 2);
+            System.out.println(((gameState + 1) % 2) * 5);
+            gameState = ((gameState +1 ) % 2) * 5;
+            loadGameState();
+            
+        }
         if (key.pause && !key.last_pause && gameState == 5) {
             isPaused = !isPaused;
             System.out.println("isPaused = " + isPaused);
@@ -207,28 +233,38 @@ public class BusinessSim extends Canvas implements Runnable {
             }
             screen.textRequiresUpdate = false;
         }
+        if (key.action && !key.last_action) {
+            gameState = 0;
+        }
     }
 
     public void loadGameState() {
+        loaded = false;
         switch (gameState) {
             case 0:
-                this.getGraphics().drawImage(image, width, width, bs);
+                try {
+                    screenImage = ImageIO.read(new FileInputStream("Resources/Textures/Screens/Title.png"));
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                }
                 this.getGraphics().dispose();
                 break;
             case 1:
-                //About
+                //About/Controls
+                screenImage = null;
                 break;
             case 2:
                 //Credits
-                break;
-            case 3:
-                //Controls
+                screenImage = null;
                 break;
             case 4:
                 //Don'tations
                 break;
             case 5:
-            //Game
+                //Game
+                screenImage = null;
         }
     }
 }
