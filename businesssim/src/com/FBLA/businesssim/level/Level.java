@@ -134,10 +134,10 @@ public class Level {
 //        y1 = (twoD1[1]) >> 5;
         
         // after multiple attempts at getting isometric corner pins to work I just render the whole level now
-        int x0 = 0;
-        int y0 = 0;
-        int x1 = width;
-        int y1 = height;
+        int x0 = ((int) (p.v.getX()) >> 5) - 12;
+        int y0 = ((int) (p.v.getY()) >> 5) - 11;
+        int x1 = ((int) (p.v.getX()) >> 5) + 18;
+        int y1 = ((int) (p.v.getY()) >> 5) + 19;
         
 //        for (int y = y1 - 1; y >= y0; y--) {
 //            for (int x = x0; x < x1; x++) {

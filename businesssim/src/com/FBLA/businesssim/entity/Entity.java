@@ -21,7 +21,7 @@ public class Entity {
     public Vector2i v;
     public String name = "";
     protected boolean removed = false;
-    public Sprite sprite;
+    public Sprite sprite = Sprite.emptySprite;
     protected Level level;
     protected Rectangle colBox;
     
