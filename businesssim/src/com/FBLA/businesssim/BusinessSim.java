@@ -88,7 +88,7 @@ public class BusinessSim extends Canvas implements Runnable {
     public Player player;
     public static BusinessSim bs;
     public static Level level;
-    public static int gameState = 0;
+    public static int gameState = 5;
     String[] test = {"Test1", "Test 2", "Test 3", "Replace", "Test11", "Test 32", "Test 73", "Replace"};
     public boolean isPaused = false, loaded = false;
 
@@ -145,7 +145,7 @@ public class BusinessSim extends Canvas implements Runnable {
         double delta = 0;
         int frames = 0;
         requestFocus();
-        loadGameState();
+        changeGameState();
 
         while (running) {
             long now = System.nanoTime();
@@ -178,9 +178,14 @@ public class BusinessSim extends Canvas implements Runnable {
             createBufferStrategy(3);
             return;
         }
-        if (gameState != 5) {
-            bs.getDrawGraphics().drawImage(screenImage, 0, 0, null);
-            bs.getDrawGraphics().dispose();
+        if (gameState != 0 && !screenImage.equals(null)) {
+            Graphics g = bs.getDrawGraphics();
+            g.drawImage(screenImage, 0, 0, null);
+            g.setColor(Color.WHITE);
+            if (gameState == 5) {
+                g.fillRect(770, 344 + (mainScreenPointerPosition * 43), 20, 15);
+            }
+            g.dispose();
             bs.show();
             return;
         }
@@ -204,22 +209,22 @@ public class BusinessSim extends Canvas implements Runnable {
     }
 
     public void update() {
-        if (!isPaused) {
+        if (!isPaused && gameState == 0) {
             player.update();
             Sprite.update();
             level.update();
         }
         key.update();
-        if (key.action && !key.last_action) {
-            System.out.println(gameState);
-            System.out.println(gameState + 1);
-            System.out.println((gameState + 1) % 2);
-            System.out.println(((gameState + 1) % 2) * 5);
-            gameState = ((gameState +1 ) % 2) * 5;
-            loadGameState();
-            
+        if ((key.up & !key.last_up) | (key.down & !key.last_down) | (key.left & !key.last_left) | (key.right & !key.last_right) | (key.action & !key.last_action)) {
+            int gameState = BusinessSim.gameState;
+            changeGameState();
+            loaded = true;
+            if(key.action & !key.last_action & gameState != BusinessSim.gameState)
+                changeGameState();
+            loaded = false;
         }
-        if (key.pause && !key.last_pause && gameState == 5) {
+
+        if ((key.pause && !key.last_pause) && gameState == 0) {
             isPaused = !isPaused;
             System.out.println("isPaused = " + isPaused);
         }
@@ -233,15 +238,48 @@ public class BusinessSim extends Canvas implements Runnable {
             }
             screen.textRequiresUpdate = false;
         }
-        if (key.action && !key.last_action) {
-            gameState = 0;
-        }
     }
+    private int mainScreenPointerPosition = 0;
 
-    public void loadGameState() {
-        loaded = false;
+    public void changeGameState() {
+        System.out.println(gameState);
         switch (gameState) {
             case 0:
+                //Game
+                screenImage = null;
+                break;
+            case 1:
+                //About
+                try {
+                    screenImage = ImageIO.read(new FileInputStream("Resources/Textures/Screens/OtherFront.png"));
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                }
+                if (key.action & !key.last_action & !loaded) {
+                    gameState = 5;
+                }
+                break;
+            case 2:
+                //Controls
+                try {
+                    screenImage = ImageIO.read(new FileInputStream("Resources/Textures/Screens/OtherFront.png"));
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                }
+                if (key.action & !key.last_action & !loaded) {
+                    gameState = 5;
+                }
+
+                break;
+            case 3:
+                //Credits
+                break;
+            case 5:
+                //StartScreen
                 try {
                     screenImage = ImageIO.read(new FileInputStream("Resources/Textures/Screens/Title.png"));
                 } catch (FileNotFoundException ex) {
@@ -249,22 +287,24 @@ public class BusinessSim extends Canvas implements Runnable {
                 } catch (IOException ex) {
                     Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 }
-                this.getGraphics().dispose();
+
+                if (key.up) {
+                    mainScreenPointerPosition--;
+                }
+                if (key.down) {
+                    mainScreenPointerPosition++;
+                }
+                if (mainScreenPointerPosition < 0) {
+                    mainScreenPointerPosition = 2;
+                }
+                if (mainScreenPointerPosition > 2) {
+                    mainScreenPointerPosition = 0;
+                }
+                if (key.action & !key.last_action & !loaded) {
+                    gameState = mainScreenPointerPosition;
+                    mainScreenPointerPosition = 0;
+                }
                 break;
-            case 1:
-                //About/Controls
-                screenImage = null;
-                break;
-            case 2:
-                //Credits
-                screenImage = null;
-                break;
-            case 4:
-                //Don'tations
-                break;
-            case 5:
-                //Game
-                screenImage = null;
         }
     }
 }
