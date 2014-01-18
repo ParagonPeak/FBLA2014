@@ -66,8 +66,8 @@ import javax.swing.JFrame;
 /**
  * @author Tripp Weiner and Raphael Rouvinov-Kats To see the full progress of
  * the game build, go to
- * @url www.github.com/paragonpeak/FBLA2014 Raphael's github:
- * www.github.com/coolcade284
+ * @url www.github.com/paragonpeak/FBLA2014 
+ * Raphael's github: www.github.com/coolcade283
  *
  * Tripp's github: www.github.com/TrippW
  *
@@ -88,10 +88,17 @@ public class BusinessSim extends Canvas implements Runnable {
     public Player player;
     public static BusinessSim bs;
     public static Level level;
-    public static int gameState = 5;
     String[] test = {"Test1", "Test 2", "Test 3", "Replace", "Test11", "Test 32", "Test 73", "Replace"};
     public boolean isPaused = false, loaded = false;
+    
+    public static final int gs_inGame = 0;
+    public static final int gs_about = 1;
+    public static final int gs_controls = 2;
+    public static final int gs_credit = 3;
+    public static final int gs_startScreen = 5;
 
+    public static int gameState = gs_startScreen;
+    
     //Starts the game, used for frame set up
     public static void main(String[] args) {
         bs = new BusinessSim();
@@ -178,11 +185,11 @@ public class BusinessSim extends Canvas implements Runnable {
             createBufferStrategy(3);
             return;
         }
-        if (gameState != 0 && !screenImage.equals(null)) {
+        if (gameState != gs_inGame && !screenImage.equals(null)) {
             Graphics g = bs.getDrawGraphics();
             g.drawImage(screenImage, 0, 0, null);
             g.setColor(Color.WHITE);
-            if (gameState == 5) {
+            if (gameState == gs_startScreen) {
                 g.fillRect(770, 344 + (mainScreenPointerPosition * 43), 20, 15);
             }
             g.dispose();
@@ -209,7 +216,7 @@ public class BusinessSim extends Canvas implements Runnable {
     }
 
     public void update() {
-        if (!isPaused && gameState == 0) {
+        if (!isPaused && gameState == gs_inGame) {
             player.update();
             Sprite.update();
             level.update();
@@ -224,7 +231,7 @@ public class BusinessSim extends Canvas implements Runnable {
             loaded = false;
         }
 
-        if ((key.pause && !key.last_pause) && gameState == 0) {
+        if ((key.pause && !key.last_pause) && gameState == gs_inGame) {
             isPaused = !isPaused;
             System.out.println("isPaused = " + isPaused);
         }
@@ -244,12 +251,10 @@ public class BusinessSim extends Canvas implements Runnable {
     public void changeGameState() {
         System.out.println(gameState);
         switch (gameState) {
-            case 0:
-                //Game
+            case gs_inGame:
                 screenImage = null;
                 break;
-            case 1:
-                //About
+            case gs_about:
                 try {
                     screenImage = ImageIO.read(new FileInputStream("Resources/Textures/Screens/OtherFront.png"));
                 } catch (FileNotFoundException ex) {
@@ -258,11 +263,10 @@ public class BusinessSim extends Canvas implements Runnable {
                     Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 }
                 if (key.action & !key.last_action & !loaded) {
-                    gameState = 5;
+                    gameState = gs_startScreen;
                 }
                 break;
-            case 2:
-                //Controls
+            case gs_controls:
                 try {
                     screenImage = ImageIO.read(new FileInputStream("Resources/Textures/Screens/OtherFront.png"));
                 } catch (FileNotFoundException ex) {
@@ -271,15 +275,13 @@ public class BusinessSim extends Canvas implements Runnable {
                     Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 }
                 if (key.action & !key.last_action & !loaded) {
-                    gameState = 5;
+                    gameState = gs_startScreen;
                 }
 
                 break;
-            case 3:
-                //Credits
+            case gs_credit:
                 break;
-            case 5:
-                //StartScreen
+            case gs_startScreen:
                 try {
                     screenImage = ImageIO.read(new FileInputStream("Resources/Textures/Screens/Title.png"));
                 } catch (FileNotFoundException ex) {
