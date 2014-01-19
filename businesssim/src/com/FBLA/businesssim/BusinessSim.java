@@ -190,7 +190,7 @@ public class BusinessSim extends Canvas implements Runnable {
             g.drawImage(screenImage, 0, 0, null);
             g.setColor(Color.WHITE);
             if (gameState == gs_startScreen) {
-                g.fillRect(770, 344 + (mainScreenPointerPosition * 43), 20, 15);
+                g.fillRect(770, 344 + (mainScreenPointerPosition * 46), 20, 15);
             }
             g.dispose();
             bs.show();
@@ -249,7 +249,6 @@ public class BusinessSim extends Canvas implements Runnable {
     private int mainScreenPointerPosition = 0;
 
     public void changeGameState() {
-        System.out.println(gameState);
         switch (gameState) {
             case gs_inGame:
                 screenImage = null;
