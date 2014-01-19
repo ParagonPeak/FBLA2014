@@ -45,6 +45,7 @@ import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.input.Keyboard;
 import com.FBLA.businesssim.level.Level;
+import com.FBLA.businesssim.sound.MusicPlayer;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -121,6 +122,7 @@ public class BusinessSim extends Canvas implements Runnable {
         addKeyListener(key);
         level = new Level("level/Floor1.png");
         player = new Player(level.playerV, screen, key);
+        MusicPlayer.init();
     }
 
     //start applet
@@ -152,6 +154,7 @@ public class BusinessSim extends Canvas implements Runnable {
         int frames = 0;
         requestFocus();
         changeGameState();
+        changeMusic();
 
         while (running) {
             long now = System.nanoTime();
@@ -234,8 +237,8 @@ public class BusinessSim extends Canvas implements Runnable {
             changeGameState();
             loaded = true;
             if (key.action & !key.last_action & gameState != BusinessSim.gameState) {
-
                 changeGameState();
+                changeMusic();
             }
             loaded = false;
         }
@@ -243,6 +246,20 @@ public class BusinessSim extends Canvas implements Runnable {
         if ((key.pause && !key.last_pause) && gameState == gs_inGame) {
             isPaused = !isPaused;
             System.out.println("isPaused = " + isPaused);
+        }
+    }
+
+    private void changeMusic() {
+//        if(isPaused) return;
+        switch (gameState) {
+            case gs_inGame:
+                MusicPlayer.mp.changeTrack(1);
+                break;
+            case gs_credit:
+                MusicPlayer.mp.changeTrack(1);
+                break;
+            default:
+                MusicPlayer.mp.changeTrack(0);
         }
     }
     private int mainScreenPointerPosition = 0;
