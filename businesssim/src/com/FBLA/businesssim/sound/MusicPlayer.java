@@ -5,13 +5,12 @@ public class MusicPlayer {
     public static MusicPlayer mp = new MusicPlayer();
     public Thread musicThread;
     private int currentTrack;
-    private Sound[] sounds;
+    private Sound[] sounds, soundEffects;
 
     public MusicPlayer() {
-        Sound[] tracks = {Sound.mainMenuMusic, Sound.floorEvenMusic};//, Sound.floorOddMusic, Sound.pauseMusic, Sound.creditsMusic};
-        sounds = tracks.clone();
+        sounds = new Sound[]{Sound.mainMenuMusic, Sound.floorEvenMusic, Sound.floorOddMusic};//, Sound.pauseMusic, Sound.creditsMusic};
+        soundEffects = new Sound[]{};
         currentTrack = -1;
-//        this.sounds[currentTrack].start();
     }
 
     public static void init() {
@@ -32,5 +31,11 @@ public class MusicPlayer {
         sounds[currentTrack = i].start(); //I think this works...
         System.out.println(currentTrack);
 
+    }
+    
+    public void playSoundEffect(int i)
+    {
+        if(!(i >= 0 & i < soundEffects.length)) return;
+        sounds[i].start();
     }
 }

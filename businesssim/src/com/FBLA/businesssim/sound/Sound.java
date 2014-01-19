@@ -5,12 +5,9 @@
 package com.FBLA.businesssim.sound;
 
 import com.FBLA.businesssim.BusinessSim;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
 
 public class Sound {
 
@@ -26,8 +23,8 @@ public class Sound {
 
     public static void init() {
         mainMenuMusic = new Sound("MainTheme.wav", Clip.LOOP_CONTINUOUSLY);
-        floorEvenMusic = new Sound("back1.wav", Clip.LOOP_CONTINUOUSLY);
-        floorOddMusic = new Sound("back1.wav", Clip.LOOP_CONTINUOUSLY);
+        floorEvenMusic = new Sound("GameMusic.wav", Clip.LOOP_CONTINUOUSLY);
+        floorOddMusic = new Sound("GameMusic.wav", Clip.LOOP_CONTINUOUSLY);
         pauseMusic = new Sound("back1.wav", Clip.LOOP_CONTINUOUSLY);
         creditsMusic = new Sound("back1.wav");
     }
