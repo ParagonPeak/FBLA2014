@@ -66,8 +66,8 @@ import javax.swing.JFrame;
 /**
  * @author Tripp Weiner and Raphael Rouvinov-Kats To see the full progress of
  * the game build, go to
- * @url www.github.com/paragonpeak/FBLA2014 
- * Raphael's github: www.github.com/coolcade283
+ * @url www.github.com/paragonpeak/FBLA2014 Raphael's github:
+ * www.github.com/coolcade283
  *
  * Tripp's github: www.github.com/TrippW
  *
@@ -90,15 +90,13 @@ public class BusinessSim extends Canvas implements Runnable {
     public static Level level;
     String[] test = {"Test1", "Test 2", "Test 3", "Replace", "Test11", "Test 32", "Test 73", "Replace"};
     public boolean isPaused = false, loaded = false;
-    
     public static final int gs_inGame = 0;
     public static final int gs_about = 1;
     public static final int gs_controls = 2;
     public static final int gs_credit = 3;
     public static final int gs_startScreen = 5;
-
     public static int gameState = gs_startScreen;
-    
+
     //Starts the game, used for frame set up
     public static void main(String[] args) {
         bs = new BusinessSim();
@@ -142,6 +140,7 @@ public class BusinessSim extends Canvas implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.exit(3);
     }
 
     @Override
@@ -190,7 +189,7 @@ public class BusinessSim extends Canvas implements Runnable {
             g.drawImage(screenImage, 0, 0, null);
             g.setColor(Color.WHITE);
             if (gameState == gs_startScreen) {
-                g.fillRect(770, 344 + (mainScreenPointerPosition * 46), 20, 15);
+                g.fillRect(760, 327 + (mainScreenPointerPosition * 43), 20, 15);
             }
             g.dispose();
             bs.show();
@@ -222,12 +221,22 @@ public class BusinessSim extends Canvas implements Runnable {
             level.update();
         }
         key.update();
-        if ((key.up & !key.last_up) | (key.down & !key.last_down) | (key.left & !key.last_left) | (key.right & !key.last_right) | (key.action & !key.last_action)) {
+        if (gameState == gs_startScreen) {
+            if ((key.up & !key.last_up) | (key.down & !key.last_down) | (key.left & !key.last_left) | (key.right & !key.last_right)) {
+                updatePointer();
+            }
+        }
+        if (key.action & !key.last_action) {
+            if (mainScreenPointerPosition == 3) {
+                System.exit(3);
+            }
             int gameState = BusinessSim.gameState;
             changeGameState();
             loaded = true;
-            if(key.action & !key.last_action & gameState != BusinessSim.gameState)
+            if (key.action & !key.last_action & gameState != BusinessSim.gameState) {
+
                 changeGameState();
+            }
             loaded = false;
         }
 
@@ -235,18 +244,23 @@ public class BusinessSim extends Canvas implements Runnable {
             isPaused = !isPaused;
             System.out.println("isPaused = " + isPaused);
         }
-        if (key.inc && !key.last_inc) {
-            test = new String[++gameState];
-            for (int i = 0; i < test.length; i++) {
-                test[i] = "";
-                for (int b = 0; b < 50; b++) {
-                    test[i] += "" + (char) ((int) (Math.random() * 500));
-                }
-            }
-            screen.textRequiresUpdate = false;
-        }
     }
     private int mainScreenPointerPosition = 0;
+
+    private void updatePointer() {
+        if (key.up) {
+            mainScreenPointerPosition--;
+        }
+        if (key.down) {
+            mainScreenPointerPosition++;
+        }
+        if (mainScreenPointerPosition < 0) {
+            mainScreenPointerPosition = 3;
+        }
+        if (mainScreenPointerPosition > 3) {
+            mainScreenPointerPosition = 0;
+        }
+    }
 
     public void changeGameState() {
         switch (gameState) {
@@ -255,7 +269,7 @@ public class BusinessSim extends Canvas implements Runnable {
                 break;
             case gs_about:
                 try {
-                    screenImage = ImageIO.read(new FileInputStream("Resources/Textures/Screens/OtherFront.png"));
+                    screenImage = ImageIO.read(new FileInputStream("Resources/Textures/Screens/About.png"));
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 } catch (IOException ex) {
@@ -267,7 +281,7 @@ public class BusinessSim extends Canvas implements Runnable {
                 break;
             case gs_controls:
                 try {
-                    screenImage = ImageIO.read(new FileInputStream("Resources/Textures/Screens/OtherFront.png"));
+                    screenImage = ImageIO.read(new FileInputStream("Resources/Textures/Screens/Controls.png"));
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 } catch (IOException ex) {
@@ -287,19 +301,6 @@ public class BusinessSim extends Canvas implements Runnable {
                     Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 } catch (IOException ex) {
                     Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                }
-
-                if (key.up) {
-                    mainScreenPointerPosition--;
-                }
-                if (key.down) {
-                    mainScreenPointerPosition++;
-                }
-                if (mainScreenPointerPosition < 0) {
-                    mainScreenPointerPosition = 2;
-                }
-                if (mainScreenPointerPosition > 2) {
-                    mainScreenPointerPosition = 0;
                 }
                 if (key.action & !key.last_action & !loaded) {
                     gameState = mainScreenPointerPosition;
