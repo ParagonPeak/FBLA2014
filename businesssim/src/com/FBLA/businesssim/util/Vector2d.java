@@ -1,7 +1,7 @@
 package com.FBLA.businesssim.util;
 
 /**
- * Vector2i purpose: stores the x and y locations of every 2 is the number of
+ * Vector2d purpose: stores the x and y locations of every 2 is the number of
  * positions on grid ie: x, y, z i stands for integers; could use f,d,etc -----
  *
  * @author Tripp and Raphael
@@ -9,37 +9,37 @@ package com.FBLA.businesssim.util;
  * @update Written and commented. Shouldn't need to be changed. -----
  *         added an add method with dx and dy instead of vectors for convenience
  */
-public class Vector2i {
+public class Vector2d {
 
     private double x, y;
 
-    public Vector2i() {
+    public Vector2d() {
         set(x, y);
     }
 
-    public Vector2i(Vector2i v) {
+    public Vector2d(Vector2d v) {
         set(v.x, v.y);
     }
 
-    public Vector2i(double x, double y) {
+    public Vector2d(double x, double y) {
         set(x, y);
     }
 
-    public Vector2i add(Vector2i v)
+    public Vector2d add(Vector2d v)
     {
         this.x += v.getX();
         this.y += v.getY();
         return this;
     }
     
-    public Vector2i add(double dx, double dy)
+    public Vector2d add(double dx, double dy)
     {
         this.x += dx;
         this.y += dy;
         return this;
     }
     
-    public Vector2i subtract(Vector2i v)
+    public Vector2d subtract(Vector2d v)
     {
         this.x -= v.getX();
         this.y -= v.getY();
@@ -59,12 +59,12 @@ public class Vector2i {
         return y;
     }
 
-    public Vector2i setX(int x) {
+    public Vector2d setX(int x) {
         this.x = x;
         return this;
     }
 
-    public Vector2i setY(int y) {
+    public Vector2d setY(int y) {
         this.y = y;
         return this;
     }

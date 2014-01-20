@@ -5,7 +5,7 @@ import com.FBLA.businesssim.entity.Entity;
 import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.level.Level;
 import com.FBLA.businesssim.util.Node;
-import com.FBLA.businesssim.util.Vector2i;
+import com.FBLA.businesssim.util.Vector2d;
 
 /**
  * Mob Purpose: The template for all moving entities
@@ -26,14 +26,14 @@ public class Mob extends Entity {
     /**
      * @see Entity
      */
-    public Mob(Vector2i v) {
+    public Mob(Vector2d v) {
         super(v, "Mob");
     }
 
     /**
      * @see Entity
      */
-    public Mob(Vector2i v, String n) {
+    public Mob(Vector2d v, String n) {
         super(v, "Mob: " + n);
     }
 
@@ -51,7 +51,7 @@ public class Mob extends Entity {
         super(x, y, "Mob");
     }
 
-    public void move(Vector2i vector) {
+    public void move(Vector2d vector) {
         v.add(vector);
     }
 

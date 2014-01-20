@@ -12,7 +12,7 @@ package com.FBLA.businesssim.util;
 public class Node {
     
     private Node parent;
-    private Vector2i v;
+    private Vector2d v;
     private double gCost, fCost, hCost;
     
     /**
@@ -22,7 +22,7 @@ public class Node {
      * @param gCost the cost of travel from startNode to endNode
      * @param hCost the cost of travel from startPos to endPos
      */
-    public Node(Node parent, Vector2i v, int gCost, int hCost)
+    public Node(Node parent, Vector2d v, int gCost, int hCost)
     {
         this.parent = parent;
         this.v = v;

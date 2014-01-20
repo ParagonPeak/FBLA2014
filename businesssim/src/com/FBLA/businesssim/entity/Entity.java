@@ -3,7 +3,7 @@ package com.FBLA.businesssim.entity;
 import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.level.Level;
-import com.FBLA.businesssim.util.Vector2i;
+import com.FBLA.businesssim.util.Vector2d;
 import java.awt.Rectangle;
 
 /**
@@ -18,7 +18,7 @@ import java.awt.Rectangle;
  */
 public class Entity {
 
-    public Vector2i v;
+    public Vector2d v;
     public String name = "";
     protected boolean removed = false;
     public Sprite sprite = Sprite.emptySprite;
@@ -26,23 +26,23 @@ public class Entity {
     protected Rectangle colBox;
     
     /**
-     * Constructor for Entities. Names Entity, set Vector2i
+     * Constructor for Entities. Names Entity, set Vector2d
      * @param v 
      * @param name
      */
-    public Entity(Vector2i v, String name) {
+    public Entity(Vector2d v, String name) {
         this.v = v;
         this.name = name;
     }
 
     /**
-     * Constructor for Entity. Names Entity, converts cords to Vector2i
+     * Constructor for Entity. Names Entity, converts cords to Vector2d
      * @param x XPosition for entity
      * @param y YPosition for entity
      * @param name The name of Entity (debugging)
      */
     public Entity(int x, int y, String name) {
-        this(new Vector2i(x, y), name);
+        this(new Vector2d(x, y), name);
     }
     
     /**
@@ -52,14 +52,14 @@ public class Entity {
      */
     public Entity(int x, int y)
     {
-        this(new Vector2i(x,y),"D_Name");
+        this(new Vector2d(x,y),"D_Name");
     }
     
     /**
      * Constructor for Entity. Adds default name.
      * @param v 
      */
-    public Entity(Vector2i v)
+    public Entity(Vector2d v)
     {
         this(v,"D_Name");
     }

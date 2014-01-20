@@ -9,7 +9,7 @@ import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.SpriteSheet;
 import com.FBLA.businesssim.level.raisedobject.RaisedObject;
 import com.FBLA.businesssim.level.tile.Tile;
-import com.FBLA.businesssim.util.Vector2i;
+import com.FBLA.businesssim.util.Vector2d;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
@@ -28,8 +28,8 @@ public class Level {
     public static int[] objects; // walls and other 3d things
     public int spawnX = 0;
     public int spawnY = 0;
-//    public Vector2i playerV = new Vector2i(spawnX + (BusinessSim.bs.player.s.W / 2), spawnY + (BusinessSim.bs.player.s.H /2));
-    public Vector2i playerV = new Vector2i(0, 128); // why is this here?
+//    public Vector2d playerV = new Vector2d(spawnX + (BusinessSim.bs.player.s.W / 2), spawnY + (BusinessSim.bs.player.s.H /2));
+    public Vector2d playerV = new Vector2d(0, 128); // why is this here?
     public static Rectangle[] rects;
 
     public Level(String path) {
