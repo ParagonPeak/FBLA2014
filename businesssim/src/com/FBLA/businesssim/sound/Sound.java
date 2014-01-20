@@ -8,6 +8,7 @@ import com.FBLA.businesssim.BusinessSim;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 public class Sound {
 
@@ -20,6 +21,7 @@ public class Sound {
     private int loopCount;
     private Clip clip;
     public boolean isRunning = false;
+    private FloatControl volume;
 
     public static void init() {
         mainMenuMusic = new Sound("MainTheme.wav", Clip.LOOP_CONTINUOUSLY);
@@ -58,13 +60,33 @@ public class Sound {
             clip.start();
             clip.loop(loopCount);
             isRunning = true;
+            volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         } catch (Exception ex) {
             System.out.println("Trouble Playing Track");
         }
     }
-    
-    public boolean isRunning()
-    {
+
+    public boolean isRunning() {
         return clip.isActive();
+    }
+    
+    /**
+     * 
+     * @param vol 0 to -80
+     */
+    public void setVolume(float vol)
+    {
+        volume.setValue(vol);
+    }
+    
+    /**
+     * 
+     * @param percent 1 to 0
+     */
+    public void setVolumeByPercent(float percent)
+    {
+        if(percent > 1) percent = 1f;
+        if(percent < 0) percent = 0f;
+        setVolume((1f - percent) * volume.getMinimum());
     }
 }

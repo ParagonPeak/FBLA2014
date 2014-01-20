@@ -6,13 +6,30 @@ public class MusicPlayer {
     public Thread musicThread;
     private int currentTrack;
     private Sound[] sounds, soundEffects;
+    private float volume = .85f;
 
     public MusicPlayer() {
         sounds = new Sound[]{Sound.mainMenuMusic, Sound.floorEvenMusic, Sound.floorOddMusic};//, Sound.pauseMusic, Sound.creditsMusic};
         soundEffects = new Sound[]{};
         currentTrack = -1;
     }
-
+    
+    public void decreaseVolume()
+    {
+        volume -= .05f;
+        if(volume < 0)
+            volume = 0;
+        sounds[currentTrack].setVolumeByPercent(volume);
+    }
+    
+    public void increaseVolume()
+    {
+        volume += .05f;
+        if(volume > 1)
+            volume = 1;
+        sounds[currentTrack].setVolumeByPercent(volume);
+    }
+    
     public static void init() {
         Sound.init();
         mp = new MusicPlayer();
@@ -29,6 +46,7 @@ public class MusicPlayer {
         }
         System.out.println(currentTrack);
         sounds[currentTrack = i].start(); //I think this works...
+        sounds[currentTrack].setVolumeByPercent(volume);
         System.out.println(currentTrack);
 
     }

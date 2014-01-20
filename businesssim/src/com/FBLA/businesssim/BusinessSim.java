@@ -265,6 +265,10 @@ public class BusinessSim extends Canvas implements Runnable {
     private int mainScreenPointerPosition = 0;
 
     private void updatePointer() {
+        if(key.left)
+            MusicPlayer.mp.decreaseVolume();
+        if(key.right)
+            MusicPlayer.mp.increaseVolume();
         if (key.up) {
             mainScreenPointerPosition--;
         }
