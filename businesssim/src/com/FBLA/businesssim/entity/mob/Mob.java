@@ -2,6 +2,7 @@ package com.FBLA.businesssim.entity.mob;
 
 import com.FBLA.businesssim.BusinessSim;
 import com.FBLA.businesssim.entity.Entity;
+import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.level.Level;
 import com.FBLA.businesssim.util.Node;
@@ -10,18 +11,13 @@ import com.FBLA.businesssim.util.Vector2d;
 /**
  * Mob Purpose: The template for all moving entities
  *
- * @needs Movement, collision, actions, AI, tracking, stats, etc 
- * -----
  * @author Tripp and Raphael
- * @date Dec 25, 2013
- * @update Created the class and some constructors. 
- *          added collision and move methods
- * -----
  */
 public class Mob extends Entity {
 
     protected double speed = 4;
     protected boolean moving = false;
+    protected Vector2d moveToVector = null;
     
     /**
      * @see Entity
@@ -55,42 +51,50 @@ public class Mob extends Entity {
         v.add(vector);
     }
 
-//    protected Tile currentTile()
-//    {
-//        int newX1 = (v.x) >> 4,
-//            newY1 = (v.y) >> 4;
-//        
-//        return com.FBLA.businesssim.level.getTile(newX1, newY1);
-//    }
+    public void moveTo(Vector2d vector) {
+        moveToVector = vector;
+    }
+    
     public void moveToNode(Node end) {
     }
 
     public void aMove(Node end) {
     }
-    
+
     public boolean collision(double d, boolean isDy) {
         int tileX;
         int tileY;
-        if(isDy) {
+        if (isDy) {
             tileX = (int) (v.getX()) >> 5;
             tileY = (int) (v.getY() + d) >> 5;
         } else {
             tileX = (int) (v.getX() + d) >> 5;
             tileY = (int) (v.getY()) >> 5;
         }
-        if(tileX < 0 || tileX >= BusinessSim.level.width) {
+        if (tileX < 0 || tileX >= BusinessSim.level.width) {
             return true;
         }
-        if(tileY < 0 || tileY >= BusinessSim.level.height) {
+        if (tileY < 0 || tileY >= BusinessSim.level.height) {
             return true;
         }
-        if(BusinessSim.level.getObject(tileX, tileY).sprite.equals(Sprite.emptySprite)) { // if it's empty
+        if (BusinessSim.level.getObject(tileX, tileY).sprite.equals(Sprite.emptySprite)) { // if it's empty
             return false;
         }
         return true; // if it's not empty
     }
-    
+
     public void move(double dx, double dy) {
         v.add(dx, dy);
+    }    
+    @Override
+    public void update() {
+        if (moveToVector != null) {
+            double dx = v.getX() - moveToVector.getX();
+            double dy = v.getY() - moveToVector.getY();
+            v.setX((dx < 0) ? (dx < speed) ? v.getX() + dx : v.getX() + speed : (dx > -speed) ? v.getX() - dx : v.getX() - speed);
+            v.setY((dy < 0) ? (dy < speed) ? v.getY() + dy : v.getY() + speed : (dy > -speed) ? v.getY() - dy : v.getY() - speed);
+            if(v.getX() == moveToVector.getX() && v.getY() == moveToVector.getY())
+                moveToVector = null;
+        }
     }
 }

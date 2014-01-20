@@ -59,12 +59,12 @@ public class Vector2d {
         return y;
     }
 
-    public Vector2d setX(int x) {
+    public Vector2d setX(double x) {
         this.x = x;
         return this;
     }
 
-    public Vector2d setY(int y) {
+    public Vector2d setY(double y) {
         this.y = y;
         return this;
     }

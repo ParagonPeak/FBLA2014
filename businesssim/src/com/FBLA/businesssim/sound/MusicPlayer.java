@@ -44,11 +44,8 @@ public class MusicPlayer {
                 sounds[currentTrack].stop();
             }
         }
-        System.out.println(currentTrack);
         sounds[currentTrack = i].start(); //I think this works...
         sounds[currentTrack].setVolumeByPercent(volume);
-        System.out.println(currentTrack);
-
     }
     
     public void playSoundEffect(int i)
