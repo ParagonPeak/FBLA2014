@@ -91,8 +91,8 @@ public class Mob extends Entity {
         if (moveToVector != null) {
             double dx = v.getX() - moveToVector.getX();
             double dy = v.getY() - moveToVector.getY();
-            v.setX((dx < 0) ? (dx < speed) ? v.getX() + dx : v.getX() + speed : (dx > -speed) ? v.getX() - dx : v.getX() - speed);
-            v.setY((dy < 0) ? (dy < speed) ? v.getY() + dy : v.getY() + speed : (dy > -speed) ? v.getY() - dy : v.getY() - speed);
+            v.setX(dx < 0 ? v.getX() - Math.min(dx, speed): v.getX() + Math.max(dx, -speed));
+            v.setY(dy < 0 ? v.getY() - Math.min(dy, speed): v.getY() + Math.max(dy, -speed));
             if(v.getX() == moveToVector.getX() && v.getY() == moveToVector.getY())
                 moveToVector = null;
         }
