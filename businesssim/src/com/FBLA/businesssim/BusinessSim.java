@@ -293,8 +293,9 @@ public class BusinessSim extends Canvas implements Runnable {
         } else { // go back to level 0 if you can't move up and aren't on level 0
             currentLevel = 0;
         }
-        level = new Level(Level.levelTilePaths[currentLevel], Level.levelObjPaths[currentLevel], currentLevel, Level.xOff[currentLevel], Level.yOff[currentLevel]);
-        // player = new Player(level.playerV, screen, key);
+//        level = new Level(Level.levelTilePaths[currentLevel], Level.levelObjPaths[currentLevel], currentLevel, Level.xOff[currentLevel], Level.yOff[currentLevel]);
+//         player = new Player(level.playerV, screen, key);
+        level = new Level(Level.levelTilePaths[currentLevel], Level.levelObjPaths[currentLevel], currentLevel, player.v.getX(), player.v.getY());
     }
 
     private void changeMusic() {

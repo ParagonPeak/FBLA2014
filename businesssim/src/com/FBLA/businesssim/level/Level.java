@@ -235,8 +235,8 @@ public class Level {
         
         x0 = Math.max(0, x0);
         y0 = Math.max(0, y0);
-        x1 = Math.min(width, x1);
-        y1 = Math.min(height, y1);
+        x1 = Math.min(width - 1, x1);
+        y1 = Math.min(height - 1, y1);
         
         for (int x = x0; x < x1; x++) {
             for (int y = y0; y < y1; y++) {
@@ -244,9 +244,8 @@ public class Level {
                 int e1 = RaisedObject.getNum(RaisedObject.elevatorSE);
                 int e2 = RaisedObject.getNum(RaisedObject.elevatorSW);
                 int spot = objects[x + y * width];
-                System.out.println(spot);
+                
                 if(spot == e1 || spot == e2) {
-                    System.out.println("yes");
                     return true;
                 }
             }
