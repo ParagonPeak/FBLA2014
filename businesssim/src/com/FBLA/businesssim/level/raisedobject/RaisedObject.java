@@ -49,7 +49,15 @@ public class RaisedObject {
     public static RaisedObject raisedCabinetSWObject    = new RaisedObject(Sprite.raisedCabinetSW   ,30, 0xffccddff);
     public static RaisedObject paperPlatformSObject     = new RaisedObject(Sprite.paperPlatformS    ,31, 0xffaaeecc);
     public static RaisedObject paperPlatformSWObject    = new RaisedObject(Sprite.paperPlatformSW   ,32, 0xffcceecc);
-    public static RaisedObject chairObject    = new RaisedObject(Sprite.chair, 33, 0xff404040);
+    public static RaisedObject deskSW                   = new RaisedObject(Sprite.deskSW            ,33, 0xff7f3300);
+    public static RaisedObject deskSE                   = new RaisedObject(Sprite.deskSE            ,34, 0xff7f3355);
+    public static RaisedObject deskNW                   = new RaisedObject(Sprite.deskNW            ,35, 0xff7f3377);
+    public static RaisedObject deskNE                   = new RaisedObject(Sprite.deskNE            ,36, 0xff7f3399);
+    public static RaisedObject wallSW                   = new RaisedObject(Sprite.wallSW            ,37, 0xffeeeeee);
+    public static RaisedObject wallSE                   = new RaisedObject(Sprite.wallSE            ,38, 0xffeeeecc);
+    public static RaisedObject elevatorSW               = new RaisedObject(Sprite.elevatorSW        ,39, 0xffeeee55);
+    public static RaisedObject elevatorSE               = new RaisedObject(Sprite.elevatorSE        ,40, 0xffeeee00);
+    public static RaisedObject chairObject              = new RaisedObject(Sprite.chair             ,41, 0xff404040);
 //    public static RaisedObject chairSEObject    = new RaisedObject(Sprite.chairSE, 33, 0x000000);
 //    public static RaisedObject  chairSObject    = new RaisedObject( Sprite.chairS, 34, 0x000000);
 //    public static RaisedObject chairSWObject    = new RaisedObject(Sprite.chairSW, 35, 0x000000);

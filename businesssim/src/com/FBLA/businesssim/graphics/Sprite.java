@@ -64,6 +64,14 @@ public class Sprite {
     public static Sprite raisedCabinetSW    = new Sprite(64, 128, 1, 7, SpriteSheet.walls, 1);
     public static Sprite paperPlatformS     = new Sprite(64, 128, 2, 7, SpriteSheet.walls, 1);
     public static Sprite paperPlatformSW    = new Sprite(64, 128, 3, 7, SpriteSheet.walls, 1);
+    public static Sprite deskSW             = new Sprite(64, 128, 0, 8, SpriteSheet.walls, 1);
+    public static Sprite deskSE             = new Sprite(64, 128, 1, 8, SpriteSheet.walls, 1);
+    public static Sprite deskNE             = new Sprite(64, 128, 2, 8, SpriteSheet.walls, 1);
+    public static Sprite deskNW             = new Sprite(64, 128, 3, 8, SpriteSheet.walls, 1);
+    public static Sprite wallSW             = new Sprite(64, 128, 0, 9, SpriteSheet.walls, 1);
+    public static Sprite wallSE             = new Sprite(64, 128, 1, 9, SpriteSheet.walls, 1);
+    public static Sprite elevatorSW         = new Sprite(64, 128, 2, 9, SpriteSheet.walls, 1);
+    public static Sprite elevatorSE         = new Sprite(64, 128, 3, 9, SpriteSheet.walls, 1);
     public static Sprite chair    = new Sprite(64, 77, 0, 0, SpriteSheet.chair, 8); // we'll have to make chairs into entities
 //    public static Sprite chairSE    = new Sprite(64, 77, 0, 0, SpriteSheet.chair, 1);
 //    public static Sprite chairS    = new Sprite(64, 77, 1, 0, SpriteSheet.chair, 1);

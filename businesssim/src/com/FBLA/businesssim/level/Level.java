@@ -40,7 +40,7 @@ public class Level {
     public static final int levelAmount = 2;
     public static final String[] levelTilePaths = {"Resources/Textures/Levels/ExampleLevelTiles.png","Resources/Textures/Levels/ExampleLevel2Tiles.png"};
     public static final String[] levelObjPaths  = {"Resources/Textures/Levels/ExampleLevelObjects.png","Resources/Textures/Levels/ExampleLevel2Objects.png"};
-    public static int[] xOff = {0, 0};
+    public static int[] xOff = {48, 48};
     public static int[] yOff = {128, 128};
 
     public Level(String tilePath, String objPath, int number) {
@@ -233,10 +233,20 @@ public class Level {
         int x1 = ((int) (playerV.getX()) >> 5) + 2;
         int y1 = ((int) (playerV.getY()) >> 5) + 2;
         
+        x0 = Math.max(0, x0);
+        y0 = Math.max(0, y0);
+        x1 = Math.min(width, x1);
+        y1 = Math.min(height, y1);
+        
         for (int x = x0; x < x1; x++) {
             for (int y = y0; y < y1; y++) {
-                RaisedObject r = getObject(x, y);
-                if(r == RaisedObject.chairObject) {
+                
+                int e1 = RaisedObject.getNum(RaisedObject.elevatorSE);
+                int e2 = RaisedObject.getNum(RaisedObject.elevatorSW);
+                int spot = objects[x + y * width];
+                System.out.println(spot);
+                if(spot == e1 || spot == e2) {
+                    System.out.println("yes");
                     return true;
                 }
             }

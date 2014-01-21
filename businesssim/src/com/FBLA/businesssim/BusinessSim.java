@@ -123,7 +123,7 @@ public class BusinessSim extends Canvas implements Runnable {
         screen = new Screen(width, height);
         addKeyListener(key);
 //        level = new Level("level/Floor1.png");
-        level = new Level(Level.levelTilePaths[0], Level.levelObjPaths[0], 0, 0, 128);
+        level = new Level(Level.levelTilePaths[0], Level.levelObjPaths[0], 0, Level.xOff[0], Level.yOff[0]);
         player = new Player(level.playerV, screen, key);
         MusicPlayer.init();
     }
@@ -294,7 +294,7 @@ public class BusinessSim extends Canvas implements Runnable {
             currentLevel = 0;
         }
         level = new Level(Level.levelTilePaths[currentLevel], Level.levelObjPaths[currentLevel], currentLevel, Level.xOff[currentLevel], Level.yOff[currentLevel]);
-        player = new Player(level.playerV, screen, key);
+        // player = new Player(level.playerV, screen, key);
     }
 
     private void changeMusic() {
