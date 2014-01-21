@@ -40,6 +40,7 @@
  */
 package com.FBLA.businesssim;
 
+import com.FBLA.businesssim.entity.items.HuntObject;
 import com.FBLA.businesssim.entity.mob.Player;
 import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
@@ -231,6 +232,18 @@ public class BusinessSim extends Canvas implements Runnable {
                     g.drawString("Press X for the first level", 10, 50);
                 }
             }
+
+            if (Level.hunt[level.number][0] != null && Level.hunt != null && Level.hunt[level.number] != null) {
+                if (level.playerNearPickup(player)) {
+                    for (HuntObject hObj : Level.hunt[level.number]) {
+                        if (hObj.v.distFrom(player.v) < 300 && !hObj.isRemoved()) {
+                            //Implement later
+                            //Draws a line between items within 300 pixels and the player
+                        }
+                    }
+                    System.out.println();
+                }
+            }
         }
         g.dispose();
         bs.show();
@@ -386,7 +399,8 @@ public class BusinessSim extends Canvas implements Runnable {
     }
 
     public void promptExit() {
-        if(JOptionPane.showConfirmDialog(null, "Do you really want to quit?", "Quit", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) 
+        if (JOptionPane.showConfirmDialog(null, "Do you really want to quit?", "Quit", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             System.exit(3);
+        }
     }
 }
