@@ -16,7 +16,8 @@ public class Sound {
             floorEvenMusic,
             floorOddMusic,
             pauseMusic,
-            creditsMusic;
+            creditsMusic,
+            sfx_elevatorDing;
     private AudioInputStream ais;
     private int loopCount;
     private Clip clip;
@@ -29,6 +30,7 @@ public class Sound {
         floorOddMusic = new Sound("GameMusic.wav", Clip.LOOP_CONTINUOUSLY);
         pauseMusic = new Sound("back1.wav", Clip.LOOP_CONTINUOUSLY);
         creditsMusic = new Sound("back1.wav");
+        sfx_elevatorDing = new Sound("sfx/Elevator_Ding.wav");
     }
 
     public Sound(String url) {
