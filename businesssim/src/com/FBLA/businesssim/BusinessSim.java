@@ -46,6 +46,7 @@ import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.input.Keyboard;
 import com.FBLA.businesssim.level.Level;
 import com.FBLA.businesssim.sound.MusicPlayer;
+import com.FBLA.businesssim.sound.Sound;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -223,6 +224,8 @@ public class BusinessSim extends Canvas implements Runnable {
                 g.setFont(tahoma);
                 if(level.finished[currentLevel] && currentLevel != Level.levelAmount) {
                     g.drawString("Press X or Space to continue", 10, 50);
+                } else if(currentLevel == 0) {
+                    g.drawString("Not ready to advance", 10, 50);
                 } else {
                     g.drawString("Press X or Space for the first level", 10, 50);
                 }
@@ -237,7 +240,7 @@ public class BusinessSim extends Canvas implements Runnable {
         if (!isPaused && gameState == gs_inGame) {
             player.update();
             Sprite.update();
-            level.update();
+            level.update(player);
             nearElevator = level.playerNearElevator(player);
             // ingame actions
             if (key.action & !key.last_action) {
@@ -245,6 +248,9 @@ public class BusinessSim extends Canvas implements Runnable {
                 // level changing 
                 if(nearElevator) {
                     switchToNextAvailableLevel();
+                    MusicPlayer o = new MusicPlayer();
+                    o.init();
+                    o.changeTrack(5);
                 } else if(false) { // action key should only do one thing at a time, "hence else if"
                     
                 }

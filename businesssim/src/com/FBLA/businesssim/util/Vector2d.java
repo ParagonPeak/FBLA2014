@@ -58,6 +58,14 @@ public class Vector2d {
     public double getY() {
         return y;
     }
+    
+    public int getiX() {
+        return (int) (x);
+    }
+
+    public int getiY() {
+        return (int) (y);
+    }
 
     public Vector2d setX(double x) {
         this.x = x;
@@ -67,5 +75,9 @@ public class Vector2d {
     public Vector2d setY(double y) {
         this.y = y;
         return this;
+    }
+    
+    public double distFrom(Vector2d v) {
+        return Math.sqrt((x - v.x)*(x - v.x) + (y - v.y)*(y - v.y));
     }
 }

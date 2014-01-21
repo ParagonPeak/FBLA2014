@@ -9,6 +9,7 @@ public class Player extends Mob{
     
     private Screen screen;
     private Keyboard keys;
+    public boolean actionDown = false;
     
     public Player(Vector2d v, Screen sc, Keyboard k)
     {
@@ -24,6 +25,11 @@ public class Player extends Mob{
     }
     
     public void update() {
+        actionDown = false;
+        if(keys.action) {
+            actionDown = true;
+        }
+        
         double dx = 0, dy = 0;
         if (keys.up) {
             dy -= speed;

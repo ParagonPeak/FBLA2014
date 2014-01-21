@@ -4,8 +4,10 @@
  */
 package com.FBLA.businesssim.level;
 
+import com.FBLA.businesssim.BusinessSim;
 import com.FBLA.businesssim.entity.mob.Player;
 import com.FBLA.businesssim.graphics.Screen;
+import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.graphics.SpriteSheet;
 import com.FBLA.businesssim.level.raisedobject.RaisedObject;
 import com.FBLA.businesssim.level.tile.Tile;
@@ -31,17 +33,18 @@ public class Level {
 //    public Vector2d playerV = new Vector2d(spawnX + (BusinessSim.bs.player.s.W / 2), spawnY + (BusinessSim.bs.player.s.H /2));
     public Vector2d playerV = new Vector2d(0, 128); // why is this here?
     public static Rectangle[] rects;
-    public static boolean[] finished = {true, false, false, false, false}; // indexes are levels. When level requirements are finished, the thing gets set to true
+    public static boolean[] finished = {false, false, false, false, false, false}; // indexes are levels. When level requirements are finished, the thing gets set to true
     public String tilePath;
     public String objPath;
     public int number; // I put this here in case we want to hardcode some level-specific commands
     
     // arrays to store level specific values to make them easier to call and change
-    public static final int levelAmount = 2;
-    public static final String[] levelTilePaths = {"Resources/Textures/Levels/ExampleLevelTiles.png","Resources/Textures/Levels/ExampleLevel2Tiles.png"};
-    public static final String[] levelObjPaths  = {"Resources/Textures/Levels/ExampleLevelObjects.png","Resources/Textures/Levels/ExampleLevel2Objects.png"};
-    public static int[] xOff = {48, 48};
-    public static int[] yOff = {128, 128};
+    public static final int levelAmount = 6;
+    public static final String[] levelTilePaths = {"Resources/Textures/Levels/ExampleLevelTiles.png","Resources/Textures/Levels/ExampleLevel2Tiles.png","Resources/Textures/Levels/ExampleLevelTiles.png","Resources/Textures/Levels/ExampleLevel2Tiles.png","Resources/Textures/Levels/ExampleLevelTiles.png","Resources/Textures/Levels/ExampleLevel2Tiles.png"};
+    public static final String[] levelObjPaths  = {"Resources/Textures/Levels/ExampleLevelObjects.png","Resources/Textures/Levels/ExampleLevel2Objects.png","Resources/Textures/Levels/ExampleLevelObjects.png","Resources/Textures/Levels/ExampleLevel2Objects.png","Resources/Textures/Levels/ExampleLevelObjects.png","Resources/Textures/Levels/ExampleLevel2Objects.png"};
+    public static int[] xOff = {48, 48, 48, 48, 48, 48};
+    public static int[] yOff = {128, 128, 128, 128, 128, 128};
+    public static Vector2d[][] hunt = new Vector2d[5][5];
 
     public Level(String tilePath, String objPath, int number) {
         this.tilePath = tilePath;
@@ -127,7 +130,57 @@ public class Level {
         }
     }
 
-    public void update() {
+    public void update(Player p) {
+        playerV = p.v;
+        if(!finished[number]) {
+            if(hunt[number][0] == null) { // ready hunt spots if necessary
+                hunt[number] = new Vector2d[5];
+                
+                for(int i = 0; i < 5; i++) {
+                    hunt[number][i] = makeHuntSpot();
+                }
+            }
+            
+            // check if you're near hunt spots
+            for(int i = 0; i < hunt[number].length; i++) {
+                if(hunt[number][i] != null) {
+                    double dist = hunt[number][i].distFrom(p.v);
+                    if(dist < 300) {
+                        System.out.println("Dist: " + (int) (hunt[number][i].distFrom(playerV)) + " \tx: " + hunt[number][i].getiX() + " \ty: " + hunt[number][i].getiY());
+                    }
+                    if(dist < 32 && p.actionDown) {
+                        hunt[number][i] = null;
+                        System.out.println("yay you got object " + i);
+                        // play a sound, write a message
+                    }
+                }
+            }
+            
+            // if you have all hunt spots null, you're done
+            finished[number] = true;
+            for(int i = 0; i < hunt[number].length; i++) {
+                if(hunt[number][i] != null) {
+                    finished[number] = false;
+                    break;
+                }
+            }
+            if(finished[number]) {
+                System.out.println("yay you passed level " + number);
+            }
+        }
+    }
+    
+    public Vector2d makeHuntSpot() {
+        boolean ready = false;
+        Vector2d coords = new Vector2d(0, 0);
+        while(!ready) {
+            coords.setX((int) (Math.random() * width)*32);
+            coords.setY((int) (Math.random() * height)*32);
+            if(coords.distFrom(playerV) > 32*4 && getObject(coords.getiX() >> 5, coords.getiY() >> 5) == RaisedObject.voidObject) { // away from objects and player
+                ready = true;
+            }
+        }
+        return coords;
     }
 
     private void time() {
@@ -187,6 +240,50 @@ public class Level {
                 getObject(x, y).render(x, y, screen);
                 if(x == px && y == py) {
                     p.render(screen);
+                }
+            }
+        }
+        if(hunt != null && hunt[number] != null && hunt[number][0] != null) {
+            for(int i = 0; i < hunt[number].length; i++) {
+                RaisedObject[] huntedObjs = new RaisedObject[5];
+                if(number == 0) { // render things based on what level you're on
+                    huntedObjs[0] = RaisedObject.deskNE;
+                    huntedObjs[1] = RaisedObject.deskNW;
+                    huntedObjs[2] = RaisedObject.deskSE;
+                    huntedObjs[3] = RaisedObject.deskSW;
+                    huntedObjs[4] = RaisedObject.deskSW;
+                } else if(number == 1) {
+                    huntedObjs[0] = RaisedObject.deskNE;
+                    huntedObjs[1] = RaisedObject.deskNW;
+                    huntedObjs[2] = RaisedObject.deskSE;
+                    huntedObjs[3] = RaisedObject.deskSW;
+                    huntedObjs[4] = RaisedObject.deskSW;
+                }  else if(number == 2) {
+                    huntedObjs[0] = RaisedObject.deskNE;
+                    huntedObjs[1] = RaisedObject.deskNW;
+                    huntedObjs[2] = RaisedObject.deskSE;
+                    huntedObjs[3] = RaisedObject.deskSW;
+                    huntedObjs[4] = RaisedObject.deskSW;
+                } else if(number == 3) {
+                    huntedObjs[0] = RaisedObject.deskNE;
+                    huntedObjs[1] = RaisedObject.deskNW;
+                    huntedObjs[2] = RaisedObject.deskSE;
+                    huntedObjs[3] = RaisedObject.deskSW;
+                    huntedObjs[4] = RaisedObject.deskSW;
+                } else if(number == 4) {
+                    huntedObjs[0] = RaisedObject.deskNE;
+                    huntedObjs[1] = RaisedObject.deskNW;
+                    huntedObjs[2] = RaisedObject.deskSE;
+                    huntedObjs[3] = RaisedObject.deskSW;
+                    huntedObjs[4] = RaisedObject.deskSW;
+                }
+                
+                for(int j = 0; j < 5; j++) {
+                    if (hunt[number][j] != null) {
+                        int x = hunt[number][j].getiX();
+                        int y = hunt[number][j].getiX();
+                        if(BusinessSim.gameState == BusinessSim.gs_inGame) huntedObjs[j].render((x >> 5), (y >> 5), screen);
+                    }
                 }
             }
         }

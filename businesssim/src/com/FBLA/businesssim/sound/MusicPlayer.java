@@ -9,7 +9,7 @@ public class MusicPlayer {
     private float volume = .85f;
 
     public MusicPlayer() {
-        sounds = new Sound[]{Sound.mainMenuMusic, Sound.floorEvenMusic, Sound.floorOddMusic};//, Sound.pauseMusic, Sound.creditsMusic};
+        sounds = new Sound[]{Sound.mainMenuMusic, Sound.floorEvenMusic, Sound.floorOddMusic, Sound.pauseMusic, Sound.creditsMusic, Sound.sfx_elevatorDing};
         soundEffects = new Sound[]{};
         currentTrack = -1;
     }
@@ -50,7 +50,7 @@ public class MusicPlayer {
     
     public void playSoundEffect(int i)
     {
-        if(!(i >= 0 & i < soundEffects.length)) return;
+        if(i < 0 || i >= soundEffects.length) return;
         sounds[i].start();
     }
 }
