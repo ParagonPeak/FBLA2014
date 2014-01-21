@@ -237,12 +237,10 @@ public class Level {
             for (int y = y0; y < y1; y++) {
                 RaisedObject r = getObject(x, y);
                 if(r == RaisedObject.chairObject) {
-                    System.out.println("yep");
                     return true;
                 }
             }
         }
-        System.out.println("nope");
         return false;
     }
 }
