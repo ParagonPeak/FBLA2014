@@ -34,7 +34,7 @@ public class Sound {
     }
 
     public Sound(String url) {
-        this(url, 1);
+        this(url, 0);
     }
 
     public Sound(String url, int timesToLoop) {

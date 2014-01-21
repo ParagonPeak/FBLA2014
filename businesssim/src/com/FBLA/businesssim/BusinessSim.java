@@ -92,7 +92,7 @@ public class BusinessSim extends Canvas implements Runnable {
     public static BusinessSim bs;
     public static Level level;
     public static int currentLevel = 0;
-    String[] test = {"Test1", "Test 2", "Test 3", "Replace", "Test11", "Test 32", "Test 73", "Replace"};
+    public String[] currentText = {"","Welcome to the Arctic branch of \"Pleasant Smells\" glue company", "This room is used for promising applicants, such as yourself", "(Though you are the only one who applied)", "We want to test the skills you will need to work here.", "Please collect us 5 items from each floor", "We promise there's meaning to this", "*Heh*", "That is all. Penguins out!"};
     public boolean isPaused = false, loaded = false;
     public static final int gs_inGame = 0;
     public static final int gs_about = 1;
@@ -217,7 +217,7 @@ public class BusinessSim extends Canvas implements Runnable {
             g.drawImage(image, 0, 0, null);
             g.setColor(Color.WHITE);
 //            g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
-            g = screen.displayText(test, key, g);
+            g = screen.displayText(currentText, key, g);
             
             if(nearElevator) {
                 g.setColor(Color.WHITE);

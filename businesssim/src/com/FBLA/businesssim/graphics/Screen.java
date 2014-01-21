@@ -1,10 +1,10 @@
 package com.FBLA.businesssim.graphics;
 
+import com.FBLA.businesssim.BusinessSim;
 import com.FBLA.businesssim.input.Keyboard;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
 
 /**
  * Class purpose: Create the bulk of the screen that has to load/render sprites
@@ -21,6 +21,7 @@ public class Screen {
     int index = 0;
     public boolean textRequiresUpdate = false;
     private boolean lastKeyAction = false;
+    private ArrayList<String[]> queue = new ArrayList<String[]>();
 
     /**
      * Creates a Screen object, used to fill the GUI that presents the graphics
@@ -136,6 +137,19 @@ public class Screen {
         return iso;
     }
 
+    public void updateText(String[] lines) {
+        if (textRequiresUpdate) {
+            BusinessSim.bs.currentText = lines;
+        } else {
+            queue.add(lines);
+        }
+        textRequiresUpdate = false;
+    }
+
+    public Graphics displayText(Keyboard key, Graphics g) {
+        return displayText(queue.get(0), key, g);
+    }
+
     /**
      * This method will display a line of text in a text box for the player to
      * read.
@@ -165,9 +179,13 @@ public class Screen {
             System.out.println("INCREASE"); //Remove in the end
         }
         if (index > lines.length - 3 && (key.action & !lastKeyAction)) {
-            textRequiresUpdate = true;
+            textRequiresUpdate = queue.isEmpty();
             index = 0;
             System.out.println("Waiting for update!"); //Remove in the end
+            if (!textRequiresUpdate) {
+                BusinessSim.bs.currentText = queue.get(0);
+                queue.remove(0);
+            }
         }
         lastKeyAction = key.action;
         return drawText(displayedLines, g);

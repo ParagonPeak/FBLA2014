@@ -5,6 +5,7 @@
 package com.FBLA.businesssim.level;
 
 import com.FBLA.businesssim.BusinessSim;
+import com.FBLA.businesssim.entity.items.HuntObject;
 import com.FBLA.businesssim.entity.mob.Player;
 import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
@@ -44,7 +45,7 @@ public class Level {
     public static final String[] levelObjPaths  = {"Resources/Textures/Levels/ExampleLevelObjects.png","Resources/Textures/Levels/ExampleLevel2Objects.png","Resources/Textures/Levels/ExampleLevelObjects.png","Resources/Textures/Levels/ExampleLevel2Objects.png","Resources/Textures/Levels/ExampleLevelObjects.png","Resources/Textures/Levels/ExampleLevel2Objects.png"};
     public static int[] xOff = {48, 48, 48, 48, 48, 48};
     public static int[] yOff = {128, 128, 128, 128, 128, 128};
-    public static Vector2d[][] hunt = new Vector2d[5][5];
+    public static HuntObject[][] hunt = new HuntObject[5][5];
 
     public Level(String tilePath, String objPath, int number) {
         this.tilePath = tilePath;
@@ -134,23 +135,24 @@ public class Level {
         playerV = p.v;
         if(!finished[number]) {
             if(hunt[number][0] == null) { // ready hunt spots if necessary
-                hunt[number] = new Vector2d[5];
+                hunt[number] = new HuntObject[5];
                 
                 for(int i = 0; i < 5; i++) {
-                    hunt[number][i] = makeHuntSpot();
+                    hunt[number][i] = new HuntObject(makeHuntSpot(), Sprite.huntSprite1, BusinessSim.bs.screen);
                 }
             }
             
             // check if you're near hunt spots
             for(int i = 0; i < hunt[number].length; i++) {
                 if(hunt[number][i] != null) {
-                    double dist = hunt[number][i].distFrom(p.v);
+                    double dist = hunt[number][i].v.distFrom(p.v);
                     if(dist < 300) {
-                        System.out.println("Dist: " + (int) (hunt[number][i].distFrom(playerV)) + " \tx: " + hunt[number][i].getiX() + " \ty: " + hunt[number][i].getiY());
+                        System.out.println("Dist: " + (int) (hunt[number][i].v.distFrom(playerV)) + " \tx: " + hunt[number][i].v.getiX() + " \ty: " + hunt[number][i].v.getiY());
                     }
                     if(dist < 32 && p.actionDown) {
                         hunt[number][i] = null;
                         System.out.println("yay you got object " + i);
+                        BusinessSim.bs.screen.updateText(new String[]{"You got the Item!", "" + (levelAmount - number) + " items remaining on this floor!"});
                         // play a sound, write a message
                     }
                 }
@@ -245,44 +247,44 @@ public class Level {
         }
         if(hunt != null && hunt[number] != null && hunt[number][0] != null) {
             for(int i = 0; i < hunt[number].length; i++) {
-                RaisedObject[] huntedObjs = new RaisedObject[5];
-                if(number == 0) { // render things based on what level you're on
-                    huntedObjs[0] = RaisedObject.deskNE;
-                    huntedObjs[1] = RaisedObject.deskNW;
-                    huntedObjs[2] = RaisedObject.deskSE;
-                    huntedObjs[3] = RaisedObject.deskSW;
-                    huntedObjs[4] = RaisedObject.deskSW;
-                } else if(number == 1) {
-                    huntedObjs[0] = RaisedObject.deskNE;
-                    huntedObjs[1] = RaisedObject.deskNW;
-                    huntedObjs[2] = RaisedObject.deskSE;
-                    huntedObjs[3] = RaisedObject.deskSW;
-                    huntedObjs[4] = RaisedObject.deskSW;
-                }  else if(number == 2) {
-                    huntedObjs[0] = RaisedObject.deskNE;
-                    huntedObjs[1] = RaisedObject.deskNW;
-                    huntedObjs[2] = RaisedObject.deskSE;
-                    huntedObjs[3] = RaisedObject.deskSW;
-                    huntedObjs[4] = RaisedObject.deskSW;
-                } else if(number == 3) {
-                    huntedObjs[0] = RaisedObject.deskNE;
-                    huntedObjs[1] = RaisedObject.deskNW;
-                    huntedObjs[2] = RaisedObject.deskSE;
-                    huntedObjs[3] = RaisedObject.deskSW;
-                    huntedObjs[4] = RaisedObject.deskSW;
-                } else if(number == 4) {
-                    huntedObjs[0] = RaisedObject.deskNE;
-                    huntedObjs[1] = RaisedObject.deskNW;
-                    huntedObjs[2] = RaisedObject.deskSE;
-                    huntedObjs[3] = RaisedObject.deskSW;
-                    huntedObjs[4] = RaisedObject.deskSW;
-                }
+//                RaisedObject[] huntedObjs = new RaisedObject[5];
+//                if(number == 0) { // render things based on what level you're on
+//                    huntedObjs[0] = RaisedObject.deskNE;
+//                    huntedObjs[1] = RaisedObject.deskNW;
+//                    huntedObjs[2] = RaisedObject.deskSE;
+//                    huntedObjs[3] = RaisedObject.deskSW;
+//                    huntedObjs[4] = RaisedObject.deskSW;
+//                } else if(number == 1) {
+//                    huntedObjs[0] = RaisedObject.deskNE;
+//                    huntedObjs[1] = RaisedObject.deskNW;
+//                    huntedObjs[2] = RaisedObject.deskSE;
+//                    huntedObjs[3] = RaisedObject.deskSW;
+//                    huntedObjs[4] = RaisedObject.deskSW;
+//                }  else if(number == 2) {
+//                    huntedObjs[0] = RaisedObject.deskNE;
+//                    huntedObjs[1] = RaisedObject.deskNW;
+//                    huntedObjs[2] = RaisedObject.deskSE;
+//                    huntedObjs[3] = RaisedObject.deskSW;
+//                    huntedObjs[4] = RaisedObject.deskSW;
+//                } else if(number == 3) {
+//                    huntedObjs[0] = RaisedObject.deskNE;
+//                    huntedObjs[1] = RaisedObject.deskNW;
+//                    huntedObjs[2] = RaisedObject.deskSE;
+//                    huntedObjs[3] = RaisedObject.deskSW;
+//                    huntedObjs[4] = RaisedObject.deskSW;
+//                } else if(number == 4) {
+//                    huntedObjs[0] = RaisedObject.deskNE;
+//                    huntedObjs[1] = RaisedObject.deskNW;
+//                    huntedObjs[2] = RaisedObject.deskSE;
+//                    huntedObjs[3] = RaisedObject.deskSW;
+//                    huntedObjs[4] = RaisedObject.deskSW;
+//                }
                 
                 for(int j = 0; j < 5; j++) {
                     if (hunt[number][j] != null) {
-                        int x = hunt[number][j].getiX();
-                        int y = hunt[number][j].getiX();
-                        if(BusinessSim.gameState == BusinessSim.gs_inGame) huntedObjs[j].render((x >> 5), (y >> 5), screen);
+                        int x = hunt[number][j].v.getiX();
+                        int y = hunt[number][j].v.getiX();
+                        if(BusinessSim.gameState == BusinessSim.gs_inGame) hunt[number][j].render();
                     }
                 }
             }
