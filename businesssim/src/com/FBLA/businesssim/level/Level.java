@@ -226,12 +226,12 @@ public class Level {
         }
     }
 
-    public boolean playerNearElevator() {
+    public boolean playerNearElevator(Player p) {
         
-        int x0 = ((int) (playerV.getX()) >> 5) - 2;
-        int y0 = ((int) (playerV.getY()) >> 5) - 2;
-        int x1 = ((int) (playerV.getX()) >> 5) + 2;
-        int y1 = ((int) (playerV.getY()) >> 5) + 2;
+        int x0 = ((int) (p.v.getX()) >> 5) - 2;
+        int y0 = ((int) (p.v.getY()) >> 5) - 2;
+        int x1 = ((int) (p.v.getX()) >> 5) + 2;
+        int y1 = ((int) (p.v.getY()) >> 5) + 2;
         
         x0 = Math.max(0, x0);
         y0 = Math.max(0, y0);

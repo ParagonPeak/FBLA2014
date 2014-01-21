@@ -99,6 +99,8 @@ public class BusinessSim extends Canvas implements Runnable {
     public static final int gs_credit = 3;
     public static final int gs_startScreen = 5;
     public static int gameState = gs_startScreen;
+    private Font tahoma = new Font("Tahoma", Font.ITALIC, 36);
+    private boolean nearElevator = false;
 
     //Starts the game, used for frame set up
     public static void main(String[] args) {
@@ -174,14 +176,12 @@ public class BusinessSim extends Canvas implements Runnable {
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
 
-                frame.setTitle(title + version + " | FPS: " + frames + " UPS: " + updates);
+                frame.setTitle(title + version + " | FPS: " + frames + " UPS: " + updates + " px: " + player.v.getX() + " py: " + player.v.getY());
                 updates = frames = 0;
             }
         }
         stop();
     }
-    
-    private Font tahoma = new Font("Tahoma", Font.ITALIC, 36);
     
     public void render() {
         BufferStrategy bs = getBufferStrategy();
@@ -218,7 +218,7 @@ public class BusinessSim extends Canvas implements Runnable {
 //            g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
             g = screen.displayText(test, key, g);
             
-            if(level.playerNearElevator()) {
+            if(nearElevator) {
                 g.setColor(Color.WHITE);
                 g.setFont(tahoma);
                 if(level.finished[currentLevel] && currentLevel != Level.levelAmount) {
@@ -238,17 +238,15 @@ public class BusinessSim extends Canvas implements Runnable {
             player.update();
             Sprite.update();
             level.update();
-            
-            if(level.playerNearElevator()) {
-                
-            }
-            
+            nearElevator = level.playerNearElevator(player);
             // ingame actions
             if (key.action & !key.last_action) {
                 
                 // level changing 
-                if(level.playerNearElevator()) {
+                if(nearElevator) {
                     switchToNextAvailableLevel();
+                } else if(false) { // action key should only do one thing at a time, "hence else if"
+                    
                 }
             }
         }
