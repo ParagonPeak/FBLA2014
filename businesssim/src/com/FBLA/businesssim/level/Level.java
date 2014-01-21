@@ -12,6 +12,7 @@ import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.graphics.SpriteSheet;
 import com.FBLA.businesssim.level.raisedobject.RaisedObject;
 import com.FBLA.businesssim.level.tile.Tile;
+import com.FBLA.businesssim.sound.MusicPlayer;
 import com.FBLA.businesssim.util.Vector2d;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -38,6 +39,7 @@ public class Level {
     public String tilePath;
     public String objPath;
     public int number; // I put this here in case we want to hardcode some level-specific commands
+    private int itemCount = 0;
     
     // arrays to store level specific values to make them easier to call and change
     public static final int levelAmount = 6;
@@ -144,16 +146,13 @@ public class Level {
             
             // check if you're near hunt spots
             for(int i = 0; i < hunt[number].length; i++) {
-                if(hunt[number][i] != null) {
-                    double dist = hunt[number][i].v.distFrom(p.v);
-                    if(dist < 300) {
-                        System.out.println("Dist: " + (int) (hunt[number][i].v.distFrom(playerV)) + " \tx: " + hunt[number][i].v.getiX() + " \ty: " + hunt[number][i].v.getiY());
-                    }
-                    if(dist < 32 && p.actionDown) {
-                        hunt[number][i] = null;
-                        System.out.println("yay you got object " + i);
-                        BusinessSim.bs.screen.updateText(new String[]{"You got the Item!", "" + (levelAmount - number) + " items remaining on this floor!"});
+                if(!hunt[number][i].isRemoved()) {
+                    if(hunt[number][i].v.distFrom(p.v) < 50 && p.actionDown) {
+                        hunt[number][i].remove();
+                        BusinessSim.bs.screen.updateText(new String[]{"You got the Item!", "" + (itemCount - 1) + " items remaining on this floor!"});
                         // play a sound, write a message
+                        MusicPlayer m = new MusicPlayer();
+                        m.changeTrack(5);
                     }
                 }
             }
@@ -161,13 +160,13 @@ public class Level {
             // if you have all hunt spots null, you're done
             finished[number] = true;
             for(int i = 0; i < hunt[number].length; i++) {
-                if(hunt[number][i] != null) {
+                if(!hunt[number][i].isRemoved()) {
                     finished[number] = false;
                     break;
                 }
             }
             if(finished[number]) {
-                System.out.println("yay you passed level " + number);
+                BusinessSim.bs.screen.updateText("Good Job. Now enter the elevator to go to floor #" + number);
             }
         }
     }
@@ -280,11 +279,13 @@ public class Level {
 //                    huntedObjs[4] = RaisedObject.deskSW;
 //                }
                 
+                itemCount = 0;
                 for(int j = 0; j < 5; j++) {
-                    if (hunt[number][j] != null) {
+                    if (!hunt[number][j].isRemoved()) {
                         int x = hunt[number][j].v.getiX();
                         int y = hunt[number][j].v.getiX();
                         if(BusinessSim.gameState == BusinessSim.gs_inGame) hunt[number][j].render();
+                        itemCount++;
                     }
                 }
             }

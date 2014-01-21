@@ -1,5 +1,6 @@
 package com.FBLA.businesssim.input;
 
+import com.FBLA.businesssim.BusinessSim;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -15,7 +16,7 @@ public class Keyboard implements KeyListener{
     
     public boolean[] keys = new boolean[120];
     public boolean up, down, right, left, action, escape, inc, pause;
-    public boolean last_up, last_down, last_right, last_left, last_action, last_inc, last_pause;
+    public boolean last_up, last_down, last_right, last_left, last_action, last_inc, last_pause, last_escape;
     
     /**
      * Called on every update to make sure data is accurate and easy calling.
@@ -31,16 +32,18 @@ public class Keyboard implements KeyListener{
         last_action = action;
         last_inc = inc;
         last_pause = pause;
+        last_escape = escape;
         
         up = keys[KeyEvent.VK_UP] | keys[KeyEvent.VK_W];
         down = keys[KeyEvent.VK_DOWN] | keys[KeyEvent.VK_S];
         right = keys[KeyEvent.VK_RIGHT] | keys[KeyEvent.VK_D];
         left = keys[KeyEvent.VK_LEFT] | keys[KeyEvent.VK_A];
-        action = keys[KeyEvent.VK_SPACE] | keys[KeyEvent.VK_X];
+        action = keys[KeyEvent.VK_X];
         escape = keys[KeyEvent.VK_ESCAPE];
-        inc = keys[KeyEvent.VK_P];
+        inc = keys[KeyEvent.VK_SPACE];
         pause = keys[KeyEvent.VK_P];
-        if(escape) System.exit(3);
+        if(escape && !last_escape) BusinessSim.bs.promptExit();
+        keys[KeyEvent.VK_ESCAPE] = false;
     }
     
     /**

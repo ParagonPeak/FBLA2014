@@ -65,6 +65,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  * @author Tripp Weiner and Raphael Rouvinov-Kats To see the full progress of
@@ -92,7 +93,7 @@ public class BusinessSim extends Canvas implements Runnable {
     public static BusinessSim bs;
     public static Level level;
     public static int currentLevel = 0;
-    public String[] currentText = {"","Welcome to the Arctic branch of \"Pleasant Smells\" glue company", "This room is used for promising applicants, such as yourself", "(Though you are the only one who applied)", "We want to test the skills you will need to work here.", "Please collect us 5 items from each floor", "We promise there's meaning to this", "*Heh*", "That is all. Penguins out!"};
+    public String[] currentText = {"Welcome to the Arctic branch of \"Pleasant Smells\" glue company", "This room is used for promising applicants, such as yourself", "(Though you are the only one who applied)", "We want to test the skills you will need to work here.", "Please collect us 5 items from each floor", "We promise there's meaning to this", "*Heh*", "That is all. Penguins out!"};
     public boolean isPaused = false, loaded = false;
     public static final int gs_inGame = 0;
     public static final int gs_about = 1;
@@ -183,7 +184,7 @@ public class BusinessSim extends Canvas implements Runnable {
         }
         stop();
     }
-    
+
     public void render() {
         BufferStrategy bs = getBufferStrategy();
         int xScroll = (int) (player.v.getX() - screen.width / 2);
@@ -204,7 +205,7 @@ public class BusinessSim extends Canvas implements Runnable {
             bs.show();
             return;
         }
-        
+
         screen.clear();
         level.render(xScroll, yScroll, screen, player);
         //player.render(screen); // player.render() called by level.render() because Sprite ordering
@@ -218,23 +219,23 @@ public class BusinessSim extends Canvas implements Runnable {
             g.setColor(Color.WHITE);
 //            g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
             g = screen.displayText(currentText, key, g);
-            
-            if(nearElevator) {
+
+            if (nearElevator) {
                 g.setColor(Color.WHITE);
                 g.setFont(tahoma);
-                if(level.finished[currentLevel] && currentLevel != Level.levelAmount) {
-                    g.drawString("Press X or Space to continue", 10, 50);
-                } else if(currentLevel == 0) {
+                if (level.finished[currentLevel] && currentLevel != Level.levelAmount) {
+                    g.drawString("Press X to continue", 10, 50);
+                } else if (currentLevel == 0) {
                     g.drawString("Not ready to advance", 10, 50);
                 } else {
-                    g.drawString("Press X or Space for the first level", 10, 50);
+                    g.drawString("Press X for the first level", 10, 50);
                 }
             }
         }
         g.dispose();
         bs.show();
     }
-    
+
     public void update() {
         // if in game and not paused, do in game stuff
         if (!isPaused && gameState == gs_inGame) {
@@ -244,28 +245,26 @@ public class BusinessSim extends Canvas implements Runnable {
             nearElevator = level.playerNearElevator(player);
             // ingame actions
             if (key.action & !key.last_action) {
-                
+
                 // level changing 
-                if(nearElevator) {
+                if (nearElevator) {
                     switchToNextAvailableLevel();
                     MusicPlayer o = new MusicPlayer();
-                    o.init();
                     o.changeTrack(5);
-                } else if(false) { // action key should only do one thing at a time, "hence else if"
-                    
+                } else if (false) { // action key should only do one thing at a time, "hence else if"
                 }
             }
         }
-        
+
         key.update();
-        
+
         // if in the main menu and a key is pressed, update
         if (gameState == gs_startScreen) {
             if ((key.up & !key.last_up) | (key.down & !key.last_down) | (key.left & !key.last_left) | (key.right & !key.last_right)) {
                 updatePointer();
             }
         }
-        
+
         // if action key is pressed
         if (key.action & !key.last_action) {
             if (mainScreenPointerPosition == 3) {
@@ -281,18 +280,18 @@ public class BusinessSim extends Canvas implements Runnable {
             loaded = false;
             System.out.println("action");
         }
-        
+
         // pause
         if ((key.pause && !key.last_pause) && gameState == gs_inGame) {
             isPaused = !isPaused;
             System.out.println("isPaused = " + isPaused);
         }
     }
-    
+
     private void switchToNextAvailableLevel() {
-        if(!(currentLevel == level.levelAmount - 1) && level.finished[currentLevel]) { // move up a level if finished and not on last level
+        if (!(currentLevel == level.levelAmount - 1) && level.finished[currentLevel]) { // move up a level if finished and not on last level
             currentLevel++;
-        } else if(currentLevel == 0) { // do nothing if you're on level 0 and not finished
+        } else if (currentLevel == 0) { // do nothing if you're on level 0 and not finished
             return;
         } else { // go back to level 0 if you can't move up and aren't on level 0
             currentLevel = 0;
@@ -318,10 +317,12 @@ public class BusinessSim extends Canvas implements Runnable {
     private int mainScreenPointerPosition = 0;
 
     private void updatePointer() {
-        if(key.left)
+        if (key.left) {
             MusicPlayer.mp.decreaseVolume();
-        if(key.right)
+        }
+        if (key.right) {
             MusicPlayer.mp.increaseVolume();
+        }
         if (key.up) {
             mainScreenPointerPosition--;
         }
@@ -382,5 +383,10 @@ public class BusinessSim extends Canvas implements Runnable {
                 }
                 break;
         }
+    }
+
+    public void promptExit() {
+        if(JOptionPane.showConfirmDialog(null, "Do you really want to quit?", "Quit", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) 
+            System.exit(3);
     }
 }

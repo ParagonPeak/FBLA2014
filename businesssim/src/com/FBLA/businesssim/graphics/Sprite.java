@@ -23,8 +23,8 @@ public class Sprite {
     public static Sprite smallYellowSprite = new Sprite(2, 2, 0xffff00);
     public static Sprite emptySprite = new Sprite(32, 32, 0xFFFF00FF);
     public static Sprite playerSprite = new Sprite(32,82,0,0,SpriteSheet.player, 4);
-    public static Sprite huntSprite1 = new Sprite(32,64,0,0,SpriteSheet.huntObj, 4);
-    public static Sprite huntSprite2 = new Sprite(32,64,1,0,SpriteSheet.huntObj, 4);
+    public static Sprite huntSprite1 = new Sprite(32,64,0,0,SpriteSheet.huntObj, 8);
+    public static Sprite huntSprite2 = new Sprite(32,64,1,0,SpriteSheet.huntObj, 8);
     public static Sprite playerSpriteFlip = new Sprite(playerSprite);
     public static Sprite backwardsPlayerSprite = new Sprite(32,82,0,1,SpriteSheet.player, 4);
     public static Sprite backwardsPlayerSpriteFlip = new Sprite(backwardsPlayerSprite);

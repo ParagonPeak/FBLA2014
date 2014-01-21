@@ -137,6 +137,11 @@ public class Screen {
         return iso;
     }
 
+    public void updateText(String line)
+    {
+        updateText(new String[]{line});
+    }
+    
     public void updateText(String[] lines) {
         if (textRequiresUpdate) {
             BusinessSim.bs.currentText = lines;
@@ -156,7 +161,7 @@ public class Screen {
      *
      * @param lines is the array of all the text to display.
      * @param key keyboard to check if the key is pressed.
-     */
+     */ 
     public Graphics displayText(String[] lines, Keyboard key, Graphics g) {
         //The lines currently on the screen, with a max of three to following convention
         if (g == null || lines == null || key == null || textRequiresUpdate) {
@@ -169,16 +174,16 @@ public class Screen {
         g.fillRect(left, top, right, bottom);
         g.setColor(Color.BLACK);
         g.drawRect(left, top, right, bottom);
-        g.drawString("Press X or Space...", right - 90, top + 90);
+        g.drawString("Press Space...", right - 70, top + 90);
         String[] displayedLines = new String[3];
         for (int i = index; i < index + 3 && i < lines.length; i++) {
             displayedLines[i - index] = lines[i];
         }
-        if (key.action && !lastKeyAction) {
+        if (key.inc && !lastKeyAction) {
             index++;
             System.out.println("INCREASE"); //Remove in the end
         }
-        if (index > lines.length - 3 && (key.action & !lastKeyAction)) {
+        if (index > lines.length - 3 && (key.inc & !lastKeyAction)) {
             textRequiresUpdate = queue.isEmpty();
             index = 0;
             System.out.println("Waiting for update!"); //Remove in the end
@@ -187,7 +192,7 @@ public class Screen {
                 queue.remove(0);
             }
         }
-        lastKeyAction = key.action;
+        lastKeyAction = key.inc;
         return drawText(displayedLines, g);
     }
 
