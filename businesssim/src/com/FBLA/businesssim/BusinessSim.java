@@ -1,7 +1,4 @@
-/*
- *
- * 
- * What we'll need:
+/*What we'll need:
  * 
  * Entity
  * -Player
@@ -352,6 +349,10 @@ public class BusinessSim extends Canvas implements Runnable {
         if (mainScreenPointerPosition > 3) {
             mainScreenPointerPosition = 0;
         }
+    }
+
+    public void setGameState(int i) {
+        gameState = i;
     }
 
     public void changeGameState() {

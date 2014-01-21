@@ -138,11 +138,10 @@ public class Screen {
         return iso;
     }
 
-    public void updateText(String line)
-    {
+    public void updateText(String line) {
         updateText(new String[]{line});
     }
-    
+
     public void updateText(String[] lines) {
         if (textRequiresUpdate) {
             BusinessSim.bs.currentText = lines;
@@ -162,7 +161,7 @@ public class Screen {
      *
      * @param lines is the array of all the text to display.
      * @param key keyboard to check if the key is pressed.
-     */ 
+     */
     public Graphics displayText(String[] lines, Keyboard key, Graphics g) {
         //The lines currently on the screen, with a max of three to following convention
         if (g == null || lines == null || key == null || textRequiresUpdate) {
@@ -188,8 +187,9 @@ public class Screen {
             textRequiresUpdate = queue.isEmpty();
             index = 0;
             System.out.println("Waiting for update!"); //Remove in the end
-            if(Level.finished[Level.finished.length - 1] && textRequiresUpdate)
-                System.exit(3);
+            if (Level.finished[Level.finished.length - 1] && textRequiresUpdate) {
+                BusinessSim.bs.setGameState(BusinessSim.gs_startScreen);
+            }
             if (!textRequiresUpdate) {
                 BusinessSim.bs.currentText = queue.get(0);
                 queue.remove(0);
