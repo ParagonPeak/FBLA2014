@@ -50,6 +50,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -89,6 +90,7 @@ public class BusinessSim extends Canvas implements Runnable {
     public Player player;
     public static BusinessSim bs;
     public static Level level;
+    public static int currentLevel = 0;
     String[] test = {"Test1", "Test 2", "Test 3", "Replace", "Test11", "Test 32", "Test 73", "Replace"};
     public boolean isPaused = false, loaded = false;
     public static final int gs_inGame = 0;
@@ -120,7 +122,8 @@ public class BusinessSim extends Canvas implements Runnable {
         key = new Keyboard();
         screen = new Screen(width, height);
         addKeyListener(key);
-        level = new Level("level/Floor1.png");
+//        level = new Level("level/Floor1.png");
+        level = new Level(Level.levelTilePaths[0], Level.levelObjPaths[0], 0, 0, 128);
         player = new Player(level.playerV, screen, key);
         MusicPlayer.init();
     }
@@ -177,7 +180,9 @@ public class BusinessSim extends Canvas implements Runnable {
         }
         stop();
     }
-
+    
+    private Font tahoma = new Font("Tahoma", Font.ITALIC, 36);
+    
     public void render() {
         BufferStrategy bs = getBufferStrategy();
         int xScroll = (int) (player.v.getX() - screen.width / 2);
@@ -198,7 +203,7 @@ public class BusinessSim extends Canvas implements Runnable {
             bs.show();
             return;
         }
-
+        
         screen.clear();
         level.render(xScroll, yScroll, screen, player);
         //player.render(screen); // player.render() called by level.render() because Sprite ordering
@@ -212,26 +217,55 @@ public class BusinessSim extends Canvas implements Runnable {
             g.setColor(Color.WHITE);
 //            g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
             g = screen.displayText(test, key, g);
+            
+            if(level.playerNearElevator()) {
+                g.setColor(Color.WHITE);
+                g.setFont(tahoma);
+                if(level.finished[currentLevel] && currentLevel != Level.levelAmount) {
+                    g.drawString("Press X or Space to continue", 10, 50);
+                } else {
+                    g.drawString("Press X or Space for the first level", 10, 50);
+                }
+            }
         }
         g.dispose();
         bs.show();
     }
-
+    
     public void update() {
+        // if in game and not paused, do in game stuff
         if (!isPaused && gameState == gs_inGame) {
             player.update();
             Sprite.update();
             level.update();
+            
+            if(level.playerNearElevator()) {
+                
+            }
+            
+            // ingame actions
+            if (key.action & !key.last_action) {
+                
+                // level changing 
+                if(level.playerNearElevator()) {
+                    switchToNextAvailableLevel();
+                }
+            }
         }
+        
         key.update();
+        
+        // if in the main menu and a key is pressed, update
         if (gameState == gs_startScreen) {
             if ((key.up & !key.last_up) | (key.down & !key.last_down) | (key.left & !key.last_left) | (key.right & !key.last_right)) {
                 updatePointer();
             }
         }
+        
+        // if action key is pressed
         if (key.action & !key.last_action) {
             if (mainScreenPointerPosition == 3) {
-                System.exit(3);
+                System.exit(3); // if in menu and on quit, quit
             }
             int gameState = BusinessSim.gameState;
             changeGameState();
@@ -241,12 +275,26 @@ public class BusinessSim extends Canvas implements Runnable {
                 changeMusic();
             }
             loaded = false;
+            System.out.println("action");
         }
-
+        
+        // pause
         if ((key.pause && !key.last_pause) && gameState == gs_inGame) {
             isPaused = !isPaused;
             System.out.println("isPaused = " + isPaused);
         }
+    }
+    
+    private void switchToNextAvailableLevel() {
+        if(!(currentLevel == level.levelAmount - 1) && level.finished[currentLevel]) { // move up a level if finished and not on last level
+            currentLevel++;
+        } else if(currentLevel == 0) { // do nothing if you're on level 0 and not finished
+            return;
+        } else { // go back to level 0 if you can't move up and aren't on level 0
+            currentLevel = 0;
+        }
+        level = new Level(Level.levelTilePaths[currentLevel], Level.levelObjPaths[currentLevel], currentLevel, Level.xOff[currentLevel], Level.yOff[currentLevel]);
+        player = new Player(level.playerV, screen, key);
     }
 
     private void changeMusic() {

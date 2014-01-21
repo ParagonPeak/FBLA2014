@@ -31,14 +31,45 @@ public class Level {
 //    public Vector2d playerV = new Vector2d(spawnX + (BusinessSim.bs.player.s.W / 2), spawnY + (BusinessSim.bs.player.s.H /2));
     public Vector2d playerV = new Vector2d(0, 128); // why is this here?
     public static Rectangle[] rects;
+    public static boolean[] finished = {true, false, false, false, false}; // indexes are levels. When level requirements are finished, the thing gets set to true
+    public String tilePath;
+    public String objPath;
+    public int number; // I put this here in case we want to hardcode some level-specific commands
+    
+    // arrays to store level specific values to make them easier to call and change
+    public static final int levelAmount = 2;
+    public static final String[] levelTilePaths = {"Resources/Textures/Levels/ExampleLevelTiles.png","Resources/Textures/Levels/ExampleLevel2Tiles.png"};
+    public static final String[] levelObjPaths  = {"Resources/Textures/Levels/ExampleLevelObjects.png","Resources/Textures/Levels/ExampleLevel2Objects.png"};
+    public static int[] xOff = {0, 0};
+    public static int[] yOff = {128, 128};
 
-    public Level(String path) {
-//        generateLevel(20, 20);
-        loadLevelTiles("Resources/Textures/Levels/ExampleLevelTiles.png");
-        loadLevelObjects("Resources/Textures/Levels/ExampleLevelObjects.png");
-//        generateLevel(40, 40);
+    public Level(String tilePath, String objPath, int number) {
+        this.tilePath = tilePath;
+        this.objPath = objPath;
+        this.number = number;
+        loadLevelTiles(tilePath);
+        loadLevelObjects(objPath);
+//        loadLevelTiles("Resources/Textures/Levels/ExampleLevelTiles.png");
+//        loadLevelObjects("Resources/Textures/Levels/ExampleLevelObjects.png");
     }
-
+    
+    public Level(String tilePath, String objPath, int number, double px, double py) {
+        this.tilePath = tilePath;
+        this.objPath = objPath;
+        this.number = number;
+        loadLevelTiles(tilePath);
+        loadLevelObjects(objPath);
+        playerV.setX(px);
+        playerV.setY(py);
+//        loadLevelTiles("Resources/Textures/Levels/ExampleLevelTiles.png");
+//        loadLevelObjects("Resources/Textures/Levels/ExampleLevelObjects.png");
+    }
+    
+    /**
+     * Generates a random level, used for testing
+     * @param w width of generated level (tile amount)
+     * @param h height of generated level (tile amount)
+     */
     protected void generateLevel(int w, int h) {
         width = w;
         height = h;
@@ -193,5 +224,25 @@ public class Level {
         } else {
             return RaisedObject.voidObject;
         }
+    }
+
+    public boolean playerNearElevator() {
+        
+        int x0 = ((int) (playerV.getX()) >> 5) - 2;
+        int y0 = ((int) (playerV.getY()) >> 5) - 2;
+        int x1 = ((int) (playerV.getX()) >> 5) + 2;
+        int y1 = ((int) (playerV.getY()) >> 5) + 2;
+        
+        for (int x = x0; x < x1; x++) {
+            for (int y = y0; y < y1; y++) {
+                RaisedObject r = getObject(x, y);
+                if(r == RaisedObject.chairObject) {
+                    System.out.println("yep");
+                    return true;
+                }
+            }
+        }
+        System.out.println("nope");
+        return false;
     }
 }
