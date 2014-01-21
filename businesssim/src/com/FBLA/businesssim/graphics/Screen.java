@@ -2,6 +2,7 @@ package com.FBLA.businesssim.graphics;
 
 import com.FBLA.businesssim.BusinessSim;
 import com.FBLA.businesssim.input.Keyboard;
+import com.FBLA.businesssim.level.Level;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -187,6 +188,8 @@ public class Screen {
             textRequiresUpdate = queue.isEmpty();
             index = 0;
             System.out.println("Waiting for update!"); //Remove in the end
+            if(Level.finished[Level.finished.length - 1] && textRequiresUpdate)
+                System.exit(3);
             if (!textRequiresUpdate) {
                 BusinessSim.bs.currentText = queue.get(0);
                 queue.remove(0);

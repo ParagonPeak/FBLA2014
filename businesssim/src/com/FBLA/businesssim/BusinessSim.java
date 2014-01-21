@@ -239,9 +239,13 @@ public class BusinessSim extends Canvas implements Runnable {
                         if (hObj.v.distFrom(player.v) < 300 && !hObj.isRemoved()) {
                             //Implement later
                             //Draws a line between items within 300 pixels and the player
+                            int x = screen.twoDToIso(hObj.v.getiX() - screen.xOffs, hObj.v.getiY() - screen.yOffs)[0];
+                            int y = screen.twoDToIso(hObj.v.getiX() - screen.xOffs, hObj.v.getiY() - screen.yOffs)[1];
+                            g.setColor(Color.white);
+                            g.drawLine(player.v.getiX() - screen.xOffs + 15, player.v.getiY() - screen.yOffs + 150, x, y);
+                            g.setColor(Color.black);
                         }
                     }
-                    System.out.println();
                 }
             }
         }
@@ -258,11 +262,11 @@ public class BusinessSim extends Canvas implements Runnable {
             nearElevator = level.playerNearElevator(player);
             // ingame actions
             if (key.action & !key.last_action) {
-
                 // level changing 
                 if (nearElevator) {
                     switchToNextAvailableLevel();
                     MusicPlayer o = new MusicPlayer();
+                    o.init();
                     o.changeTrack(5);
                 } else if (false) { // action key should only do one thing at a time, "hence else if"
                 }
