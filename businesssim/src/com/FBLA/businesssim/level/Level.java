@@ -53,7 +53,7 @@ public class Level {
                                                     {"Floor 3: ", "This is where design our glue.", "We don't go ahead with anything until it's prefectly planned out!", "Why the open space, desks, and mini-maze?", "Because we planned it out perfectly that way."},
                                                     {"Floor 4: ", "This floor is where we conduct glue testing.", "Walls and corners are strewn all about!", "Don't get stuck trying to find your way around! HahaHAHAha"},
                                                     {"Floor 5: ", "You remember the ground floor? ", "There's a reason it was designed the way it was!", "It was modeled after this floor, which be built first.", "Don't ask how."},
-                                                    {"Floor 6: ", "You made it. Congratulations."}
+                                                    {"Floor 6: ", "You made it! Congratulations.", "Wondering what to do next?", "Join FBLA!"}
     };
     
     // [level][pickup#][description line]
@@ -67,21 +67,21 @@ public class Level {
                                                             { "PUBLIC SPEAKING",                 "Effective oral communication in public settings is a daily part of business activity.", "This event tests your ability to make a speech on one of the goals of FBLA,", "expressing thoughts in logical, interseting ways."}, 
                                                             { "ACCOUNTING",                      "Financial record-keeping is important for business activity.", "This event tests your knowledge and abilities in the field of accounting."}, 
                                                             { "COMPUTER PROBLEM SOLVING",        "Computers are integral to businesses, and as such, so is computer problem solving.", "This event tests competencies in a wide range of topics, from", "security and operating systems to networks and printers."}},
-                                                         {  {"DIGITAL DESIGN AND PROMOTION",     ""},
-                                                            { "DESKTOP APPLICATION PROGRAMMING", ""},
-                                                            { "BUSINESS PRESENTATION",           ""},
-                                                            { "WORD PROCESSING",                 ""},
-                                                            { "PUBLIC SERVICE ANNOUNCEMENT",     ""}},
-                                                         {  {"BANKING AND FINANCIAL SYSTEMS",    ""}, 
-                                                            { "MANAGEMENT DECISION MAKING",      ""}, 
-                                                            { "BUSINESS ETHICS",                 ""}, 
-                                                            { "AMERICAN ENTERPRISE PROJECT",     ""}, 
-                                                            { "WEB SITE DESIGN",                 ""}}, 
-                                                         {  {"ENTREPENEURSHIP",                  ""}, 
-                                                            { "ECONOMICS",                       ""}, 
-                                                            { "GLOBAL BUSINESS",                 ""}, 
-                                                            { "BUSINESS LAW",                    ""}, 
-                                                            { "FUTURE BUSINESS LEADER",          ""}},
+                                                         {  {"DIGITAL DESIGN AND PROMOTION",     "Businesses have always used professional, recognizable logos to further their ends.", "This event requires an individual or team to create and present a \"digital design\", or logo."},
+                                                            { "DESKTOP APPLICATION PROGRAMMING", "Desktop applications allow businesses to run smoother, making programs do the heavy work in implementing changes.", "In this event, a program must be made that can effectively serve a purpose such as signing people up for a conference"},
+                                                            { "BUSINESS PRESENTATION",           "Presentations are vital to business operations, as they inform businesspeople.", "This event tasks you with creating an informative multimedia presentation on a topic, e.g. the Affordable Care Act."},
+                                                            { "WORD PROCESSING",                 "Documents are staples of business, and effective word processing is effective business.", "This event tests you knowledge and abilities in creating all types of documents, ", "from memos to tables to reports."},
+                                                            { "PUBLIC SERVICE ANNOUNCEMENT",     "Public Service Announcements help raise awareness on social issues.", "This exciting FBLA event requires a 30 second PSA on a specific topic,", "raising awareness of it and affecting viewers' attitudes toward it."}},
+                                                         {  {"BANKING AND FINANCIAL SYSTEMS",    "Successful business ownership and management requires understanfding of financial institutions.", "This event requires takers to both take a test and ", "develop a case study on a problem", "in the banking or financial business community."}, 
+                                                            { "MANAGEMENT DECISION MAKING",      "Managers need to make high-quality, instantaneous decision all the time.", "This event examines your management abilities with both an objective test and a case study on a managemtn decision."}, 
+                                                            { "BUSINESS ETHICS",                 "Ethical (moral) decisions are necessary for business and beyond.", "This event requires a case study into an ethical dilemna a business could have."}, 
+                                                            { "AMERICAN ENTERPRISE PROJECT",     "This event encourages knowledge of the American Enterpries System.", "It requires an FBLA Chapter to create a program educating the school or community about American Enterprise."}, 
+                                                            { "WEB SITE DESIGN",                 "Websites are integral to effective businesses.", "This event requires a specified business website to be submitted, judged, and presented."}}, 
+                                                         {  {"ENTREPENEURSHIP",                  "Entrepeneurs establish and manage businesses.", "This event requires a team to present an interactive case-study on an issue that", "an entrepeneur might face."}, 
+                                                            { "ECONOMICS",                       "Businesses often need to apply macro and micro-economic principles to their businesses.", "This event tests you on your familiarity with economics concepts."}, 
+                                                            { "GLOBAL BUSINESS",                 "Understanding global business, from culture to laws, is important to many businesses.", "This event tests a team's knowledge and abilities in the field of global business."}, 
+                                                            { "BUSINESS LAW",                    "Businesses need to understand legal boundaries.", "This event tests your knowledge in that field, from liabilities to contracts and more."}, 
+                                                            { "FUTURE BUSINESS LEADER",          "This event honors outstanding FBLA members, based on", "their leadership, participation in FBLA, and knowledge.", "This event consists of a submission of a letter of application and résumé, an objective test, and an interview"}},
                                                          {{""}} // no level 6 pickups
     };
     
