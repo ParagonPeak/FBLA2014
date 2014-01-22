@@ -192,7 +192,7 @@ public class BusinessSim extends Canvas implements Runnable {
             createBufferStrategy(3);
             return;
         }
-        if (gameState != gs_inGame && !screenImage.equals(null)) {
+        if (gameState != gs_inGame && !(screenImage == null)) {
             Graphics g = bs.getDrawGraphics();
             g.drawImage(screenImage, 0, 0, null);
             g.setColor(Color.WHITE);
