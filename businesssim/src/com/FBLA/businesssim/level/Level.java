@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.FBLA.businesssim.level;
 
 import com.FBLA.businesssim.BusinessSim;
@@ -50,9 +46,9 @@ public class Level {
     public static HuntObject[][] hunt = new HuntObject[levelTilePaths.length][totalItems];
     public static final String[][] levelMessage = {{"Ground Floor: ", "This is where we conduct job application testing.", "It's normally filled with people applying."},
                                                     {"Floor 2: ", "We store things here. ", "Luckily for you, it's very organized", "Except for the power cables near the motorized chairs", "We just can't seem to unplug them"},
-                                                    {"Floor 3: ", "This is where design our glue.", "We don't go ahead with anything until it's prefectly planned out!", "Why the open space, desks, and mini-maze?", "Because we planned it out perfectly that way."},
+                                                    {"Floor 3: ", "This is where we design our glue.", "We don't go ahead with anything until it's prefectly planned out!", "Why the open space, desks, and mini-maze?", "Because we planned it out perfectly that way."},
                                                     {"Floor 4: ", "This floor is where we conduct glue testing.", "Walls and corners are strewn all about!", "Don't get stuck trying to find your way around! HahaHAHAha"},
-                                                    {"Floor 5: ", "You remember the ground floor? ", "There's a reason it was designed the way it was!", "It was modeled after this floor, which be built first.", "Don't ask how."},
+                                                    {"Floor 5: ", "You remember the ground floor? ", "There's a reason it was designed the way it was!", "It was modeled after this floor, which we built first.", "Don't ask how."},
                                                     {"Floor 6: ", "You made it! Congratulations.", "Wondering what to do next?", "Join FBLA!"}
     };
     
