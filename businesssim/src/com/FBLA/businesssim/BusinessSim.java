@@ -85,7 +85,7 @@ public class BusinessSim extends Canvas implements Runnable {
     private Thread mThread;
     private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB), screenImage = image;
     private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-    private static String title = "The Little Man", version = " 0.1 alpha";
+    private static String title = "The Little Man", version = " 8.675309 alpha";
     private JFrame frame = new JFrame();
     public Player player;
     public static BusinessSim bs;
@@ -176,7 +176,8 @@ public class BusinessSim extends Canvas implements Runnable {
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
 
-                frame.setTitle(title + version + " | FPS: " + frames + " UPS: " + updates + " px: " + player.v.getX() + " py: " + player.v.getY());
+//                frame.setTitle(title + version + " | FPS: " + frames + " UPS: " + updates + " px: " + player.v.getX() + " py: " + player.v.getY());
+                frame.setTitle(((isPaused)? "***PAUSED*** " : "") + title + version + " | FPS: " + frames + " Floor: " + (currentLevel+1) + " Pickups left here: " + level.itemCount);
                 updates = frames = 0;
             }
         }
@@ -313,6 +314,7 @@ public class BusinessSim extends Canvas implements Runnable {
 //        level = new Level(Level.levelTilePaths[currentLevel], Level.levelObjPaths[currentLevel], currentLevel, Level.xOff[currentLevel], Level.yOff[currentLevel]);
 //         player = new Player(level.playerV, screen, key);
         level = new Level(Level.levelTilePaths[currentLevel], Level.levelObjPaths[currentLevel], currentLevel, player.v.getX(), player.v.getY());
+        screen.updateText(Level.levelMessage[currentLevel]);
     }
 
     private void changeMusic() {
