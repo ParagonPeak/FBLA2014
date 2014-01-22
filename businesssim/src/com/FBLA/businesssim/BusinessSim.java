@@ -91,7 +91,7 @@ public class BusinessSim extends Canvas implements Runnable {
     public static BusinessSim bs;
     public static Level level;
     public static int currentLevel = 0;
-    public String[] currentText = {"Welcome to the Arctic branch of \"Pleasant Smells\" glue company", "This room is used for promising applicants, such as yourself", "(Though you are the only one who applied)", "We want to test the skills you will need to work here.", "Please collect us 5 items from each floor", "We promise there's meaning to this", "*Heh*", "That is all. Penguins out!"};
+    public String[] currentText = {"Welcome to the Arctic branch of \"Pleasant Smells\" glue company.", "This room is used for promising applicants, such as yourself.", "(Though you are the only one who applied)", "We want to test the skills you will need to work here.", "Please collect 5 FBLA items for us from each floor.", "We promise there's meaning to this.", "*Heh*", "That is all. Penguins out!"};
     public boolean isPaused = false, loaded = false;
     public static final int gs_inGame = 0;
     public static final int gs_about = 1;

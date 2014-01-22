@@ -56,6 +56,35 @@ public class Level {
                                                     {"Floor 6: ", "You made it. Congratulations."}
     };
     
+    // [level][pickup#][description line]
+    public static final String[][][] pickUpDescriptions = {{{"JOB INTERVIEW",                    "A job interview assesses a job applicants suitability for the job they are applying to"},
+                                                            { "LIFESMARTS",                      ""},
+                                                            { "INTRO TO BUSINESS",               ""},
+                                                            { "BUSINESS COMMUNICATIONS",         ""},
+                                                            { "BUSINESS MATH",                   ""}},
+                                                         {  {"SPREADSHEET APPLICATIONS",         ""},
+                                                            { "COMPUTER APPLICATIONS",           ""}, 
+                                                            { "PUBLIC SPEAKING",                 ""}, 
+                                                            { "ACCOUNTING",                      ""}, 
+                                                            { "COMPUTER PROBLEM SOLVING",        ""}},
+                                                         {  {"DIGITAL DESIGN AND PROMOTION",     ""},
+                                                            { "DESKTOP APPLICATION PROGRAMMING", ""},
+                                                            { "BUSINESS PRESENTATION",           ""},
+                                                            { "WORD PROCESSING",                 ""},
+                                                            { "PUBLIC SERVICE ANNOUNCEMENT",     ""}},
+                                                         {  {"BANKING AND FINANCIAL SYSTEMS",    ""}, 
+                                                            { "MANAGEMENT DECISION MAKING",      ""}, 
+                                                            { "BUSINESS ETHICS",                 ""}, 
+                                                            { "AMERICAN ENTERPRISE PROJECT",     ""}, 
+                                                            { "WEB SITE DESIGN",                 ""}}, 
+                                                         {  {"ENTREPENEURSHIP",                  ""}, 
+                                                            { "ECONOMICS",                       ""}, 
+                                                            { "GLOBAL BUSINESS",                 ""}, 
+                                                            { "BUSINESS LAW",                    ""}, 
+                                                            { "FUTURE BUSINESS LEADER",          ""}},
+                                                         {{""}} // no level 6 pickups
+    };
+    
     public Level(String tilePath, String objPath, int number) {
         this.tilePath = tilePath;
         this.objPath = objPath;
@@ -157,7 +186,9 @@ public class Level {
                 if (!hunt[number][i].isRemoved()) {
                     if (hunt[number][i].v.distFrom(p.v) < 50 && p.actionDown) {
                         hunt[number][i].remove();
-                        BusinessSim.bs.screen.updateText(new String[]{"You got the Item!", "" + (itemCount - 1) + " items remaining on this floor!"});
+                        BusinessSim.bs.screen.updateText(new String[]{"Woah! You picked up a skill!", "Let's see what it is.."});
+                        BusinessSim.bs.screen.updateText(pickUpDescriptions[number][5 - itemCount]);
+                        BusinessSim.bs.screen.updateText(new String[]{(itemCount - 1) + " skills remaining on this floor!"});
                         // play a sound, write a message
                         MusicPlayer m = new MusicPlayer();
                         m.init();
