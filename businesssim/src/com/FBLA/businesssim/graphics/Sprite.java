@@ -18,8 +18,8 @@ public class Sprite {
     public int[] pixels;
     private SpriteSheet sheet;
     public static ArrayList<Sprite> sprites = new ArrayList<>();
-//    public static Sprite voidSprite = new Sprite(32, 32, 0x00A0CC);
-    public static Sprite voidSprite = new Sprite(32, 32, 0x22A099);
+    public static Sprite voidSprite = new Sprite(32, 32, 0x121212);
+//    public static Sprite voidSprite = new Sprite(32, 32, 0x22A099);
     public static Sprite smallRedSprite = new Sprite(2, 2, 0xff0000);
     public static Sprite smallYellowSprite = new Sprite(2, 2, 0xffff00);
     public static Sprite emptySprite = new Sprite(32, 32, 0xFFFF00FF);

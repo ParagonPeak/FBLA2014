@@ -65,7 +65,7 @@ public class Screen {
      * while rendering.
      */
     public void clear() {
-        int voidColor = Sprite.voidSprite.pixels[0] + (int) ((System.currentTimeMillis() >> 3) % 255); // figured it should be cleared with the same color as the voidSprite
+        int voidColor = Sprite.voidSprite.pixels[0];// + (int) ((System.currentTimeMillis() >> 3) % 255); // figured it should be cleared with the same color as the voidSprite
         for (int i = 0; i < pixels.length; i++) {
             //pixels[i] = 0x000000;
             pixels[i] = voidColor;

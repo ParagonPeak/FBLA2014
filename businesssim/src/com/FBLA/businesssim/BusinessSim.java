@@ -7,10 +7,8 @@ import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.input.Keyboard;
 import com.FBLA.businesssim.level.Level;
 import com.FBLA.businesssim.sound.MusicPlayer;
-import com.FBLA.businesssim.sound.Sound;
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -203,7 +201,7 @@ public class BusinessSim extends Canvas implements Runnable {
                             int x = screen.twoDToIso(hObj.v.getiX() - screen.xOffs, hObj.v.getiY() - screen.yOffs)[0];
                             int y = screen.twoDToIso(hObj.v.getiX() - screen.xOffs, hObj.v.getiY() - screen.yOffs)[1];
                             g.setColor(Color.white);
-                            g.drawLine(player.v.getiX() - screen.xOffs + 15, player.v.getiY() - screen.yOffs + 150, x, y);
+                            g.drawLine(player.v.getiX() - screen.xOffs + 15, player.v.getiY() - screen.yOffs + 150, x + 15, y - 30);
                             g.setColor(Color.black);
                         }
                     }
