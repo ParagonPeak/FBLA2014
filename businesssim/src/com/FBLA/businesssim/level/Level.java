@@ -216,8 +216,8 @@ public class Level {
         boolean ready = false;
         Vector2d coords = new Vector2d(0, 0);
         while (!ready) {
-            coords.setX((int) (Math.random() * width) * 32);
-            coords.setY((int) (Math.random() * height) * 32);
+            coords.setX((int) (Math.random() * width) * 3);
+            coords.setY((int) (Math.random() * height) * 3);
             if (coords.distFrom(playerV) > 32 * 4 && getObject(coords.getiX() >> 5, coords.getiY() >> 5) == RaisedObject.voidObject) { // away from objects and player
                 ready = true;
             }
@@ -275,51 +275,9 @@ public class Level {
                 getTile(x, y).render(x - 1, y - 1, screen); // shifted over 1 to account for raised objects being 1 space higher than they should be
             }
         }
-        int px = (int) (p.v.getX()) >> 5;
-        int py = (int) (p.v.getY()) >> 5;
-        for (int x = x0; x < x1; x++) {
-            for (int y = y0; y < y1; y++) {
-                getObject(x, y).render(x, y, screen);
-                if (x == px && y == py) {
-                    p.render(screen);
-                }
-            }
-        }
+        if(number < hunt.length)
         if (hunt != null && hunt[number] != null && hunt[number][0] != null) {
             for (int i = 0; i < hunt[number].length; i++) {
-//                RaisedObject[] huntedObjs = new RaisedObject[5];
-//                if(number == 0) { // render things based on what level you're on
-//                    huntedObjs[0] = RaisedObject.deskNE;
-//                    huntedObjs[1] = RaisedObject.deskNW;
-//                    huntedObjs[2] = RaisedObject.deskSE;
-//                    huntedObjs[3] = RaisedObject.deskSW;
-//                    huntedObjs[4] = RaisedObject.deskSW;
-//                } else if(number == 1) {
-//                    huntedObjs[0] = RaisedObject.deskNE;
-//                    huntedObjs[1] = RaisedObject.deskNW;
-//                    huntedObjs[2] = RaisedObject.deskSE;
-//                    huntedObjs[3] = RaisedObject.deskSW;
-//                    huntedObjs[4] = RaisedObject.deskSW;
-//                }  else if(number == 2) {
-//                    huntedObjs[0] = RaisedObject.deskNE;
-//                    huntedObjs[1] = RaisedObject.deskNW;
-//                    huntedObjs[2] = RaisedObject.deskSE;
-//                    huntedObjs[3] = RaisedObject.deskSW;
-//                    huntedObjs[4] = RaisedObject.deskSW;
-//                } else if(number == 3) {
-//                    huntedObjs[0] = RaisedObject.deskNE;
-//                    huntedObjs[1] = RaisedObject.deskNW;
-//                    huntedObjs[2] = RaisedObject.deskSE;
-//                    huntedObjs[3] = RaisedObject.deskSW;
-//                    huntedObjs[4] = RaisedObject.deskSW;
-//                } else if(number == 4) {
-//                    huntedObjs[0] = RaisedObject.deskNE;
-//                    huntedObjs[1] = RaisedObject.deskNW;
-//                    huntedObjs[2] = RaisedObject.deskSE;
-//                    huntedObjs[3] = RaisedObject.deskSW;
-//                    huntedObjs[4] = RaisedObject.deskSW;
-//                }
-
                 itemCount = 0;
                 for (int j = 0; j < totalItems; j++) {
                     if (!hunt[number][j].isRemoved()) {
@@ -330,6 +288,17 @@ public class Level {
                         }
                         itemCount++;
                     }
+                }
+            }
+        }
+        
+        int px = (int) (p.v.getX()) >> 5;
+        int py = (int) (p.v.getY()) >> 5;
+        for (int x = x0; x < x1; x++) {
+            for (int y = y0; y < y1; y++) {
+                getObject(x, y).render(x, y, screen);
+                if (x == px && y == py) {
+                    p.render(screen);
                 }
             }
         }

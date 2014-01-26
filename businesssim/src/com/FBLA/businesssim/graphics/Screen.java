@@ -171,11 +171,11 @@ public class Screen {
         }
         g.setColor(new Color(0xcc, 0xcc, 0xcc, 150));
 
-        int top = 375, bottom = height - top - 25, right = width - 50, left = 25;
+        int top = 175, bottom = 100, right = width - 75, left = 50;
         g.fillRect(left, top, right, bottom);
         g.setColor(Color.BLACK);
         g.drawRect(left, top, right, bottom);
-        g.drawString("Press Space...", right - 70, top + 90);
+        g.drawString("Press Space...", right - 60, top + 90);
         String[] displayedLines = new String[3];
         for (int i = index; i < index + 3 && i < lines.length; i++) {
             displayedLines[i - index] = lines[i];
@@ -208,7 +208,7 @@ public class Screen {
             if (lines[i] == null) {
                 return g;
             }
-            g.drawString(lines[i], 30, ((i + 1) * 25 + 375));
+            g.drawString(lines[i], 60, ((i + 1) * 25 + 175));
         }
         return g;
     }
