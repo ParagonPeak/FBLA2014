@@ -46,7 +46,7 @@ public class BusinessSim extends Canvas implements Runnable {
     private Thread mThread;
     private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB), screenImage = image;
     private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-    private static String title = "The Little Man", version = " 8.675309 alpha";
+    private static String title = "The Little Man", version = " 8.2 alpha";
     private JFrame frame = new JFrame();
     public Player player;
     public static BusinessSim bs;

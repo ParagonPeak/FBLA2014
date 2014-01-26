@@ -216,8 +216,8 @@ public class Level {
         boolean ready = false;
         Vector2d coords = new Vector2d(0, 0);
         while (!ready) {
-            coords.setX((int) (Math.random() * width) * 3);
-            coords.setY((int) (Math.random() * height) * 3);
+            coords.setX((int) (Math.random() * width) * 32);
+            coords.setY((int) (Math.random() * height) * 32);
             if (coords.distFrom(playerV) > 32 * 4 && getObject(coords.getiX() >> 5, coords.getiY() >> 5) == RaisedObject.voidObject) { // away from objects and player
                 ready = true;
             }
