@@ -34,7 +34,7 @@ public class Level {
     public static boolean[] finished = {false, false, false, false, false, false}; // indexes are levels. When level requirements are finished, the thing gets set to true
     public String tilePath;
     public String objPath;
-    public int number; // I put this here in case we want to hardcode some level-specific commands
+    public int levelNumber; // I put this here in case we want to hardcode some level-specific commands
     public int itemCount = 0;
     // arrays to store level specific values to make them easier to call and change
     public static final int levelAmount = 6;
@@ -84,7 +84,7 @@ public class Level {
     public Level(String tilePath, String objPath, int number) {
         this.tilePath = tilePath;
         this.objPath = objPath;
-        this.number = number;
+        this.levelNumber = number;
         loadLevelTiles(tilePath);
         loadLevelObjects(objPath);
 //        loadLevelTiles("Resources/Textures/Levels/ExampleLevelTiles.png");
@@ -94,7 +94,7 @@ public class Level {
     public Level(String tilePath, String objPath, int number, double px, double py) {
         this.tilePath = tilePath;
         this.objPath = objPath;
-        this.number = number;
+        this.levelNumber = number;
         loadLevelTiles(tilePath);
         loadLevelObjects(objPath);
         playerV.setX(px);
@@ -168,22 +168,22 @@ public class Level {
     
     public void update(Player p) {
         playerV = p.v;
-        if (!finished[number]) {
-            if (hunt[number][0] == null) { // ready hunt spots if necessary
-                hunt[number] = new HuntObject[totalItems];
+        if (!finished[levelNumber]) {
+            if (hunt[levelNumber][0] == null) { // ready hunt spots if necessary
+                hunt[levelNumber] = new HuntObject[totalItems];
                 
                 for (int i = 0; i < totalItems; i++) {
-                    hunt[number][i] = new HuntObject(makeHuntSpot(), Sprite.huntSprite1, BusinessSim.bs.screen);
+                    hunt[levelNumber][i] = new HuntObject(makeHuntSpot(), Sprite.huntSprite1, BusinessSim.bs.screen);
                 }
             }
 
             // check if you're near hunt spots
-            for (int i = 0; i < hunt[number].length; i++) {
-                if (!hunt[number][i].isRemoved()) {
-                    if (hunt[number][i].v.distFrom(p.v) < 50 && p.actionDown) {
-                        hunt[number][i].remove();
+            for (int i = 0; i < hunt[levelNumber].length; i++) {
+                if (!hunt[levelNumber][i].isRemoved()) {
+                    if (hunt[levelNumber][i].v.distFrom(p.v) < 50 && p.actionDown) {
+                        hunt[levelNumber][i].remove();
                         BusinessSim.bs.screen.updateText(new String[]{"Woah! You picked up a skill!", "Let's see what it is.."});
-                        BusinessSim.bs.screen.updateText(pickUpDescriptions[number][5 - itemCount]);
+                        BusinessSim.bs.screen.updateText(pickUpDescriptions[levelNumber][5 - itemCount]);
                         BusinessSim.bs.screen.updateText(new String[]{(itemCount - 1) + " skills remaining on this floor!"});
                         // play a sound, write a message
                         MusicPlayer m = new MusicPlayer();
@@ -194,18 +194,18 @@ public class Level {
             }
 
             // if you have all hunt spots null, you're done
-            finished[number] = true;
-            for (int i = 0; i < hunt[number].length; i++) {
-                if (!hunt[number][i].isRemoved()) {
-                    finished[number] = false;
+            finished[levelNumber] = true;
+            for (int i = 0; i < hunt[levelNumber].length; i++) {
+                if (!hunt[levelNumber][i].isRemoved()) {
+                    finished[levelNumber] = false;
                     break;
                 }
             }
-            if (finished[number]) {
-                if (number == finished.length - 1) {
+            if (finished[levelNumber]) {
+                if (levelNumber == finished.length - 1) {
                     BusinessSim.bs.screen.updateText(new String[]{"Thank you, kind applicant!", "Now with all these, we can rule the world!", "How you ask?", "Through the addictiveness of the glue of course!", "We use all these skulls to make our special, patented glue which people won't be able to resist.", "No one can stop us now!", "Now for the final skull..."});
                 } else {
-                    BusinessSim.bs.screen.updateText("Good Job. Now enter the elevator to go to floor #" + (number + 2));
+                    BusinessSim.bs.screen.updateText("Good Job. Now enter the elevator to go to floor #" + (levelNumber + 2));
                     System.out.println("Floor done");
                 }
             }
@@ -275,16 +275,16 @@ public class Level {
                 getTile(x, y).render(x - 1, y - 1, screen); // shifted over 1 to account for raised objects being 1 space higher than they should be
             }
         }
-        if(number < hunt.length)
-        if (hunt != null && hunt[number] != null && hunt[number][0] != null) {
-            for (int i = 0; i < hunt[number].length; i++) {
+        if(levelNumber < hunt.length)
+        if (hunt != null && hunt[levelNumber] != null && hunt[levelNumber][0] != null) {
+            for (int i = 0; i < hunt[levelNumber].length; i++) {
                 itemCount = 0;
                 for (int j = 0; j < totalItems; j++) {
-                    if (!hunt[number][j].isRemoved()) {
-                        int x = hunt[number][j].v.getiX();
-                        int y = hunt[number][j].v.getiX();
+                    if (!hunt[levelNumber][j].isRemoved()) {
+                        int x = hunt[levelNumber][j].v.getiX();
+                        int y = hunt[levelNumber][j].v.getiX();
                         if (BusinessSim.gameState == BusinessSim.gs_inGame) {
-                            hunt[number][j].render();
+                            hunt[levelNumber][j].render();
                         }
                         itemCount++;
                     }
@@ -349,8 +349,8 @@ public class Level {
         x1 = Math.min(width - 1, x1);
         y1 = Math.min(height - 1, y1);
         
-        for (int i = 0; i < hunt[number].length; i++) {
-            double objectDist = hunt[number][i].v.distFrom(p.v);
+        for (int i = 0; i < hunt[levelNumber].length; i++) {
+            double objectDist = hunt[levelNumber][i].v.distFrom(p.v);
             
             if (objectDist < 250) {
                 return true;

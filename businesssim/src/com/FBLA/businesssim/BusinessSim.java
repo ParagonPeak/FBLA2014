@@ -18,6 +18,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.awt.image.MemoryImageSource;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -65,6 +66,7 @@ public class BusinessSim extends Canvas implements Runnable {
 
     //Starts the game, used for frame set up
     public static void main(String[] args) {
+ 
         bs = new BusinessSim();
         bs.frame.setResizable(false);
         bs.frame.setVisible(true);
@@ -192,9 +194,9 @@ public class BusinessSim extends Canvas implements Runnable {
                 }
             }
 
-            if (Level.hunt[level.number][0] != null && Level.hunt != null && Level.hunt[level.number] != null) {
+            if (Level.hunt[level.levelNumber][0] != null && Level.hunt != null && Level.hunt[level.levelNumber] != null) {
                 if (level.playerNearPickup(player)) {
-                    for (HuntObject hObj : Level.hunt[level.number]) {
+                    for (HuntObject hObj : Level.hunt[level.levelNumber]) {
                         if (hObj.v.distFrom(player.v) < 300 && !hObj.isRemoved()) {
                             //Implement later
                             //Draws a line between items within 300 pixels and the player

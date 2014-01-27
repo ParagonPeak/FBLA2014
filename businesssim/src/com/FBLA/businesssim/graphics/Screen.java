@@ -45,7 +45,7 @@ public class Screen {
      * @param sprite The image to be drawn
      */
     public void renderPlayer(int xp, int yp, Sprite sprite) {
-        renderRaisedSprite(xp, yp - 20, sprite);
+        renderRaisedMob(xp, yp, sprite);
     }
 
     /**
@@ -213,7 +213,8 @@ public class Screen {
         return g;
     }
 
-    public void renderRaisedSprite(int xp, int yp, Sprite s) {
+
+public void renderRaisedSprite(int xp, int yp, Sprite s) {
         int w = s.W;
         int h = s.H;
         xp -= xOffs;
@@ -222,6 +223,32 @@ public class Screen {
         int[] iso = twoDToIso(xp, yp);
         xp = iso[0];
         yp = iso[1];
+
+        for (int y = 0; y < h; y++) {
+            int ya = y + yp - h; // absolute position
+            for (int x = 0; x < w; x++) {
+                int xa = x + xp;
+                if (xa < 0 - w || xa >= width || ya < 0 || ya >= height) {
+                    break;
+                }
+                if (xa < 0) {
+                    xa = 0;
+                }
+                if (s.pixels[x + (y * w)] != 0xffFF00FF) {
+                    pixels[xa + (ya * width)] = s.pixels[x + (y * w)];
+                }
+            }
+        }
+    }
+public void renderRaisedMob(int xp, int yp, Sprite s) {
+        int w = s.W;
+        int h = s.H;
+        xp -= xOffs;
+        yp -= yOffs;
+
+        int[] iso = twoDToIso(xp, yp);
+        xp = iso[0];
+        yp = iso[1] - 20;
 
         for (int y = 0; y < h; y++) {
             int ya = y + yp - h; // absolute position
