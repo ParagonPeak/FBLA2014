@@ -24,12 +24,34 @@ public class Sprite {
     public static Sprite smallRedSprite = new Sprite(2, 2, 0xff0000);
     public static Sprite smallYellowSprite = new Sprite(2, 2, 0xffff00);
     public static Sprite emptySprite = new Sprite(32, 32, 0xFFFF00FF);
-    public static Sprite huntSprite1 = new Sprite(32,64,0,0,SpriteSheet.huntObj, 8);
-    public static Sprite huntSprite2 = new Sprite(32,64,1,0,SpriteSheet.huntObj, 8);
     public static Sprite playerSprite = new Sprite(32,64,0,0,SpriteSheet.player, 4);
     public static Sprite playerSpriteFlip = new Sprite(playerSprite);
     public static Sprite backwardsPlayerSprite = new Sprite(32,64,0,1,SpriteSheet.player, 4);
     public static Sprite backwardsPlayerSpriteFlip = new Sprite(backwardsPlayerSprite);
+    
+    public static Sprite huntSprite1 = new Sprite(32,64,0,0,SpriteSheet.huntObj, 8);
+    public static Sprite huntSprite2 = new Sprite(32,64,1,0,SpriteSheet.huntObj, 8);
+    
+    public static Sprite penguinBlueTuxSpriteFlip = new Sprite(32,64,0,0,SpriteSheet.penguinBlue, 4);
+    public static Sprite backwardsPenguinBlueTuxSpriteFlip = new Sprite(32,64,1,0,SpriteSheet.penguinBlue, 4);
+    public static Sprite penguinBlueTuxSprite = new Sprite(penguinBlueTuxSpriteFlip);
+    public static Sprite backwardsPenguinBlueTuxSprite = new Sprite(backwardsPenguinBlueTuxSpriteFlip);
+    
+    public static Sprite penguinBlueSpriteFlip = new Sprite(new Sprite(32,64,2,0,SpriteSheet.penguinBlue, 4));
+    public static Sprite backwardsPenguinBlueSpriteFlip = new Sprite(new Sprite(32,64,3,0,SpriteSheet.penguinBlue, 4));
+    public static Sprite penguinBlueSprite = new Sprite(penguinBlueSpriteFlip);
+    public static Sprite backwardsPenguinBlueSprite = new Sprite(backwardsPenguinBlueSpriteFlip);
+    
+    public static Sprite penguinGrayTuxSpriteFlip = new Sprite(32,64,0,0,SpriteSheet.penguinGray, 4);
+    public static Sprite backwardsPenguinGrayTuxSpriteFlip = new Sprite(32,64,1,0,SpriteSheet.penguinGray, 4);
+    public static Sprite penguinGrayTuxSprite = new Sprite(penguinGrayTuxSpriteFlip);
+    public static Sprite backwardsPenguinGrayTuxSprite = new Sprite(backwardsPenguinGrayTuxSpriteFlip);
+    
+    public static Sprite penguinGraySpriteFlip = new Sprite(new Sprite(32,64,2,0,SpriteSheet.penguinGray, 4));
+    public static Sprite backwardsPenguinGraySpriteFlip = new Sprite(new Sprite(32,64,3,0,SpriteSheet.penguinGray, 4));
+    public static Sprite penguinGraySprite = new Sprite(penguinGraySpriteFlip);
+    public static Sprite backwardsPenguinGraySprite = new Sprite(backwardsPenguinGraySpriteFlip);
+    
 //    public static Sprite grass = new Sprite(32, 32, 352/32, 320/32, SpriteSheet.sample, 1);
     
     public static Sprite checkerboardFloor = new Sprite(64, 32, 1, 2, SpriteSheet.carpet, 1);
