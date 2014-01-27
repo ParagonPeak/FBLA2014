@@ -97,4 +97,9 @@ public class Mob extends Entity {
                 moveToVector = null;
         }
     }
+    
+    public boolean isMoving()
+    {
+        return moving;
+    }
 }

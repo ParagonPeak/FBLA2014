@@ -45,7 +45,7 @@ public class Screen {
      * @param sprite The image to be drawn
      */
     public void renderPlayer(int xp, int yp, Sprite sprite) {
-        renderRaisedSprite(xp, yp, sprite);
+        renderRaisedSprite(xp, yp - 20, sprite);
     }
 
     /**

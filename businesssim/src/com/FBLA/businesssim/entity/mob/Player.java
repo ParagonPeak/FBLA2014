@@ -21,7 +21,7 @@ public class Player extends Mob{
     
     public void render(Screen screen)
     {
-        screen.renderPlayer((int) (v.getX()), (int) (v.getY()), sprite);
+        screen.renderPlayer(v.getiX(), v.getiY(), sprite);
     }
     
     public void update() {

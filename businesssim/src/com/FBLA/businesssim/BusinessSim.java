@@ -201,7 +201,7 @@ public class BusinessSim extends Canvas implements Runnable {
                             int x = screen.twoDToIso(hObj.v.getiX() - screen.xOffs, hObj.v.getiY() - screen.yOffs)[0];
                             int y = screen.twoDToIso(hObj.v.getiX() - screen.xOffs, hObj.v.getiY() - screen.yOffs)[1];
                             g.setColor(Color.white);
-                            g.drawLine(player.v.getiX() - screen.xOffs + 15, player.v.getiY() - screen.yOffs + 150, x + 15, y - 30);
+                            g.drawLine(player.v.getiX() - screen.xOffs + 35, player.v.getiY() - screen.yOffs + 150, x + 15, y - 30);
                             g.setColor(Color.black);
                         }
                     }

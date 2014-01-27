@@ -1,5 +1,6 @@
 package com.FBLA.businesssim.graphics;
 
+import com.FBLA.businesssim.BusinessSim;
 import java.util.ArrayList;
 
 /**
@@ -23,11 +24,11 @@ public class Sprite {
     public static Sprite smallRedSprite = new Sprite(2, 2, 0xff0000);
     public static Sprite smallYellowSprite = new Sprite(2, 2, 0xffff00);
     public static Sprite emptySprite = new Sprite(32, 32, 0xFFFF00FF);
-    public static Sprite playerSprite = new Sprite(32,82,0,0,SpriteSheet.player, 4);
     public static Sprite huntSprite1 = new Sprite(32,64,0,0,SpriteSheet.huntObj, 8);
     public static Sprite huntSprite2 = new Sprite(32,64,1,0,SpriteSheet.huntObj, 8);
+    public static Sprite playerSprite = new Sprite(32,64,0,0,SpriteSheet.player, 4);
     public static Sprite playerSpriteFlip = new Sprite(playerSprite);
-    public static Sprite backwardsPlayerSprite = new Sprite(32,82,0,1,SpriteSheet.player, 4);
+    public static Sprite backwardsPlayerSprite = new Sprite(32,64,0,1,SpriteSheet.player, 4);
     public static Sprite backwardsPlayerSpriteFlip = new Sprite(backwardsPlayerSprite);
 //    public static Sprite grass = new Sprite(32, 32, 352/32, 320/32, SpriteSheet.sample, 1);
     
@@ -178,7 +179,7 @@ public class Sprite {
         H = sheet.HEIGHT;
         pixels = new int[W*H];
         xInSheet = x * W;
-        yInSheet = y * H;
+        yInSheet = y * H;        
         load();
         sprites.add(this);
     }
@@ -210,7 +211,7 @@ public class Sprite {
      */
     public static void update() {
         for (int i = 0; i < sprites.size(); i++) {
-                sprites.get(i).animate();
+                    sprites.get(i).animate();
             }
         }
 
