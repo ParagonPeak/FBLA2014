@@ -34,20 +34,21 @@ import javax.swing.JOptionPane;
 /**
  * @author Tripp Weiner and Raphael Rouvinov-Kats To see the full progress of
  * the game build, go to the GitHub repository:
- * @url www.github.com/paragonpeak/FBLA2014 
- * 
+ * @url www.github.com/paragonpeak/FBLA2014
+ *
  * Raphael's github:
  * @url www.github.com/coolcade
  *
- * Tripp's github: 
+ * Tripp's github:
  * @url www.github.com/TrippW
  *
  */
 public class BusinessSim extends Canvas implements Runnable, MouseListener, MouseMotionListener {
 
+    private final int normWidth = 800, normHeight = 500, fullWidth, fullHeight;
     public int width = 800, height = 500;
     private int updates = 0;
-    public byte scale = 1;
+    public double scale = 1, fullScale;
     public Keyboard key;
     public int mouseX = 0, mouseY = 0;
     public boolean mouseIsClicked = false, last_mouseIsClicked = false;
@@ -63,24 +64,21 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
     public static Level level;
     public static int currentLevel = 0;
     public String[] currentText = {"Welcome to the Arctic branch of \"Pleasant Smells\" glue company.", "This room is used for promising applicants, such as yourself.", "(Though you are the only one who applied)", "We want to test the skills you will need to work here.", "Please collect 5 FBLA items for us from each floor.", "We promise there's meaning to this.", "*Heh*", "That is all. Penguins out!"};
-    public boolean isPaused = false, loaded = false;
-    
+    public boolean isPaused = false, loaded = false, isFullScreen = false;
+    ;
     public static final int gs_inGame = 0;
     public static final int gs_about = 1;
     public static final int gs_controls = 2;
     public static final int gs_credit = 3, mspp_quit = 3;
     public static final int gs_startScreen = 5;
     public static int gameState = gs_startScreen;
-    
     private int mainScreenPointerPosition = gs_inGame;
-    
     private boolean nearElevator = false;
-    
     private Font tahoma = new Font("Tahoma", Font.ITALIC, 36);
 
     //Starts the game, used for frame set up
     public static void main(String[] args) {
- 
+
         bs = new BusinessSim();
         bs.frame.setResizable(false);
         bs.frame.setVisible(true);
@@ -90,13 +88,15 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
         bs.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         bs.frame.setFocusable(true);
         bs.frame.setLocationRelativeTo(null);
-
+        bs.setFullScreen(true);
         bs.start();
     }
 
     public BusinessSim() {
         // setCursor(Toolkit.getDefaultToolkit().createCustomCursor(createImage(new MemoryImageSource(16, 16, new int[16 * 16], 0, 16)), new Point(0, 0), ""));
-        Dimension size = new Dimension(width * scale, height * scale);
+        fullScale = (fullHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()) / normHeight;
+        fullWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+        Dimension size = new Dimension((int) (width * scale), (int) (height * scale));
         setPreferredSize(size);
         key = new Keyboard();
         addMouseListener(this);
@@ -156,7 +156,7 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
                 timer += 1000;
 
 //                frame.setTitle(title + version + " | FPS: " + frames + " UPS: " + updates + " px: " + player.v.getX() + " py: " + player.v.getY());
-                frame.setTitle(((isPaused)? "***PAUSED*** " : "") + title + version + " | FPS: " + frames + " Floor: " + (currentLevel+1) + " Pickups left here: " + level.itemCount);
+                frame.setTitle(((isPaused) ? "***PAUSED*** " : "") + title + version + " | FPS: " + frames + " Floor: " + (currentLevel + 1) + " Pickups left here: " + level.itemCount);
                 updates = frames = 0;
             }
         }
@@ -174,10 +174,15 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
         }
         if (gameState != gs_inGame && !(screenImage == null)) {
             Graphics g = bs.getDrawGraphics();
-            g.drawImage(screenImage, 0, 0, null);
+//            g.drawImage(screenImage, 0, 0, null);
+            g.drawImage(screenImage, 0, 0, width, height, 0, 0, normWidth, normHeight, null);
             g.setColor(Color.WHITE);
             if (gameState == gs_startScreen) {
-                g.fillRect(760, 327 + (mainScreenPointerPosition * 43), 20, 15);
+                if (!isFullScreen) {
+                    g.fillRect(width - 40, 327 + (mainScreenPointerPosition * 43), 20, 15);
+                }
+                else
+                    g.fillRect(width-70, 500 + (mainScreenPointerPosition * 65), 40, 30);
             }
             g.dispose();
             bs.show();
@@ -193,7 +198,9 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
 
         Graphics g = bs.getDrawGraphics();
         {
-            g.drawImage(image, 0, 0, null);
+//            g.drawImage(image, 0, 0, null);
+            g.drawImage(image, 0, 0, width, height, 0, 0, normWidth, normHeight, null);
+
             g.setColor(Color.WHITE);
 //            g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
             g = screen.displayText(currentText, key, g);
@@ -250,18 +257,18 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
                 }
             }
         }
-        
+
         key.update();
-        
+
         // if in the main menu and a key is pressed, update
         if (gameState == gs_startScreen) {
-            
-            if(mouseX > 600 && mouseY > 310) {
-                if(mouseY < 355) {
+
+            if (mouseX > 600 && mouseY > 310) {
+                if (mouseY < 355) {
                     mainScreenPointerPosition = gs_inGame;
-                } else if(mouseY < 400) {
+                } else if (mouseY < 400) {
                     mainScreenPointerPosition = gs_about;
-                } else if(mouseY < 440) {
+                } else if (mouseY < 440) {
                     mainScreenPointerPosition = gs_controls;
                 } else {
                     mainScreenPointerPosition = mspp_quit;
@@ -279,7 +286,7 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
                     mainScreenPointerPosition = gs_inGame;
                 }
             }
-            
+
             if ((key.left & !key.last_left) | (key.right & !key.last_right)) {
                 if (key.left) {
                     MusicPlayer.mp.decreaseVolume();
@@ -289,9 +296,9 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
                 }
             }
         }
-        
+
         // if action is pressed in main menu. inc key/mouse don't actually make this do stuff yet for some reason
-        if ((key.action && !key.last_action)){// || (key.inc && !key.last_inc) || (!mouseIsClicked && last_mouseIsClicked)) {
+        if ((key.action && !key.last_action)) {// || (key.inc && !key.last_inc) || (!mouseIsClicked && last_mouseIsClicked)) {
             if (mainScreenPointerPosition == mspp_quit) {
                 System.exit(3); // if in menu and on quit, quit
             }
@@ -311,6 +318,27 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
             isPaused = !isPaused;
             System.out.println("isPaused = " + isPaused);
         }
+    }
+
+    public void setFullScreen(boolean b) {
+        frame.setVisible(false);
+        frame.dispose();
+        frame.setUndecorated(b);
+        if (b) {
+            frame.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
+            scale = fullScale;
+            width = fullWidth;
+            height = fullHeight;
+            frame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+            frame.setResizable(true);
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            frame.setLocationRelativeTo(null);
+        } else {
+            frame.setPreferredSize(new Dimension(width, height));
+            scale = 1;
+        }
+        isFullScreen = b;
+        frame.setVisible(true);
     }
 
     private void switchToNextAvailableLevel() {
@@ -439,15 +467,11 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
         updateMousePos(e);
         mouseIsClicked = false;
         // open menu item if on same button as when pressed
-        if(gameState == gs_startScreen) {
-            if(mainScreenPointerPosition == 0) {
-                
-            } else if(mainScreenPointerPosition == 1) {
-                
-            } else if(mainScreenPointerPosition == 2) {
-                
-            } else if(mainScreenPointerPosition == 3) {
-                
+        if (gameState == gs_startScreen) {
+            if (mainScreenPointerPosition == 0) {
+            } else if (mainScreenPointerPosition == 1) {
+            } else if (mainScreenPointerPosition == 2) {
+            } else if (mainScreenPointerPosition == 3) {
             }
         }
     }
@@ -473,7 +497,7 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
         mouseIsClicked = false;
         updateMousePos(e);
     }
-    
+
     public void updateMousePos(MouseEvent e) {
         mouseX = e.getX();
         mouseY = e.getY();
