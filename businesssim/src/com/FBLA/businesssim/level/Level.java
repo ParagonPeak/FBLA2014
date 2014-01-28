@@ -39,8 +39,8 @@ public class Level {
     // arrays to store level specific values to make them easier to call and change
     public static final int levelAmount = 6;
     public static final int totalItems = 5;
-    public static final String[] levelTilePaths = {"Resources/Textures/Levels/Level0Tiles.png", "Resources/Textures/Levels/ExampleLevel2Tiles.png", "Resources/Textures/Levels/Level3Tiles.png", "Resources/Textures/Levels/Level4Tiles.png", "Resources/Textures/Levels/ExampleLevelTiles.png", "Resources/Textures/Levels/Level3Tiles.png"};
-    public static final String[] levelObjPaths = {"Resources/Textures/Levels/Level0Objects.png", "Resources/Textures/Levels/ExampleLevel2Objects.png", "Resources/Textures/Levels/Level3Objects.png", "Resources/Textures/Levels/Level4Objects.png", "Resources/Textures/Levels/ExampleLevelObjects.png", "Resources/Textures/Levels/Level3Objects.png"};
+    public static final String[] levelTilePaths = {"/Textures/Levels/Level0Tiles.png", "/Textures/Levels/ExampleLevel2Tiles.png", "/Textures/Levels/Level3Tiles.png", "/Textures/Levels/Level4Tiles.png", "/Textures/Levels/ExampleLevelTiles.png", "/Textures/Levels/Level3Tiles.png"};
+    public static final String[] levelObjPaths = {"/Textures/Levels/Level0Objects.png", "/Textures/Levels/ExampleLevel2Objects.png", "/Textures/Levels/Level3Objects.png", "/Textures/Levels/Level4Objects.png", "/Textures/Levels/ExampleLevelObjects.png", "/Textures/Levels/Level3Objects.png"};
     public static int[] xOff = {48, 48, 48, 48, 48, 48};
     public static int[] yOff = {128, 128, 128, 128, 128, 128};
     public static HuntObject[][] hunt = new HuntObject[levelTilePaths.length][totalItems];
@@ -82,21 +82,21 @@ public class Level {
     };
     
     public Level(String tilePath, String objPath, int number) {
-        this.tilePath = tilePath.substring("Resources".length());
-        this.objPath = objPath.substring("Resources".length());
+        this.tilePath = tilePath;
+        this.objPath = objPath;
         this.levelNumber = number;
-        loadLevelTiles(this.tilePath);
-        loadLevelObjects(this.objPath);
+        loadLevelTiles();
+        loadLevelObjects();
 //        loadLevelTiles("Resources/Textures/Levels/ExampleLevelTiles.png");
 //        loadLevelObjects("Resources/Textures/Levels/ExampleLevelObjects.png");
     }
     
     public Level(String tilePath, String objPath, int number, double px, double py) {
-        this.tilePath = tilePath.substring("Resources".length());
-        this.objPath = objPath.substring("Resources".length());
+        this.tilePath = tilePath;
+        this.objPath = objPath;
         this.levelNumber = number;
-        loadLevelTiles(this.tilePath);
-        loadLevelObjects(this.objPath);
+        loadLevelTiles();
+        loadLevelObjects();
         playerV.setX(px);
         playerV.setY(py);
 //        loadLevelTiles("Resources/Textures/Levels/ExampleLevelTiles.png");
@@ -122,9 +122,9 @@ public class Level {
         }
     }
     
-    protected void loadLevelTiles(String path) {
+    protected void loadLevelTiles() {
         try {
-            BufferedImage image = ImageIO.read(getClass().getResourceAsStream(path));
+            BufferedImage image = ImageIO.read(getClass().getResourceAsStream(tilePath));
             width = image.getWidth();
             height = image.getHeight();
             tiles = new int[width * height];
@@ -144,9 +144,9 @@ public class Level {
         }
     }
     
-    protected void loadLevelObjects(String path) {
+    protected void loadLevelObjects() {
         try {
-            BufferedImage image = ImageIO.read(getClass().getResourceAsStream(path));
+            BufferedImage image = ImageIO.read(getClass().getResourceAsStream(objPath));
             width = image.getWidth();
             height = image.getHeight();
             objects = new int[width * height];

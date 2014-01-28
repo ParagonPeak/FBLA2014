@@ -20,15 +20,15 @@ public class SpriteSheet {
     private String path;
     public final int WIDTH, HEIGHT;
     public int[] pixels;
-    public static SpriteSheet penguinGray = new SpriteSheet("Resources/Textures/Characters/Penguins_Gray.png");
-    public static SpriteSheet penguinBlue = new SpriteSheet("Resources/Textures/Characters/Penguins_Blue.png");
-    public static SpriteSheet player = new SpriteSheet("Resources/Textures/Characters/Player.png");
-    public static SpriteSheet huntObj = new SpriteSheet("Resources/Textures/Pickups/Pickups.png");
-    //public static SpriteSheet player = new SpriteSheet("Resources/Textures/Characters/RaphSprites/PlayerRaph.png");
-    public static SpriteSheet sample = new SpriteSheet("Resources/Textures/Tiles/sample.gif");
-    public static SpriteSheet carpet = new SpriteSheet("Resources/Textures/Tiles/office_tiles/office/out_floor/carpetff00ff.png");
-    public static SpriteSheet walls = new SpriteSheet("Resources/Textures/Tiles/office_tiles/office/out_walls/cubiclesff00ff.png");
-    public static SpriteSheet chair = new SpriteSheet("Resources/Textures/Tiles/office_tiles/office/out_chair/chairff00ffline.png");
+    public static SpriteSheet penguinGray = new SpriteSheet("/Textures/Characters/Penguins_Gray.png");
+    public static SpriteSheet penguinBlue = new SpriteSheet("/Textures/Characters/Penguins_Blue.png");
+    public static SpriteSheet player = new SpriteSheet("/Textures/Characters/Player.png");
+    public static SpriteSheet huntObj = new SpriteSheet("/Textures/Pickups/Pickups.png");
+    //public static SpriteSheet player = new SpriteSheet("/Textures/Characters/RaphSprites/PlayerRaph.png");
+    public static SpriteSheet sample = new SpriteSheet("/Textures/Tiles/sample.gif");
+    public static SpriteSheet carpet = new SpriteSheet("/Textures/Tiles/office_tiles/office/out_floor/carpetff00ff.png");
+    public static SpriteSheet walls = new SpriteSheet("/Textures/Tiles/office_tiles/office/out_walls/cubiclesff00ff.png");
+    public static SpriteSheet chair = new SpriteSheet("/Textures/Tiles/office_tiles/office/out_chair/chairff00ffline.png");
     //Example for loading a spritesheet. All should be static
     //public static SpriteSheet tiles = new SpriteSheet("textures/spritesheet.png", 256);
 
@@ -42,7 +42,7 @@ public class SpriteSheet {
      * spritesheet for a size.
      */
     public SpriteSheet(String p) {
-        path = p.substring("Resources".length());
+        path = p;
         WIDTH = load();
         HEIGHT = pixels.length/WIDTH;
     }
