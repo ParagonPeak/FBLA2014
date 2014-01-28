@@ -42,7 +42,7 @@ public class SpriteSheet {
      * spritesheet for a size.
      */
     public SpriteSheet(String p) {
-        path = p;
+        path = p.substring("Resources".length());
         WIDTH = load();
         HEIGHT = pixels.length/WIDTH;
     }
@@ -54,7 +54,9 @@ public class SpriteSheet {
      */
     private int load() {
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream(path));
+//            BufferedImage image = ImageIO.read(new FileInputStream(path));
+            BufferedImage image = ImageIO.read(getClass().getResourceAsStream(path));
+            getClass().getResourceAsStream(path).close();
             int w = image.getWidth();
             int h = image.getHeight();
             pixels = new int[w * h];

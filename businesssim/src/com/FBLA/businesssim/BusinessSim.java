@@ -366,7 +366,7 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
                 break;
             case gs_about:
                 try {
-                    screenImage = ImageIO.read(new FileInputStream("Resources/Textures/Screens/About.png"));
+                    screenImage = ImageIO.read(getClass().getResourceAsStream("/Textures/Screens/About.png"));
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 } catch (IOException ex) {
@@ -378,7 +378,7 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
                 break;
             case gs_controls:
                 try {
-                    screenImage = ImageIO.read(new FileInputStream("Resources/Textures/Screens/Controls.png"));
+                    screenImage = ImageIO.read(getClass().getResourceAsStream("/Textures/Screens/Controls.png"));
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 } catch (IOException ex) {
@@ -393,7 +393,7 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
                 break;
             case gs_startScreen:
                 try {
-                    screenImage = ImageIO.read(new FileInputStream("Resources/Textures/Screens/Title.png"));
+                    screenImage = ImageIO.read(getClass().getResourceAsStream("/Textures/Screens/Title.png"));
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 } catch (IOException ex) {

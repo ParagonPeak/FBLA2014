@@ -82,21 +82,21 @@ public class Level {
     };
     
     public Level(String tilePath, String objPath, int number) {
-        this.tilePath = tilePath;
-        this.objPath = objPath;
+        this.tilePath = tilePath.substring("Resources".length());
+        this.objPath = objPath.substring("Resources".length());
         this.levelNumber = number;
-        loadLevelTiles(tilePath);
-        loadLevelObjects(objPath);
+        loadLevelTiles(this.tilePath);
+        loadLevelObjects(this.objPath);
 //        loadLevelTiles("Resources/Textures/Levels/ExampleLevelTiles.png");
 //        loadLevelObjects("Resources/Textures/Levels/ExampleLevelObjects.png");
     }
     
     public Level(String tilePath, String objPath, int number, double px, double py) {
-        this.tilePath = tilePath;
-        this.objPath = objPath;
+        this.tilePath = tilePath.substring("Resources".length());
+        this.objPath = objPath.substring("Resources".length());
         this.levelNumber = number;
-        loadLevelTiles(tilePath);
-        loadLevelObjects(objPath);
+        loadLevelTiles(this.tilePath);
+        loadLevelObjects(this.objPath);
         playerV.setX(px);
         playerV.setY(py);
 //        loadLevelTiles("Resources/Textures/Levels/ExampleLevelTiles.png");
@@ -124,7 +124,7 @@ public class Level {
     
     protected void loadLevelTiles(String path) {
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream(path));
+            BufferedImage image = ImageIO.read(getClass().getResourceAsStream(path));
             width = image.getWidth();
             height = image.getHeight();
             tiles = new int[width * height];
@@ -146,7 +146,7 @@ public class Level {
     
     protected void loadLevelObjects(String path) {
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream(path));
+            BufferedImage image = ImageIO.read(getClass().getResourceAsStream(path));
             width = image.getWidth();
             height = image.getHeight();
             objects = new int[width * height];

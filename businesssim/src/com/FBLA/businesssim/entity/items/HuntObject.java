@@ -30,7 +30,7 @@ public class HuntObject extends Entity {
     
     public void render()
     {
-        screen.renderRaisedSprite(v.getiX(), v.getiY(), sprite);
+        screen.renderRaisedMob(v.getiX(), v.getiY(), sprite);
     }
     
     public void event()
