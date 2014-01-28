@@ -30,7 +30,7 @@ public class Sprite {
     public static Sprite backwardsPlayerSpriteFlip = new Sprite(backwardsPlayerSprite);
     
     public static Sprite huntSprite1 = new Sprite(32,64,0,0,SpriteSheet.huntObj, 8);
-    public static Sprite huntSprite2 = new Sprite(32,64,1,0,SpriteSheet.huntObj, 8);
+    public static Sprite huntSprite2 = new Sprite(32,64,0,1,SpriteSheet.huntObj, 8);
     
     public static Sprite penguinBlueTuxSpriteFlip = new Sprite(32,64,0,0,SpriteSheet.penguinBlue, 4);
     public static Sprite backwardsPenguinBlueTuxSpriteFlip = new Sprite(32,64,1,0,SpriteSheet.penguinBlue, 4);
@@ -233,6 +233,25 @@ public class Sprite {
      */
     public static void update() {
         for (int i = 0; i < sprites.size(); i++) {
+            if(sprites.get(i) == Sprite.backwardsPenguinBlueSprite || 
+                    sprites.get(i) == Sprite.backwardsPenguinBlueSpriteFlip || 
+                    sprites.get(i) == Sprite.penguinBlueSpriteFlip || 
+                    sprites.get(i) == Sprite.penguinBlueSprite || 
+                    sprites.get(i) == Sprite.backwardsPenguinGraySprite || 
+                    sprites.get(i) == Sprite.backwardsPenguinGraySpriteFlip || 
+                    sprites.get(i) == Sprite.penguinGraySprite || 
+                    sprites.get(i) == Sprite.penguinGraySpriteFlip)
+            {
+                //Code to animate each individual penguin
+            }
+            else if(sprites.get(i) == Sprite.playerSprite ||
+                    sprites.get(i) == Sprite.playerSpriteFlip ||
+                    sprites.get(i) == Sprite.backwardsPlayerSprite||
+                    sprites.get(i) == Sprite.backwardsPlayerSpriteFlip)
+            {
+                sprites.get(i).animate(BusinessSim.bs.player.isMoving());
+            }
+            else
                     sprites.get(i).animate();
             }
         }

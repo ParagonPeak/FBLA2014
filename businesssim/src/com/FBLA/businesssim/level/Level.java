@@ -173,7 +173,7 @@ public class Level {
                 hunt[levelNumber] = new HuntObject[totalItems];
                 
                 for (int i = 0; i < totalItems; i++) {
-                    hunt[levelNumber][i] = new HuntObject(makeHuntSpot(), Sprite.huntSprite1, BusinessSim.bs.screen);
+                    hunt[levelNumber][i] = new HuntObject(makeHuntSpot(), Sprite.huntSprite2, BusinessSim.bs.screen);
                 }
             }
 
