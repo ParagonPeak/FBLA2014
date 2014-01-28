@@ -5,6 +5,7 @@ import com.FBLA.businesssim.entity.mob.Player;
 import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.input.Keyboard;
+import com.FBLA.businesssim.input.Mouse;
 import com.FBLA.businesssim.level.Level;
 import com.FBLA.businesssim.sound.MusicPlayer;
 import java.awt.Canvas;
@@ -14,6 +15,9 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -36,12 +40,14 @@ import javax.swing.JOptionPane;
  * Tripp's github: www.github.com/TrippW
  *
  */
-public class BusinessSim extends Canvas implements Runnable {
+public class BusinessSim extends Canvas implements Runnable, MouseListener, MouseMotionListener {
 
     public int width = 800, height = 500;
     private int updates = 0;
     public byte scale = 1;
     public Keyboard key;
+    public int mouseX = 0, mouseY = 0;
+    public boolean mouseIsClicked = false;
     public Screen screen;
     private boolean running;
     private Thread mThread;
@@ -81,10 +87,12 @@ public class BusinessSim extends Canvas implements Runnable {
     }
 
     public BusinessSim() {
-        setCursor(Toolkit.getDefaultToolkit().createCustomCursor(createImage(new MemoryImageSource(16, 16, new int[16 * 16], 0, 16)), new Point(0, 0), ""));
+        // setCursor(Toolkit.getDefaultToolkit().createCustomCursor(createImage(new MemoryImageSource(16, 16, new int[16 * 16], 0, 16)), new Point(0, 0), ""));
         Dimension size = new Dimension(width * scale, height * scale);
         setPreferredSize(size);
         key = new Keyboard();
+        addMouseListener(this);
+        addMouseMotionListener(this);
         screen = new Screen(width, height);
         addKeyListener(key);
 //        level = new Level("level/Floor1.png");
@@ -233,18 +241,49 @@ public class BusinessSim extends Canvas implements Runnable {
                 }
             }
         }
-
+        
         key.update();
-
+        
         // if in the main menu and a key is pressed, update
         if (gameState == gs_startScreen) {
-            if ((key.up & !key.last_up) | (key.down & !key.last_down) | (key.left & !key.last_left) | (key.right & !key.last_right)) {
-                updatePointer();
+            
+            if(mouseX > 600 && mouseY > 310) {
+                if(mouseY < 355) {
+                    mainScreenPointerPosition = 0;
+                } else if(mouseY < 400) {
+                    mainScreenPointerPosition = 1;
+                } else if(mouseY < 440) {
+                    mainScreenPointerPosition = 2;
+                } else {
+                    mainScreenPointerPosition = 3;
+                }
+            } else if ((key.up & !key.last_up) | (key.down & !key.last_down)) {
+                if (key.up) {
+                    mainScreenPointerPosition--;
+                }
+                if (key.down) {
+                    mainScreenPointerPosition++;
+                }
+                if (mainScreenPointerPosition < 0) {
+                    mainScreenPointerPosition = 3;
+                }
+                if (mainScreenPointerPosition > 3) {
+                    mainScreenPointerPosition = 0;
+                }
+            }
+            
+            if ((key.left & !key.last_left) | (key.right & !key.last_right)) {
+                if (key.left) {
+                    MusicPlayer.mp.decreaseVolume();
+                }
+                if (key.right) {
+                    MusicPlayer.mp.increaseVolume();
+                }
             }
         }
-
+        
         // if action key is pressed
-        if (key.action & !key.last_action) {
+        if ((key.action & !key.last_action)) {
             if (mainScreenPointerPosition == 3) {
                 System.exit(3); // if in menu and on quit, quit
             }
@@ -372,5 +411,54 @@ public class BusinessSim extends Canvas implements Runnable {
         if (JOptionPane.showConfirmDialog(null, "Do you really want to quit?", "Quit", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             System.exit(3);
         }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        updateMousePos(e);
+        mouseIsClicked = false;
+        // open menu item
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        updateMousePos(e);
+        mouseIsClicked = true;
+        // highlight menu item
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        updateMousePos(e);
+        mouseIsClicked = false;
+        // open menu item if on same button as when pressed
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        mouseIsClicked = false;
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        mouseIsClicked = true;
+        updateMousePos(e);
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        mouseIsClicked = false;
+        updateMousePos(e);
+    }
+    
+    public void updateMousePos(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
     }
 }
