@@ -275,18 +275,19 @@ public class Level {
                 getTile(x, y).render(x - 1, y - 1, screen); // shifted over 1 to account for raised objects being 1 space higher than they should be
             }
         }
-        if(levelNumber < hunt.length)
-        if (hunt != null && hunt[levelNumber] != null && hunt[levelNumber][0] != null) {
-            for (int i = 0; i < hunt[levelNumber].length; i++) {
-                itemCount = 0;
-                for (int j = 0; j < totalItems; j++) {
-                    if (!hunt[levelNumber][j].isRemoved()) {
-                        int x = hunt[levelNumber][j].v.getiX();
-                        int y = hunt[levelNumber][j].v.getiX();
-                        if (BusinessSim.gameState == BusinessSim.gs_inGame) {
-                            hunt[levelNumber][j].render();
+        if(levelNumber < hunt.length) {
+            if (hunt != null && hunt[levelNumber] != null && hunt[levelNumber][0] != null) {
+                for (int i = 0; i < hunt[levelNumber].length; i++) {
+                    itemCount = 0;
+                    for (int j = 0; j < totalItems; j++) {
+                        if (!hunt[levelNumber][j].isRemoved()) {
+                            int x = hunt[levelNumber][j].v.getiX();
+                            int y = hunt[levelNumber][j].v.getiX();
+                            if (BusinessSim.gameState == BusinessSim.gs_inGame) {
+                                hunt[levelNumber][j].render();
+                            }
+                            itemCount++;
                         }
-                        itemCount++;
                     }
                 }
             }
