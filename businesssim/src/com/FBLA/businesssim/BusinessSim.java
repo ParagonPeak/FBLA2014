@@ -189,10 +189,10 @@ public class BusinessSim extends Canvas implements Runnable {
             int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - fullWidth;
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, screenWidth + fullWidth, fullHeight);
-            g.drawImage(screenImage, screenWidth, 0, width, height, 0, 0, normWidth, normHeight, null);
+            g.drawImage(screenImage, (isFullScreen)? screenWidth :0, 0, width, height, 0, 0, normWidth, normHeight, null);
             g.setColor(Color.WHITE);
             if (gameState == gs_startScreen) {
-                g.fillRect(width - (int)(40 * fullScale), (int) ((327 + (mainScreenPointerPosition * 43))*fullScale), (int)(20 * fullScale), (int) (15 * fullScale));
+                g.fillRect(width - (int)(40 * scale), (int) ((327 + (mainScreenPointerPosition * 43))* scale), (int)(20 * scale), (int) (15 * scale));
             }
             g.dispose();
             bs.show();
@@ -280,12 +280,12 @@ public class BusinessSim extends Canvas implements Runnable {
         // if in the main menu and a key is pressed, update
         if (gameState == gs_startScreen) {
 
-            if (mouse.xPos > 600 * fullScale && mouse.yPos > 310 * fullScale){
-                if (mouse.yPos < 355 * fullScale) {
+            if (mouse.xPos > 600 * scale && mouse.yPos > 310 * scale){
+                if (mouse.yPos < 355 * scale) {
                     mainScreenPointerPosition = gs_inGame;
-                } else if (mouse.yPos < 400 * fullScale) {
+                } else if (mouse.yPos < 400 * scale) {
                     mainScreenPointerPosition = gs_about;
-                } else if (mouse.yPos < 440 * fullScale) {
+                } else if (mouse.yPos < 440 * scale) {
                     mainScreenPointerPosition = gs_controls;
                 } else {
                     mainScreenPointerPosition = mspp_quit;
