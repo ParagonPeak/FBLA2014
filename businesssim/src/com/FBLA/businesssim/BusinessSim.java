@@ -49,10 +49,9 @@ public class BusinessSim extends Canvas implements Runnable {
     public int height = 500;
     public int width = 800;
     private int updates = 0;
-    public double scale = 1, fullScale;
+    public double scale = 1, fullScale = 1;
     public Keyboard key;
     public Mouse mouse;
-    public int mouseX = 0, mouseY = 0;
     public boolean mouseIsClicked = false, last_mouseIsClicked = false;
     public Screen screen;
     private boolean running;
@@ -108,9 +107,11 @@ public class BusinessSim extends Canvas implements Runnable {
         System.out.println(fullWidth);
         Dimension size = new Dimension((int) (width * scale), (int) (height * scale));
         setPreferredSize(size);
+        
         key = new Keyboard();
-        addMouseListener(this);
-        addMouseMotionListener(this);
+        mouse = new Mouse();
+        addMouseListener(mouse);
+        addMouseMotionListener(mouse);
         screen = new Screen(width, height);
         addKeyListener(key);
 //        level = new Level("level/Floor1.png");
@@ -191,11 +192,7 @@ public class BusinessSim extends Canvas implements Runnable {
             g.drawImage(screenImage, screenWidth, 0, width, height, 0, 0, normWidth, normHeight, null);
             g.setColor(Color.WHITE);
             if (gameState == gs_startScreen) {
-                if (!isFullScreen) {
-                    g.fillRect(width - 40, 327 + (mainScreenPointerPosition * 43), 20, 15);
-                } else {
-                    g.fillRect(width - (int)(40 * fullScale), 500 + (int) (mainScreenPointerPosition * 43 * fullScale), (int)(20 * fullScale), (int) (15 * fullScale));
-                }
+                g.fillRect(width - (int)(40 * fullScale), (int) ((327 + (mainScreenPointerPosition * 43))*fullScale), (int)(20 * fullScale), (int) (15 * fullScale));
             }
             g.dispose();
             bs.show();
@@ -246,7 +243,7 @@ public class BusinessSim extends Canvas implements Runnable {
                             int x = screen.twoDToIso(hObj.v.getiX() - screen.xOffs, hObj.v.getiY() - screen.yOffs)[0];
                             int y = screen.twoDToIso(hObj.v.getiX() - screen.xOffs, hObj.v.getiY() - screen.yOffs)[1];
                             g.setColor(Color.white);
-                            g.drawLine(player.v.getiX() - screen.xOffs + 15, player.v.getiY() - screen.yOffs + 150, x + 15, y - 30);
+                            g.drawLine((int) ((player.v.getiX() - screen.xOffs + 15) * fullScale), (int) ((player.v.getiY() - screen.yOffs + 150) * fullScale), (int) ((x + 15) * fullScale), (int) ((y - 30) * fullScale));
                             g.setColor(Color.black);
                         }
                     }
@@ -258,7 +255,7 @@ public class BusinessSim extends Canvas implements Runnable {
     }
 
     public void update() {
-        last_mouseIsClicked = mouseIsClicked;
+        mouse.update();
         // if in game and not paused, do in game stuff
         if (!isPaused && gameState == gs_inGame) {
             player.update();
@@ -283,12 +280,12 @@ public class BusinessSim extends Canvas implements Runnable {
         // if in the main menu and a key is pressed, update
         if (gameState == gs_startScreen) {
 
-            if (mouseX > 600 && mouseY > 310){
-                if (mouseY < 355) {
+            if (mouse.xPos > 600 * fullScale && mouse.yPos > 310 * fullScale){
+                if (mouse.yPos < 355 * fullScale) {
                     mainScreenPointerPosition = gs_inGame;
-                } else if (mouseY < 400) {
+                } else if (mouse.yPos < 400 * fullScale) {
                     mainScreenPointerPosition = gs_about;
-                } else if (mouseY < 440) {
+                } else if (mouse.yPos < 440 * fullScale) {
                     mainScreenPointerPosition = gs_controls;
                 } else {
                     mainScreenPointerPosition = mspp_quit;
@@ -467,59 +464,5 @@ public class BusinessSim extends Canvas implements Runnable {
         if (JOptionPane.showConfirmDialog(null, "Do you really want to quit?", "Quit", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             System.exit(3);
         }
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        updateMousePos(e);
-        mouseIsClicked = false;
-        // open menu item
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        updateMousePos(e);
-        mouseIsClicked = true;
-        // highlight menu item
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        updateMousePos(e);
-        mouseIsClicked = false;
-        // open menu item if on same button as when pressed
-        if (gameState == gs_startScreen) {
-                gameState = mainScreenPointerPosition;
-                if(mainScreenPointerPosition == 3)
-                    System.exit(3);
-                changeGameState();
-        }
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        mouseIsClicked = false;
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        mouseIsClicked = true;
-        updateMousePos(e);
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        mouseIsClicked = false;
-        updateMousePos(e);
-    }
-
-    public void updateMousePos(MouseEvent e) {
-        mouseX = e.getX();
-        mouseY = e.getY();
     }
 }
