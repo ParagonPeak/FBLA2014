@@ -39,8 +39,8 @@ public class Level {
     // arrays to store level specific values to make them easier to call and change
     public static final int levelAmount = 6;
     public static final int totalItems = 5;
-    public static final String[] levelTilePaths = {"/Textures/Levels/Level0Tiles.png", "/Textures/Levels/ExampleLevel2Tiles.png", "/Textures/Levels/Level3Tiles.png", "/Textures/Levels/Level4Tiles.png", "/Textures/Levels/ExampleLevelTiles.png", "/Textures/Levels/Level3Tiles.png"};
-    public static final String[] levelObjPaths = {"/Textures/Levels/Level0Objects.png", "/Textures/Levels/ExampleLevel2Objects.png", "/Textures/Levels/Level3Objects.png", "/Textures/Levels/Level4Objects.png", "/Textures/Levels/ExampleLevelObjects.png", "/Textures/Levels/Level3Objects.png"};
+    public static final String[] levelTilePaths = {"/Textures/Levels/Level0Tiles.png", "/Textures/Levels/Level2Tiles.png", "/Textures/Levels/Level3Tiles.png", "/Textures/Levels/Level4Tiles.png", "/Textures/Levels/Level0Tiles.png", "/Textures/Levels/Level3Tiles.png"};
+    public static final String[] levelObjPaths = {"/Textures/Levels/Level0Objects.png", "/Textures/Levels/Level2Objects.png", "/Textures/Levels/Level3Objects.png", "/Textures/Levels/Level4Objects.png", "/Textures/Levels/Level0Objects.png", "/Textures/Levels/Level3Objects.png"};
     public static int[] xOff = {48, 48, 48, 48, 48, 48};
     public static int[] yOff = {128, 128, 128, 128, 128, 128};
     public static HuntObject[][] hunt = new HuntObject[levelTilePaths.length][totalItems];

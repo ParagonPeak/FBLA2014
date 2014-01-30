@@ -2,8 +2,9 @@ package com.FBLA.businesssim.input;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class Mouse extends MouseAdapter {
+public class Mouse extends MouseAdapter implements MouseListener {
     
     public boolean mouseClicked, mouseHeld;
     public int xPos, yPos;

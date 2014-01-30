@@ -43,13 +43,15 @@ import javax.swing.JOptionPane;
  * @url www.github.com/TrippW
  *
  */
-public class BusinessSim extends Canvas implements Runnable, MouseListener, MouseMotionListener {
+public class BusinessSim extends Canvas implements Runnable {
 
-    private final int normWidth = 800, normHeight = 500, fullWidth, fullHeight;
-    public int width = 800, height = 500;
+    private final int normWidth, normHeight, fullWidth, fullHeight;
+    public int height = 500;
+    public int width = 800;
     private int updates = 0;
     public double scale = 1, fullScale;
     public Keyboard key;
+    public Mouse mouse;
     public int mouseX = 0, mouseY = 0;
     public boolean mouseIsClicked = false, last_mouseIsClicked = false;
     public Screen screen;
@@ -78,7 +80,7 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
 
     //Starts the game, used for frame set up
     public static void main(String[] args) {
-
+        
         bs = new BusinessSim();
         bs.frame.setResizable(false);
         bs.frame.setVisible(true);
@@ -94,8 +96,16 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
 
     public BusinessSim() {
         // setCursor(Toolkit.getDefaultToolkit().createCustomCursor(createImage(new MemoryImageSource(16, 16, new int[16 * 16], 0, 16)), new Point(0, 0), ""));
-        fullScale = (fullHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()) / normHeight;
-        fullWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+        fullHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+        normHeight = height;
+        normWidth = width;
+        System.out.println(fullHeight);
+        System.out.println(normHeight);
+        fullScale = fullHeight * 1.0 / normHeight;
+        System.out.println(fullScale);
+        fullWidth = (int) (normWidth * fullScale);
+        System.out.println(normWidth);
+        System.out.println(fullWidth);
         Dimension size = new Dimension((int) (width * scale), (int) (height * scale));
         setPreferredSize(size);
         key = new Keyboard();
@@ -175,14 +185,17 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
         if (gameState != gs_inGame && !(screenImage == null)) {
             Graphics g = bs.getDrawGraphics();
 //            g.drawImage(screenImage, 0, 0, null);
-            g.drawImage(screenImage, 0, 0, width, height, 0, 0, normWidth, normHeight, null);
+            int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - fullWidth;
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, screenWidth + fullWidth, fullHeight);
+            g.drawImage(screenImage, screenWidth, 0, width, height, 0, 0, normWidth, normHeight, null);
             g.setColor(Color.WHITE);
             if (gameState == gs_startScreen) {
                 if (!isFullScreen) {
                     g.fillRect(width - 40, 327 + (mainScreenPointerPosition * 43), 20, 15);
+                } else {
+                    g.fillRect(width - (int)(40 * fullScale), 500 + (int) (mainScreenPointerPosition * 43 * fullScale), (int)(20 * fullScale), (int) (15 * fullScale));
                 }
-                else
-                    g.fillRect(width-70, 500 + (mainScreenPointerPosition * 65), 40, 30);
             }
             g.dispose();
             bs.show();
@@ -199,8 +212,15 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
         Graphics g = bs.getDrawGraphics();
         {
 //            g.drawImage(image, 0, 0, null);
-            g.drawImage(image, 0, 0, width, height, 0, 0, normWidth, normHeight, null);
-
+            int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - fullWidth;
+            if (isFullScreen) {
+                g.setColor(Color.BLACK);
+                g.fillRect(0, 0, screenWidth + fullWidth, height);
+//                g.fillRect(width, 0, screenWidth, height);
+                g.drawImage(image, screenWidth, 0, width, height, 0, 0, normWidth, normHeight, null);
+            } else {
+                g.drawImage(image, 0, 0 , null);
+            }
             g.setColor(Color.WHITE);
 //            g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
             g = screen.displayText(currentText, key, g);
@@ -263,7 +283,7 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
         // if in the main menu and a key is pressed, update
         if (gameState == gs_startScreen) {
 
-            if (mouseX > 600 && mouseY > 310) {
+            if (mouseX > 600 && mouseY > 310){
                 if (mouseY < 355) {
                     mainScreenPointerPosition = gs_inGame;
                 } else if (mouseY < 400) {
@@ -273,7 +293,8 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
                 } else {
                     mainScreenPointerPosition = mspp_quit;
                 }
-            } else if ((key.up & !key.last_up) | (key.down & !key.last_down)) {
+            }
+            if ((key.up & !key.last_up) | (key.down & !key.last_down)) {
                 if (key.up) {
                     mainScreenPointerPosition--;
                 }
@@ -468,11 +489,10 @@ public class BusinessSim extends Canvas implements Runnable, MouseListener, Mous
         mouseIsClicked = false;
         // open menu item if on same button as when pressed
         if (gameState == gs_startScreen) {
-            if (mainScreenPointerPosition == 0) {
-            } else if (mainScreenPointerPosition == 1) {
-            } else if (mainScreenPointerPosition == 2) {
-            } else if (mainScreenPointerPosition == 3) {
-            }
+                gameState = mainScreenPointerPosition;
+                if(mainScreenPointerPosition == 3)
+                    System.exit(3);
+                changeGameState();
         }
     }
 
