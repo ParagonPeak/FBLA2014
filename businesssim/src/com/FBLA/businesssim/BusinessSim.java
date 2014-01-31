@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -58,6 +59,7 @@ public class BusinessSim extends Canvas implements Runnable {
     private Thread mThread;
     private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB), screenImage = image;
     private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+//    private int[] lastPixels = Arrays.copyOf(pixels, pixels.length); // used in pixel manipulation like motion blur
     private static String title = "The Little Man", version = " 8.2 alpha";
     private JFrame frame = new JFrame();
     public Player player;
@@ -173,7 +175,25 @@ public class BusinessSim extends Canvas implements Runnable {
         }
         stop();
     }
-
+    
+    // used for pixel manipulation like blurring
+//    public int getR(int col) {
+//        return col % 256;
+//    }
+//    public int getG(int col) {
+//        return (col >> 8) % 256;
+//    }
+//    public int getB(int col) {
+//        return (col >> 16) % 256;
+//    }
+//    public int avg(Integer... ints) {
+//        int sum = 0;
+//        for(int i = 0; i < ints.length; i++) {
+//            sum += ints[i];
+//        }
+//        return sum / ints.length;
+//    }
+    
     public void render() {
         BufferStrategy bs = getBufferStrategy();
         int xScroll = (int) (player.v.getX() - screen.width / 2);
@@ -205,7 +225,22 @@ public class BusinessSim extends Canvas implements Runnable {
         // screen.renderSpriteOnScreen(0, 0, Sprite.grass); // example of what renderSpriteOnScreen does
 
         System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
-
+        
+        // blur
+//        int[] temp = Arrays.copyOf(pixels, pixels.length);
+//        int pArrScale = pixels.length / 800 / 500;
+//        int pArrWidth = pixels.length / (500 * pArrScale);
+//        for(int i = 1 + pArrWidth; i < pixels.length - 1 - pArrWidth; i++) {
+//            int r = (avg(getR(temp[i-1-pArrWidth]),getR(temp[i-pArrWidth]),getR(temp[i+1-pArrWidth]),getR(temp[i-1]),getR(temp[i]),getR(temp[i+1]),getR(temp[i-1+pArrWidth]),getR(temp[i+pArrWidth]),getR(temp[i+1+pArrWidth])));
+//            int g = avg(getG(temp[i-1-pArrWidth]),getG(temp[i-pArrWidth]),getG(temp[i+1-pArrWidth]),getG(temp[i-1]),getG(temp[i]),getG(temp[i+1]),getG(temp[i-1+pArrWidth]),getG(temp[i+pArrWidth]),getG(temp[i+1+pArrWidth]));
+//            int b = avg(getB(temp[i-1-pArrWidth]),getB(temp[i-pArrWidth]),getB(temp[i+1-pArrWidth]),getB(temp[i-1]),getB(temp[i]),getB(temp[i+1]),getB(temp[i-1+pArrWidth]),getB(temp[i+pArrWidth]),getB(temp[i+1+pArrWidth]));
+//            r = avg(r, getR(temp[i]));
+//            g = avg(g, getG(temp[i]));
+//            b = avg(b, getB(temp[i]));
+//            pixels[i] = r + (g << 8) + (b << 16);
+//        }
+//        lastPixels = Arrays.copyOf(temp, temp.length);
+        
         Graphics g = bs.getDrawGraphics();
         {
 //            g.drawImage(image, 0, 0, null);
