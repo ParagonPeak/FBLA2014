@@ -69,8 +69,9 @@ public class BusinessSim extends Canvas implements Runnable {
     public static Level level;
     public static int currentLevel = 0;
     public String[] currentText = {"Welcome to the Arctic branch of \"Pleasant Smells\" glue company.", "This room is used for promising applicants, such as yourself.", "(Though you are the only one who applied)", "We want to test the skills you will need to work here.", "Please collect 5 FBLA items for us from each floor.", "We promise there's meaning to this.", "*Heh*", "That is all. Penguins out!"};
-    public boolean isPaused = false, loaded = false, isFullScreen = false;
-    ;
+    public static boolean isPaused = false, loaded = false, 
+            isFullScreen = true;
+    
     public static final int gs_inGame = 0;
     public static final int gs_about = 1;
     public static final int gs_controls = 2;
@@ -79,7 +80,9 @@ public class BusinessSim extends Canvas implements Runnable {
     public static int gameState = gs_startScreen;
     private int mainScreenPointerPosition = gs_inGame;
     private boolean nearElevator = false;
-    private Font tahoma = new Font("Tahoma", Font.ITALIC, 36);
+    private Font tahoma;// = new Font("Tahoma", Font.ITALIC, 36);
+    
+    private int FPS = 0;
 
     //Starts the game, used for frame set up
     public static void main(String[] args) {
@@ -93,7 +96,7 @@ public class BusinessSim extends Canvas implements Runnable {
         bs.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         bs.frame.setFocusable(true);
         bs.frame.setLocationRelativeTo(null);
-        bs.setFullScreen(false);
+        bs.setFullScreen(isFullScreen);
         bs.start();
     }
 
@@ -122,6 +125,8 @@ public class BusinessSim extends Canvas implements Runnable {
         level = new Level(Level.levelTilePaths[0], Level.levelObjPaths[0], 0, Level.xOff[0], Level.yOff[0]);
         player = new Player(level.playerV, screen, key);
         MusicPlayer.init();
+        
+        tahoma = new Font("Tahoma", Font.ITALIC, (int) (36 * scale));
     }
 
     //start applet
@@ -169,7 +174,7 @@ public class BusinessSim extends Canvas implements Runnable {
 
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
-
+                FPS = frames;
 //                frame.setTitle(title + version + " | FPS: " + frames + " UPS: " + updates + " px: " + player.v.getX() + " py: " + player.v.getY());
                 frame.setTitle(((isPaused) ? "***PAUSED*** " : "") + title + version + " | FPS: " + frames + " Floor: " + (currentLevel + 1) + " Pickups left here: " + level.itemCount);
                 updates = frames = 0;
@@ -245,9 +250,10 @@ public class BusinessSim extends Canvas implements Runnable {
         
         Graphics2D g = (Graphics2D) bs.getDrawGraphics();
         {
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 //            g.drawImage(image, 0, 0, null);
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - fullWidth;
             if (isFullScreen) {
                 g.setColor(Color.BLACK);
@@ -260,7 +266,11 @@ public class BusinessSim extends Canvas implements Runnable {
             g.setColor(Color.WHITE);
 //            g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
             g = (Graphics2D) screen.displayText(currentText, key, g);
-
+            
+            g.setColor(Color.RED);
+            g.setFont(tahoma);
+            g.drawString("FPS: " + FPS, (int) ((screen.width - 150) * scale), (int) (40 * scale));
+            
             if (nearElevator) {
                 g.setColor(Color.WHITE);
                 g.setFont(tahoma);
