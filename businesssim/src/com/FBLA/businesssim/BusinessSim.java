@@ -13,7 +13,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -91,7 +93,7 @@ public class BusinessSim extends Canvas implements Runnable {
         bs.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         bs.frame.setFocusable(true);
         bs.frame.setLocationRelativeTo(null);
-        bs.setFullScreen(true);
+        bs.setFullScreen(false);
         bs.start();
     }
 
@@ -241,8 +243,10 @@ public class BusinessSim extends Canvas implements Runnable {
 //        }
 //        lastPixels = Arrays.copyOf(temp, temp.length);
         
-        Graphics g = bs.getDrawGraphics();
+        Graphics2D g = (Graphics2D) bs.getDrawGraphics();
         {
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 //            g.drawImage(image, 0, 0, null);
             int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - fullWidth;
             if (isFullScreen) {
@@ -255,7 +259,7 @@ public class BusinessSim extends Canvas implements Runnable {
             }
             g.setColor(Color.WHITE);
 //            g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
-            g = screen.displayText(currentText, key, g);
+            g = (Graphics2D) screen.displayText(currentText, key, g);
 
             if (nearElevator) {
                 g.setColor(Color.WHITE);
@@ -278,7 +282,7 @@ public class BusinessSim extends Canvas implements Runnable {
                             int x = screen.twoDToIso(hObj.v.getiX() - screen.xOffs, hObj.v.getiY() - screen.yOffs)[0];
                             int y = screen.twoDToIso(hObj.v.getiX() - screen.xOffs, hObj.v.getiY() - screen.yOffs)[1];
                             g.setColor(Color.white);
-                            g.drawLine((int) ((player.v.getiX() - screen.xOffs + 15) * fullScale), (int) ((player.v.getiY() - screen.yOffs + 150) * fullScale), (int) ((x + 15) * fullScale), (int) ((y - 30) * fullScale));
+                            g.drawLine((int) ((player.v.getiX() - screen.xOffs + 15) * scale), (int) ((player.v.getiY() - screen.yOffs + 150) * scale), (int) ((x + 15) * scale), (int) ((y - 30) * scale));
                             g.setColor(Color.black);
                         }
                     }
