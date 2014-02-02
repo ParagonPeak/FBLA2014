@@ -7,19 +7,18 @@ import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.input.Keyboard;
 import com.FBLA.businesssim.input.Mouse;
 import com.FBLA.businesssim.level.Level;
+import static com.FBLA.businesssim.level.Level.hunt;
 import com.FBLA.businesssim.sound.MusicPlayer;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.awt.image.MemoryImageSource;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -203,8 +202,8 @@ public class BusinessSim extends Canvas implements Runnable {
         }
         if (gameState != gs_inGame && !(screenImage == null)) {
             Graphics2D g = (Graphics2D) bs.getDrawGraphics();
-//            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 //            g.drawImage(screenImage, 0, 0, null);
             int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - fullWidth;
             g.setColor(Color.BLACK);
@@ -221,9 +220,6 @@ public class BusinessSim extends Canvas implements Runnable {
 
         screen.clear();
         level.render(xScroll, yScroll, screen, player);
-        //player.render(screen); // player.render() called by level.render() because Sprite ordering
-        // screen.renderSpriteOnScreen(0, 0, Sprite.grass); // example of what renderSpriteOnScreen does
-
         System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
 
         // blur
@@ -262,8 +258,7 @@ public class BusinessSim extends Canvas implements Runnable {
             g.setColor(Color.RED);
             g.setFont(tahoma);
             g.drawString("FPS: " + FPS, (int) ((screen.width - 150) * scale), (int) (40 * scale));
-            if ((nearElevator && key.action && !key.last_action) || isPrompting) {
-                isPrompting = true;
+            if (nearElevator && isPrompting) {
                 g = promptFloorSwitch(g);
             }
 //            if (nearElevator) {
@@ -310,14 +305,45 @@ public class BusinessSim extends Canvas implements Runnable {
             Sprite.update();
             level.update(player);
             nearElevator = level.playerNearElevator(player);
+
+            if (isPrompting) {
+                updateElevatorPointer();
+            }
+
             // ingame actions
             if (key.action & !key.last_action) {
                 // level changing 
-                if (nearElevator) {
-                    switchToNextAvailableLevel();
-                    MusicPlayer o = new MusicPlayer();
-                    o.init();
-                    o.changeTrack(5);
+                if (Level.isNearHunt) {
+                    for (int i = 0; i < hunt[currentLevel].length; i++) {
+                        if (!hunt[currentLevel][i].isRemoved()) {
+                            if (hunt[currentLevel][i].v.distFrom(player.v) < 50) {
+                                hunt[currentLevel][i].event();
+                                screen.updateText("" + level.itemCount + " items left on this floor.");
+                            }
+                        }
+                    }
+                } else if (nearElevator && !isPrompting) {
+                    isPrompting = true;
+                } else if (nearElevator && isPrompting) {
+                    if (elevatorPointer != currentLevel) {
+                        if (elevatorPointer == 0) {
+                            switchLevel(elevatorPointer);
+                            MusicPlayer o = new MusicPlayer();
+                            o.init();
+                            o.changeTrack(5);
+                        } else if (Level.finished[elevatorPointer - 1]) {
+                            switchLevel(elevatorPointer);
+                            MusicPlayer o = new MusicPlayer();
+                            o.init();
+                            o.changeTrack(5);
+                        } else {
+                            MusicPlayer o = new MusicPlayer();
+                            o.init();
+                            o.changeTrack(6); //will be a click noise, show it's not available
+                        }
+                    } else {
+                        isPrompting = false;
+                    }
                 } else if (false) { // action key should only do one thing at a time, "hence else if"
                 }
             }
@@ -331,31 +357,19 @@ public class BusinessSim extends Canvas implements Runnable {
         }
 
         // if action is pressed in main menu. inc key/mouse don't actually make this do stuff yet for some reason
-        if ((key.action && !key.last_action)) {// || (key.inc && !key.last_inc) || (!mouseIsClicked && last_mouseIsClicked)) {
+        if ((key.action && !key.last_action) || (!mouseIsClicked && last_mouseIsClicked)) {
             if (mainScreenPointerPosition == mspp_quit) {
                 System.exit(3); // if in menu and on quit, quit
             }
             int gameState = BusinessSim.gameState;
             changeGameState();
             loaded = true;
-            if ((key.action && !key.last_action) && gameState != BusinessSim.gameState) {
+            if (gameState != BusinessSim.gameState) {
                 changeGameState();
                 changeMusic();
             }
             loaded = false;
             System.out.println("action");
-        }
-
-        if (isPrompting) {
-            if (key.action && !key.last_action) {
-                if (elevatorPointer != currentLevel) {
-                    if (elevatorPointer == 0) {
-                        switchLevel(elevatorPointer);
-                    } else if (Level.finished[elevatorPointer - 1]) {
-                        switchLevel(elevatorPointer);
-                    }
-                }
-            }
         }
 
         // pause
@@ -390,18 +404,15 @@ public class BusinessSim extends Canvas implements Runnable {
 
     private Graphics2D promptFloorSwitch(Graphics2D g) {
         //x,y,width,height,arcW,arcH
+        if (!isPrompting) {
+            return g;
+        }
         if (!Level.finished[0]) {
-            screen.updateText(new String[]{"Hey, what do you think you're doing?","You can't possibly think we'd grant you elevator privleges","without completing the entrance testing, do you?","Finish this up here before you try again"});
+            screen.updateText(new String[]{"Hey, what do you think you're doing?", "You can't possibly think we'd grant you elevator privleges", "without completing the entrance testing, do you?", "Finish this up here before you try again"});
             isPrompting = false;
             System.out.println("FAILED ATTEMPT");
             return g;
         }
-        updateElevatorPointer();
-//        if (!screen.textRequiresUpdate) {
-//            isPrompting = false;
-//            System.out.println("STAHP");
-//            return g;
-//        }
         g.setColor(new Color(0x7f, 0x6a, 0, 0xb0));
         int left = (int) (((width - 100 * scale) / 2)),
                 top = (int) (((height - 250 * scale) / 2)),
@@ -444,25 +455,11 @@ public class BusinessSim extends Canvas implements Runnable {
 
     private void switchLevel(int levelNum) {
         System.out.println("SWITCH");
-        currentLevel =  elevatorPointer = levelNum;
+        currentLevel = elevatorPointer = levelNum;
         level = new Level(Level.levelTilePaths[levelNum], Level.levelObjPaths[levelNum], levelNum, player.v.getX(), player.v.getY());
         screen.updateText(Level.levelMessage[currentLevel]);
         isPrompting = false;
-       
-    }
 
-    private void switchToNextAvailableLevel() {
-        if (!(currentLevel == Level.levelAmount - 1) && Level.finished[currentLevel]) { // move up a level if finished and not on last level
-            currentLevel++;
-        } else if (currentLevel == 0) { // do nothing if you're on level 0 and not finished
-            return;
-        } else { // go back to level 0 if you can't move up and aren't on level 0
-            currentLevel = 0;
-        }
-//        level = new Level(Level.levelTilePaths[currentLevel], Level.levelObjPaths[currentLevel], currentLevel, Level.xOff[currentLevel], Level.yOff[currentLevel]);
-//         player = new Player(level.playerV, screen, key);
-        level = new Level(Level.levelTilePaths[currentLevel], Level.levelObjPaths[currentLevel], currentLevel, player.v.getX(), player.v.getY());
-        screen.updateText(Level.levelMessage[currentLevel]);
     }
 
     private void changeMusic() {

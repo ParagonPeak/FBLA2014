@@ -10,7 +10,7 @@ public class MusicPlayer {
 
     public MusicPlayer() {
         sounds = new Sound[]{Sound.mainMenuMusic, Sound.floorEvenMusic, Sound.floorOddMusic, Sound.pauseMusic, Sound.creditsMusic, Sound.sfx_elevatorDing};
-        soundEffects = new Sound[]{};
+        soundEffects = new Sound[]{ Sound.sfx_elevatorDing};
         currentTrack = -1;
     }
     
@@ -46,11 +46,5 @@ public class MusicPlayer {
         }
         sounds[currentTrack = i].start(); //I think this works...
         sounds[currentTrack].setVolumeByPercent(volume);
-    }
-    
-    public void playSoundEffect(int i)
-    {
-        if(i < 0 || i >= soundEffects.length) return;
-        sounds[i].start();
     }
 }

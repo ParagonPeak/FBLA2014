@@ -8,11 +8,9 @@ import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.graphics.SpriteSheet;
 import com.FBLA.businesssim.level.raisedobject.RaisedObject;
 import com.FBLA.businesssim.level.tile.Tile;
-import com.FBLA.businesssim.sound.MusicPlayer;
 import com.FBLA.businesssim.util.Vector2d;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -36,6 +34,7 @@ public class Level {
     public String objPath;
     public int levelNumber; // I put this here in case we want to hardcode some level-specific commands
     public int itemCount = 0;
+    public static boolean isNearHunt = false;
     // arrays to store level specific values to make them easier to call and change
     public static final int levelAmount = 6;
     public static final int totalItems = 5;
@@ -173,22 +172,16 @@ public class Level {
                 hunt[levelNumber] = new HuntObject[totalItems];
                 
                 for (int i = 0; i < totalItems; i++) {
-                    hunt[levelNumber][i] = new HuntObject(makeHuntSpot(), Sprite.huntSprite2, BusinessSim.bs.screen);
+                    hunt[levelNumber][i] = new HuntObject(makeHuntSpot(), Sprite.huntSprite2, BusinessSim.bs.screen, pickUpDescriptions[levelNumber][i]);
                 }
             }
 
+            isNearHunt = false;
             // check if you're near hunt spots
             for (int i = 0; i < hunt[levelNumber].length; i++) {
                 if (!hunt[levelNumber][i].isRemoved()) {
-                    if (hunt[levelNumber][i].v.distFrom(p.v) < 50 && p.actionDown) {
-                        hunt[levelNumber][i].remove();
-                        BusinessSim.bs.screen.updateText(new String[]{"Woah! You picked up a skill!", "Let's see what it is.."});
-                        BusinessSim.bs.screen.updateText(pickUpDescriptions[levelNumber][5 - itemCount]);
-                        BusinessSim.bs.screen.updateText(new String[]{(itemCount - 1) + " skills remaining on this floor!"});
-                        // play a sound, write a message
-                        MusicPlayer m = new MusicPlayer();
-                        m.init();
-                        m.changeTrack(5);
+                    if (hunt[levelNumber][i].v.distFrom(p.v) < 50) {
+                        isNearHunt = true;
                     }
                 }
             }
@@ -202,10 +195,10 @@ public class Level {
                 }
             }
             if (finished[levelNumber]) {
-                if (levelNumber == finished.length - 1) {
+                if (levelNumber == levelAmount - 1) {
                     BusinessSim.bs.screen.updateText(new String[]{"Thank you, kind applicant!", "Now with all these, we can rule the world!", "How you ask?", "Through the addictiveness of the glue of course!", "We use all these skulls to make our special, patented glue which people won't be able to resist.", "No one can stop us now!", "Now for the final skull..."});
                 } else {
-                    BusinessSim.bs.screen.updateText("Good Job. Now enter the elevator to go to floor #" + (levelNumber + 2));
+                        BusinessSim.bs.screen.updateText("Good Job. Now enter the elevator to go to floor #" + (levelNumber + 2));
                     System.out.println("Floor done");
                 }
             }
