@@ -14,21 +14,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.awt.image.MemoryImageSource;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -69,9 +62,9 @@ public class BusinessSim extends Canvas implements Runnable {
     public static Level level;
     public static int currentLevel = 0;
     public String[] currentText = {"Welcome to the Arctic branch of \"Pleasant Smells\" glue company.", "This room is used for promising applicants, such as yourself.", "(Though you are the only one who applied)", "We want to test the skills you will need to work here.", "Please collect 5 FBLA items for us from each floor.", "We promise there's meaning to this.", "*Heh*", "That is all. Penguins out!"};
-    public static boolean isPaused = false, loaded = false, 
-            isFullScreen = true;
-    
+    public static boolean isPaused = false, loaded = false,
+            isFullScreen = false,
+            isPrompting = false;
     public static final int gs_inGame = 0;
     public static final int gs_about = 1;
     public static final int gs_controls = 2;
@@ -81,12 +74,11 @@ public class BusinessSim extends Canvas implements Runnable {
     private int mainScreenPointerPosition = gs_inGame;
     private boolean nearElevator = false;
     private Font tahoma;// = new Font("Tahoma", Font.ITALIC, 36);
-    
     private int FPS = 0;
 
     //Starts the game, used for frame set up
     public static void main(String[] args) {
-        
+
         bs = new BusinessSim();
         bs.frame.setResizable(false);
         bs.frame.setVisible(true);
@@ -96,7 +88,7 @@ public class BusinessSim extends Canvas implements Runnable {
         bs.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         bs.frame.setFocusable(true);
         bs.frame.setLocationRelativeTo(null);
-        bs.setFullScreen(isFullScreen);
+        bs.setFullScreen(false);
         bs.start();
     }
 
@@ -114,7 +106,7 @@ public class BusinessSim extends Canvas implements Runnable {
         System.out.println(fullWidth);
         Dimension size = new Dimension((int) (width * scale), (int) (height * scale));
         setPreferredSize(size);
-        
+
         key = new Keyboard();
         mouse = new Mouse();
         addMouseListener(mouse);
@@ -125,7 +117,7 @@ public class BusinessSim extends Canvas implements Runnable {
         level = new Level(Level.levelTilePaths[0], Level.levelObjPaths[0], 0, Level.xOff[0], Level.yOff[0]);
         player = new Player(level.playerV, screen, key);
         MusicPlayer.init();
-        
+
         tahoma = new Font("Tahoma", Font.ITALIC, (int) (36 * scale));
     }
 
@@ -182,7 +174,7 @@ public class BusinessSim extends Canvas implements Runnable {
         }
         stop();
     }
-    
+
     // used for pixel manipulation like blurring
 //    public int getR(int col) {
 //        return col % 256;
@@ -200,7 +192,6 @@ public class BusinessSim extends Canvas implements Runnable {
 //        }
 //        return sum / ints.length;
 //    }
-    
     public void render() {
         BufferStrategy bs = getBufferStrategy();
         int xScroll = (int) (player.v.getX() - screen.width / 2);
@@ -211,15 +202,17 @@ public class BusinessSim extends Canvas implements Runnable {
             return;
         }
         if (gameState != gs_inGame && !(screenImage == null)) {
-            Graphics g = bs.getDrawGraphics();
+            Graphics2D g = (Graphics2D) bs.getDrawGraphics();
+//            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 //            g.drawImage(screenImage, 0, 0, null);
             int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - fullWidth;
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, screenWidth + fullWidth, fullHeight);
-            g.drawImage(screenImage, (isFullScreen)? screenWidth :0, 0, width, height, 0, 0, normWidth, normHeight, null);
+            g.drawImage(screenImage, (isFullScreen) ? screenWidth : 0, 0, width, height, 0, 0, normWidth, normHeight, null);
             g.setColor(Color.WHITE);
             if (gameState == gs_startScreen) {
-                g.fillRect(width - (int)(40 * scale), (int) ((327 + (mainScreenPointerPosition * 43))* scale), (int)(20 * scale), (int) (15 * scale));
+                g.fillRect(width - (int) (40 * scale), (int) ((327 + (mainScreenPointerPosition * 43)) * scale), (int) (20 * scale), (int) (15 * scale));
             }
             g.dispose();
             bs.show();
@@ -232,7 +225,7 @@ public class BusinessSim extends Canvas implements Runnable {
         // screen.renderSpriteOnScreen(0, 0, Sprite.grass); // example of what renderSpriteOnScreen does
 
         System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
-        
+
         // blur
 //        int[] temp = Arrays.copyOf(pixels, pixels.length);
 //        int pArrScale = pixels.length / 800 / 500;
@@ -247,12 +240,12 @@ public class BusinessSim extends Canvas implements Runnable {
 //            pixels[i] = r + (g << 8) + (b << 16);
 //        }
 //        lastPixels = Arrays.copyOf(temp, temp.length);
-        
+
         Graphics2D g = (Graphics2D) bs.getDrawGraphics();
         {
 //            g.drawImage(image, 0, 0, null);
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+//            g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - fullWidth;
             if (isFullScreen) {
@@ -261,46 +254,52 @@ public class BusinessSim extends Canvas implements Runnable {
 //                g.fillRect(width, 0, screenWidth, height);
                 g.drawImage(image, screenWidth, 0, width, height, 0, 0, normWidth, normHeight, null);
             } else {
-                g.drawImage(image, 0, 0 , null);
+                g.drawImage(image, 0, 0, null);
             }
             g.setColor(Color.WHITE);
 //            g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
             g = (Graphics2D) screen.displayText(currentText, key, g);
-            
             g.setColor(Color.RED);
             g.setFont(tahoma);
             g.drawString("FPS: " + FPS, (int) ((screen.width - 150) * scale), (int) (40 * scale));
-            
-            if (nearElevator) {
-                g.setColor(Color.WHITE);
-                g.setFont(tahoma);
-                if (level.finished[currentLevel] && currentLevel != Level.levelAmount) {
-                    g.drawString("Press X to continue", 10, 50);
-                } else if (currentLevel == 0) {
-                    g.drawString("Not ready to advance", 10, 50);
-                } else {
-                    g.drawString("Press X for the first level", 10, 50);
-                }
+            if ((nearElevator && key.action && !key.last_action) || isPrompting) {
+                isPrompting = true;
+                g = promptFloorSwitch(g);
             }
+//            if (nearElevator) {
+//                g.setColor(Color.WHITE);
+//                g.setFont(tahoma);
+//                if (level.finished[currentLevel] && currentLevel != Level.levelAmount) {
+//                    g.drawString("Press X to continue", 10, 50);
+//                } else if (currentLevel == 0) {
+//                    g.drawString("Not ready to advance", 10, 50);
+//                } else {
+//                    g.drawString("Press X for the first level", 10, 50);
+//                }
+//            }
+            g = drawLineToObjects(g);
+        }
+        g.dispose();
+        bs.show();
+    }
 
-            if (Level.hunt[level.levelNumber][0] != null && Level.hunt != null && Level.hunt[level.levelNumber] != null) {
-                if (level.playerNearPickup(player)) {
-                    for (HuntObject hObj : Level.hunt[level.levelNumber]) {
-                        if (hObj.v.distFrom(player.v) < 300 && !hObj.isRemoved()) {
-                            //Implement later
-                            //Draws a line between items within 300 pixels and the player
-                            int x = screen.twoDToIso(hObj.v.getiX() - screen.xOffs, hObj.v.getiY() - screen.yOffs)[0];
-                            int y = screen.twoDToIso(hObj.v.getiX() - screen.xOffs, hObj.v.getiY() - screen.yOffs)[1];
-                            g.setColor(Color.white);
-                            g.drawLine((int) ((player.v.getiX() - screen.xOffs + 15) * scale), (int) ((player.v.getiY() - screen.yOffs + 150) * scale), (int) ((x + 15) * scale), (int) ((y - 30) * scale));
-                            g.setColor(Color.black);
-                        }
+    public Graphics2D drawLineToObjects(Graphics2D g) {
+        if (Level.hunt[level.levelNumber][0] != null && Level.hunt != null && Level.hunt[level.levelNumber] != null) {
+            if (level.playerNearPickup(player)) {
+                for (HuntObject hObj : Level.hunt[level.levelNumber]) {
+                    if (hObj.v.distFrom(player.v) < 300 && !hObj.isRemoved()) {
+                        //Implement later
+                        //Draws a line between items within 300 pixels and the player
+                        int x = screen.twoDToIso(hObj.v.getiX() - screen.xOffs, hObj.v.getiY() - screen.yOffs)[0];
+                        int y = screen.twoDToIso(hObj.v.getiX() - screen.xOffs, hObj.v.getiY() - screen.yOffs)[1];
+                        g.setColor(Color.white);
+                        g.drawLine((int) ((player.v.getiX() - screen.xOffs + 15) * scale), (int) ((player.v.getiY() - screen.yOffs + 150) * scale), (int) ((x + 15) * scale), (int) ((y - 30) * scale));
+                        g.setColor(Color.black);
                     }
                 }
             }
         }
-        g.dispose();
-        bs.show();
+        return g;
     }
 
     public void update() {
@@ -328,40 +327,7 @@ public class BusinessSim extends Canvas implements Runnable {
 
         // if in the main menu and a key is pressed, update
         if (gameState == gs_startScreen) {
-
-            if (mouse.xPos > 600 * scale && mouse.yPos > 310 * scale){
-                if (mouse.yPos < 355 * scale) {
-                    mainScreenPointerPosition = gs_inGame;
-                } else if (mouse.yPos < 400 * scale) {
-                    mainScreenPointerPosition = gs_about;
-                } else if (mouse.yPos < 440 * scale) {
-                    mainScreenPointerPosition = gs_controls;
-                } else {
-                    mainScreenPointerPosition = mspp_quit;
-                }
-            }
-            if ((key.up & !key.last_up) | (key.down & !key.last_down)) {
-                if (key.up) {
-                    mainScreenPointerPosition--;
-                }
-                if (key.down) {
-                    mainScreenPointerPosition++;
-                }
-                if (mainScreenPointerPosition < gs_inGame) {
-                    mainScreenPointerPosition = mspp_quit;
-                } else if (mainScreenPointerPosition > mspp_quit) {
-                    mainScreenPointerPosition = gs_inGame;
-                }
-            }
-
-            if ((key.left & !key.last_left) | (key.right & !key.last_right)) {
-                if (key.left) {
-                    MusicPlayer.mp.decreaseVolume();
-                }
-                if (key.right) {
-                    MusicPlayer.mp.increaseVolume();
-                }
-            }
+            updateMainPointer();
         }
 
         // if action is pressed in main menu. inc key/mouse don't actually make this do stuff yet for some reason
@@ -380,6 +346,18 @@ public class BusinessSim extends Canvas implements Runnable {
             System.out.println("action");
         }
 
+        if (isPrompting) {
+            if (key.action && !key.last_action) {
+                if (elevatorPointer != currentLevel) {
+                    if (elevatorPointer == 0) {
+                        switchLevel(elevatorPointer);
+                    } else if (Level.finished[elevatorPointer - 1]) {
+                        switchLevel(elevatorPointer);
+                    }
+                }
+            }
+        }
+
         // pause
         if ((key.pause && !key.last_pause) && gameState == gs_inGame) {
             isPaused = !isPaused;
@@ -388,7 +366,7 @@ public class BusinessSim extends Canvas implements Runnable {
     }
 
     public void setFullScreen(boolean b) {
-        frame.setVisible(false);
+        frame.setVisible(true);
         frame.dispose();
         frame.setUndecorated(b);
         if (b) {
@@ -401,6 +379,8 @@ public class BusinessSim extends Canvas implements Runnable {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             frame.setLocationRelativeTo(null);
         } else {
+            width = normWidth;
+            height = normHeight;
             frame.setPreferredSize(new Dimension(width, height));
             scale = 1;
         }
@@ -408,8 +388,71 @@ public class BusinessSim extends Canvas implements Runnable {
         frame.setVisible(true);
     }
 
+    private Graphics2D promptFloorSwitch(Graphics2D g) {
+        //x,y,width,height,arcW,arcH
+        if (!Level.finished[0]) {
+            screen.updateText(new String[]{"Hey, what do you think you're doing?","You can't possibly think we'd grant you elevator privleges","without completing the entrance testing, do you?","Finish this up here before you try again"});
+            isPrompting = false;
+            System.out.println("FAILED ATTEMPT");
+            return g;
+        }
+        updateElevatorPointer();
+//        if (!screen.textRequiresUpdate) {
+//            isPrompting = false;
+//            System.out.println("STAHP");
+//            return g;
+//        }
+        g.setColor(new Color(0x7f, 0x6a, 0, 0xb0));
+        int left = (int) (((width - 100 * scale) / 2)),
+                top = (int) (((height - 250 * scale) / 2)),
+                right = (int) (100 * scale),
+                bottom = (int) (150 * scale);
+        g.fillRoundRect(left, top, right, bottom, 10, 10);
+        g.setColor(Color.black);
+        g.setFont(new Font("Tahoma", Font.PLAIN, (int) (12 * scale)));
+        top += 15;
+        g.drawString("FLOOR", (int) (left + (35 * scale)), top);
+        left += 20 * scale;
+        for (int i = 0; i < Level.levelAmount; i++) {
+            if (i % 2 == 0) {
+                top += (30 * scale);
+            } else {
+                left += (40 * scale);
+            }
+            g.setColor(Color.BLACK);
+            g.fillOval(left, top, (int) (20 * scale), (int) (scale * 20));
+            if (i == 0) {
+                g.setColor(Color.white);
+            } else if (Level.finished[i - 1]) {
+                g.setColor(Color.white);
+            } else {
+                g.setColor(Color.DARK_GRAY);
+            }
+            if (i == elevatorPointer) {
+                g.setColor(Color.yellow);
+            }
+            g.fillOval((int) (left + (2 * scale)), (int) (top + (2 * scale)), (int) (16 * scale), (int) (16 * scale));
+            g.setColor(Color.black);
+            g.drawString("" + (i + 1), (float) (left + 7 * scale), (float) (top + 14 * scale));
+
+            if (i % 2 == 1) {
+                left -= (40 * scale);
+            }
+        }
+        return g;
+    }
+
+    private void switchLevel(int levelNum) {
+        System.out.println("SWITCH");
+        currentLevel =  elevatorPointer = levelNum;
+        level = new Level(Level.levelTilePaths[levelNum], Level.levelObjPaths[levelNum], levelNum, player.v.getX(), player.v.getY());
+        screen.updateText(Level.levelMessage[currentLevel]);
+        isPrompting = false;
+       
+    }
+
     private void switchToNextAvailableLevel() {
-        if (!(currentLevel == level.levelAmount - 1) && level.finished[currentLevel]) { // move up a level if finished and not on last level
+        if (!(currentLevel == Level.levelAmount - 1) && Level.finished[currentLevel]) { // move up a level if finished and not on last level
             currentLevel++;
         } else if (currentLevel == 0) { // do nothing if you're on level 0 and not finished
             return;
@@ -435,25 +478,64 @@ public class BusinessSim extends Canvas implements Runnable {
                 MusicPlayer.mp.changeTrack(0);
         }
     }
+    private int elevatorPointer = 0;
 
-    private void updatePointer() {
-        if (key.left) {
-            MusicPlayer.mp.decreaseVolume();
+    public void updateElevatorPointer() {
+        if (key.up && !key.last_up) {
+            if (elevatorPointer > 1) {
+                elevatorPointer -= 2; //moves the pointer up one in the grid selection in the same left-right spot.
+            } else {
+                elevatorPointer += 4; //moves the pointer to the bottom row in the same left-right spot.
+            }
+        } else if (key.down && !key.last_down) {
+            if (elevatorPointer < 4) {
+                elevatorPointer += 2; //Moves the pointer down one y spot in the grid selection in same left-right spot.
+            } else {
+                elevatorPointer %= 2; //Moves the pointer to the top row in the same left-right spot.
+            }
+        } else if ((key.right && !key.last_right) || (key.left && !key.last_left)) {
+            if (elevatorPointer % 2 == 0) {
+                elevatorPointer += 1; //Changes the left right position, but won't change the up, down position;
+            } else {
+                elevatorPointer -= 1; //Changes the left right position, but won't change the up, down position;
+            }
         }
-        if (key.right) {
-            MusicPlayer.mp.increaseVolume();
+    }
+
+    private void updateMainPointer() {
+
+        if (mouse.xPos > 600 * scale && mouse.yPos > 310 * scale) {
+            if (mouse.yPos < 355 * scale) {
+                mainScreenPointerPosition = gs_inGame;
+            } else if (mouse.yPos < 400 * scale) {
+                mainScreenPointerPosition = gs_about;
+            } else if (mouse.yPos < 440 * scale) {
+                mainScreenPointerPosition = gs_controls;
+            } else {
+                mainScreenPointerPosition = mspp_quit;
+            }
         }
-        if (key.up) {
-            mainScreenPointerPosition--;
+        if ((key.up & !key.last_up) | (key.down & !key.last_down)) {
+            if (key.up) {
+                mainScreenPointerPosition--;
+            }
+            if (key.down) {
+                mainScreenPointerPosition++;
+            }
+            if (mainScreenPointerPosition < gs_inGame) {
+                mainScreenPointerPosition = mspp_quit;
+            } else if (mainScreenPointerPosition > mspp_quit) {
+                mainScreenPointerPosition = gs_inGame;
+            }
         }
-        if (key.down) {
-            mainScreenPointerPosition++;
-        }
-        if (mainScreenPointerPosition < gs_inGame) {
-            mainScreenPointerPosition = mspp_quit;
-        }
-        if (mainScreenPointerPosition > mspp_quit) {
-            mainScreenPointerPosition = gs_inGame;
+
+        if ((key.left & !key.last_left) | (key.right & !key.last_right)) {
+            if (key.left) {
+                MusicPlayer.mp.decreaseVolume();
+            }
+            if (key.right) {
+                MusicPlayer.mp.increaseVolume();
+            }
         }
     }
 

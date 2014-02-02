@@ -12,12 +12,10 @@ import java.io.IOException;
 public class NPC extends Mob{
     
     protected String[] speak;
-    protected Screen screen;
     
     public NPC(Vector2d v, String name, Screen sc)
     {
         super(v, name);
-        screen = sc;
     }
     
     /**
@@ -53,6 +51,6 @@ public class NPC extends Mob{
     
     public void speak()
     {
-        
+//        BusinessSim.bs.screen.speakPrompt(v.getiX(), v.getiY(), speak, BusinessSim.bs.getGraphics());
     }
 }

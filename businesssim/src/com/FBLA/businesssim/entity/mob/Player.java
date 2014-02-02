@@ -1,5 +1,6 @@
 package com.FBLA.businesssim.entity.mob;
 
+import com.FBLA.businesssim.BusinessSim;
 import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.input.Keyboard;
@@ -29,7 +30,11 @@ public class Player extends Mob{
         if(keys.action) {
             actionDown = true;
         }
-        
+        if(BusinessSim.isPrompting) 
+        {
+            moving = false;
+            return;
+        }
         double dx = 0, dy = 0;
         if (keys.up) {
             dy -= speed;

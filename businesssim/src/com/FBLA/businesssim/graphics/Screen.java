@@ -197,7 +197,11 @@ public class Screen {
             }
         }
         lastKeyAction = key.inc;
+//        drawText(displayedLines, g).dispose();
         return drawText(displayedLines, g);
+    }
+    
+    public void speak(int x, int y, String[] prompt, Graphics g){
     }
 
     public Graphics drawText(String[] lines, Graphics g) {
