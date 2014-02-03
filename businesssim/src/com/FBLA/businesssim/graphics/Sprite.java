@@ -20,36 +20,35 @@ public class Sprite {
     private SpriteSheet sheet;
     public static ArrayList<Sprite> sprites = new ArrayList<>();
     public static Sprite voidSprite = new Sprite(32, 32, 0x121212);
-//    public static Sprite voidSprite = new Sprite(32, 32, 0x22A099);
     public static Sprite smallRedSprite = new Sprite(2, 2, 0xff0000);
     public static Sprite smallYellowSprite = new Sprite(2, 2, 0xffff00);
     public static Sprite emptySprite = new Sprite(32, 32, 0xFFFF00FF);
-    public static Sprite playerSprite = new Sprite(32,64,0,0,SpriteSheet.player, 4);
+    public static Sprite playerSprite = new Sprite(32,64,0,0,SpriteSheet.player, 4, 8);
     public static Sprite playerSpriteFlip = new Sprite(playerSprite);
-    public static Sprite backwardsPlayerSprite = new Sprite(32,64,0,1,SpriteSheet.player, 4);
+    public static Sprite backwardsPlayerSprite = new Sprite(32,64,0,1,SpriteSheet.player, 4, 8);
     public static Sprite backwardsPlayerSpriteFlip = new Sprite(backwardsPlayerSprite);
     
     public static Sprite huntSprite1 = new Sprite(32,64,0,0,SpriteSheet.huntObj, 8);
     public static Sprite huntSprite2 = new Sprite(32,64,0,1,SpriteSheet.huntObj, 8);
     
-    public static Sprite penguinBlueTuxSpriteFlip = new Sprite(32,64,0,0,SpriteSheet.penguinBlue, 4);
-    public static Sprite backwardsPenguinBlueTuxSpriteFlip = new Sprite(32,64,1,0,SpriteSheet.penguinBlue, 4);
+    public static Sprite penguinBlueTuxSpriteFlip = new Sprite(32,64,0,0,SpriteSheet.penguinBlue, 4, 8);
     public static Sprite penguinBlueTuxSprite = new Sprite(penguinBlueTuxSpriteFlip);
+    public static Sprite backwardsPenguinBlueTuxSpriteFlip = new Sprite(32,64,1,0,SpriteSheet.penguinBlue, 4, 8);
     public static Sprite backwardsPenguinBlueTuxSprite = new Sprite(backwardsPenguinBlueTuxSpriteFlip);
     
-    public static Sprite penguinBlueSpriteFlip = new Sprite(new Sprite(32,64,2,0,SpriteSheet.penguinBlue, 4));
-    public static Sprite backwardsPenguinBlueSpriteFlip = new Sprite(new Sprite(32,64,3,0,SpriteSheet.penguinBlue, 4));
+    public static Sprite penguinBlueSpriteFlip = new Sprite(new Sprite(32,64,2,0,SpriteSheet.penguinBlue, 4, 8));
     public static Sprite penguinBlueSprite = new Sprite(penguinBlueSpriteFlip);
+    public static Sprite backwardsPenguinBlueSpriteFlip = new Sprite(new Sprite(32,64,3,0,SpriteSheet.penguinBlue, 4, 8));
     public static Sprite backwardsPenguinBlueSprite = new Sprite(backwardsPenguinBlueSpriteFlip);
     
-    public static Sprite penguinGrayTuxSpriteFlip = new Sprite(32,64,0,0,SpriteSheet.penguinGray, 4);
-    public static Sprite backwardsPenguinGrayTuxSpriteFlip = new Sprite(32,64,1,0,SpriteSheet.penguinGray, 4);
+    public static Sprite penguinGrayTuxSpriteFlip = new Sprite(32,64,0,0,SpriteSheet.penguinGray, 4, 8);
     public static Sprite penguinGrayTuxSprite = new Sprite(penguinGrayTuxSpriteFlip);
+    public static Sprite backwardsPenguinGrayTuxSpriteFlip = new Sprite(32,64,1,0,SpriteSheet.penguinGray, 4, 8);
     public static Sprite backwardsPenguinGrayTuxSprite = new Sprite(backwardsPenguinGrayTuxSpriteFlip);
     
-    public static Sprite penguinGraySpriteFlip = new Sprite(new Sprite(32,64,2,0,SpriteSheet.penguinGray, 4));
-    public static Sprite backwardsPenguinGraySpriteFlip = new Sprite(new Sprite(32,64,3,0,SpriteSheet.penguinGray, 4));
+    public static Sprite penguinGraySpriteFlip = new Sprite(new Sprite(32,64,2,0,SpriteSheet.penguinGray, 4, 8));
     public static Sprite penguinGraySprite = new Sprite(penguinGraySpriteFlip);
+    public static Sprite backwardsPenguinGraySpriteFlip = new Sprite(new Sprite(32,64,3,0,SpriteSheet.penguinGray, 4, 8));
     public static Sprite backwardsPenguinGraySprite = new Sprite(backwardsPenguinGraySpriteFlip);
     
 //    public static Sprite grass = new Sprite(32, 32, 352/32, 320/32, SpriteSheet.sample, 1);
@@ -98,17 +97,10 @@ public class Sprite {
     public static Sprite wallSE             = new Sprite(64, 128, 1, 9, SpriteSheet.walls, 1);
     public static Sprite elevatorSW         = new Sprite(64, 128, 2, 9, SpriteSheet.walls, 1);
     public static Sprite elevatorSE         = new Sprite(64, 128, 3, 9, SpriteSheet.walls, 1);
-    public static Sprite chair    = new Sprite(64, 77, 0, 0, SpriteSheet.chair, 8); // we'll have to make chairs into entities
-//    public static Sprite chairSE    = new Sprite(64, 77, 0, 0, SpriteSheet.chair, 1);
-//    public static Sprite chairS    = new Sprite(64, 77, 1, 0, SpriteSheet.chair, 1);
-//    public static Sprite chairSW    = new Sprite(64, 77, 2, 0, SpriteSheet.chair, 1);
-//    public static Sprite chairW    = new Sprite(64, 77, 3, 0, SpriteSheet.chair, 1);
-//    public static Sprite chairNW    = new Sprite(64, 77, 4, 0, SpriteSheet.chair, 1);
-//    public static Sprite chairN    = new Sprite(64, 77, 5, 0, SpriteSheet.chair, 1);
-//    public static Sprite chairNE    = new Sprite(64, 77, 6, 0, SpriteSheet.chair, 1);
-//    public static Sprite chairE    = new Sprite(64, 77, 7, 0, SpriteSheet.chair, 1);
+    public static Sprite chair              = new Sprite(64, 77, 0, 0, SpriteSheet.chair, 8, 10); // we'll have to make chairs into entities
     
     private byte update;
+    private byte animationSpeed = 20;
     
     
     /** 
@@ -133,6 +125,12 @@ public class Sprite {
         load();
         sprites.add(this);
     }
+    
+    public Sprite(int width, int height, int x, int y, SpriteSheet ss, int frames, int animSpeed)
+    {
+        this(width, height, x, y, ss, frames);
+        animationSpeed = (byte) animSpeed;
+    }
 
     /**
      * Creates a square sprite
@@ -145,6 +143,11 @@ public class Sprite {
     public Sprite(int size, int x, int y, SpriteSheet ss, int frames)
     {
         this(size, size, x, y, ss, frames);
+    }
+    
+    public Sprite(int size, int x, int y, SpriteSheet ss, int frames, int animSpeed)
+    {
+        this(size, size, x, y, ss, frames, animSpeed);
     }
     
     /**
@@ -164,6 +167,7 @@ public class Sprite {
      * @param s Sprite to flip
      */
     public Sprite(Sprite s) {
+        animationSpeed = s.animationSpeed;
         W = s.W;
         H = s.H;
         pixels = new int[W*H];
@@ -260,7 +264,7 @@ public class Sprite {
      * Animates a sprite by switching frames. Switches up to 3 times per second.
      */
     private void animate() {
-        if(++update % 20 == 0)
+        if(++update % animationSpeed == 0)
         {
             if (frame < MAX_FRAMES) {
                 frame++;
@@ -284,7 +288,7 @@ public class Sprite {
      */
     public void animate(boolean moving) 
     {
-        if(++update % 8 == 0)
+        if(++update % animationSpeed == 0)
         {
             if (moving && (frame < MAX_FRAMES)) 
             {
