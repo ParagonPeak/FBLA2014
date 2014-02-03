@@ -318,7 +318,7 @@ public class BusinessSim extends Canvas implements Runnable {
                         if (!hunt[currentLevel][i].isRemoved()) {
                             if (hunt[currentLevel][i].v.distFrom(player.v) < 50) {
                                 hunt[currentLevel][i].event();
-                                screen.updateText("" + level.itemCount + " items left on this floor.");
+                                screen.updateText("" + (level.itemCount - 1) + " items left on this floor.");
                             }
                         }
                     }
