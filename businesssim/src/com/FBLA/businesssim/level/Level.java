@@ -20,7 +20,7 @@ import javax.imageio.ImageIO;
  * @author Tripp and Raphael
  */
 public class Level {
-    
+
     public int width, height;
     public static int[] tiles; // floor
     public static int[] objects; // walls and other 3d things
@@ -44,11 +44,11 @@ public class Level {
     public static int[] yOff = {128, 128, 128, 128, 128, 128};
     public static HuntObject[][] hunt = new HuntObject[levelTilePaths.length][totalItems];
     public static final String[][] levelMessage = {{"Ground Floor: ", "This is where we conduct job application testing.", "It's normally filled with people applying."},
-                                                    {"Floor 2: ", "We store things here. ", "Luckily for you, it's very organized", "Except for the power cables near the motorized chairs", "We just can't seem to unplug them"},
-                                                    {"Floor 3: ", "This is where we design our glue.", "We don't go ahead with anything until it's prefectly planned out!", "Why the open space, desks, and mini-maze?", "Because we planned it out perfectly that way."},
-                                                    {"Floor 4: ", "This floor is where we conduct glue testing.", "Walls and corners are strewn all about!", "Don't get stuck trying to find your way around! HahaHAHAha"},
-                                                    {"Floor 5: ", "You remember the ground floor? ", "There's a reason it was designed the way it was!", "It was modeled after this floor, which we built first.", "Don't ask how."},
-                                                    {"Floor 6: ", "You made it! Congratulations.", "Wondering what to do next?", "Join FBLA!"}
+        {"Floor 2: ", "We store things here. ", "Luckily for you, it's very organized", "Except for the power cables near the motorized chairs", "We just can't seem to unplug them"},
+        {"Floor 3: ", "This is where we design our glue.", "We don't go ahead with anything until it's prefectly planned out!", "Why the open space, desks, and mini-maze?", "Because we planned it out perfectly that way."},
+        {"Floor 4: ", "This floor is where we conduct glue testing.", "Walls and corners are strewn all about!", "Don't get stuck trying to find your way around! HahaHAHAha"},
+        {"Floor 5: ", "You remember the ground floor? ", "There's a reason it was designed the way it was!", "It was modeled after this floor, which we built first.", "Don't ask how."},
+        {"Floor 6: ", "You made it! Congratulations.", "Wondering what to do next?", "Join FBLA!"}
     };
     
     // [level][pickup#][description line]
@@ -77,9 +77,9 @@ public class Level {
                                                             { "GLOBAL BUSINESS",                 "Understanding global business, from culture to laws, is important to many businesses.", "This event tests a team's knowledge and abilities in the field of global business."}, 
                                                             { "BUSINESS LAW",                    "Businesses need to understand legal boundaries.", "This event tests your knowledge in that field, from liabilities to contracts and more."}, 
                                                             { "FUTURE BUSINESS LEADER",          "This event honors outstanding FBLA members, based on", "their leadership, participation in FBLA, and knowledge.", "This event consists of a submission of a letter of application and résumé, an objective test, and an interview"}},
-                                                         {{""}} // no level 6 pickups
+        {{""}} // no level 6 pickups
     };
-    
+
     public Level(String tilePath, String objPath, int number) {
         this.tilePath = tilePath;
         this.objPath = objPath;
@@ -89,7 +89,7 @@ public class Level {
 //        loadLevelTiles("Resources/Textures/Levels/ExampleLevelTiles.png");
 //        loadLevelObjects("Resources/Textures/Levels/ExampleLevelObjects.png");
     }
-    
+
     public Level(String tilePath, String objPath, int number, double px, double py) {
         this.tilePath = tilePath;
         this.objPath = objPath;
@@ -120,7 +120,7 @@ public class Level {
             objects[i] = (int) (Math.random() * 50);
         }
     }
-    
+
     protected void loadLevelTiles() {
         try {
             BufferedImage image = ImageIO.read(getClass().getResourceAsStream(tilePath));
@@ -129,7 +129,7 @@ public class Level {
             tiles = new int[width * height];
             int[] tilePixels = new int[width * height];
             image.getRGB(0, 0, width, height, tilePixels, 0, width);
-            
+
             for (int i = 0; i < tilePixels.length; i++) {
                 Tile t = Tile.getTileFromColor(tilePixels[i]);
                 if (t != null) {
@@ -142,7 +142,7 @@ public class Level {
             Logger.getLogger(SpriteSheet.class.getName()).log(java.util.logging.Level.SEVERE, "Could not load level tiles", ex);
         }
     }
-    
+
     protected void loadLevelObjects() {
         try {
             BufferedImage image = ImageIO.read(getClass().getResourceAsStream(objPath));
@@ -151,7 +151,7 @@ public class Level {
             objects = new int[width * height];
             int[] objPixels = new int[width * height];
             image.getRGB(0, 0, width, height, objPixels, 0, width);
-            
+
             for (int i = 0; i < objPixels.length; i++) {
                 RaisedObject r = RaisedObject.getRaisedObjectFromColor(objPixels[i]);
                 if (r != null) {
@@ -164,47 +164,52 @@ public class Level {
             Logger.getLogger(SpriteSheet.class.getName()).log(java.util.logging.Level.SEVERE, "Could not load level objects", ex);
         }
     }
-    
+
     public void update(Player p) {
         playerV = p.v;
-        if (!finished[levelNumber]) {
-            if (hunt[levelNumber][0] == null) { // ready hunt spots if necessary
-                hunt[levelNumber] = new HuntObject[totalItems];
-                
-                for (int i = 0; i < totalItems; i++) {
-                    hunt[levelNumber][i] = new HuntObject(makeHuntSpot(), Sprite.huntSprite2, BusinessSim.bs.screen, pickUpDescriptions[levelNumber][i]);
-                }
-            }
+        if (levelNumber < levelAmount - 1) {
+            if (!finished[levelNumber]) {
+                if (hunt[levelNumber][0] == null) { // ready hunt spots if necessary
+                    hunt[levelNumber] = new HuntObject[totalItems];
 
-            isNearHunt = false;
-            // check if you're near hunt spots
-            for (int i = 0; i < hunt[levelNumber].length; i++) {
-                if (!hunt[levelNumber][i].isRemoved()) {
-                    if (hunt[levelNumber][i].v.distFrom(p.v) < 50) {
-                        isNearHunt = true;
+                    for (int i = 0; i < totalItems; i++) {
+                        hunt[levelNumber][i] = new HuntObject(makeHuntSpot(), Sprite.huntSprite2, BusinessSim.bs.screen, pickUpDescriptions[levelNumber][i]);
                     }
                 }
-            }
 
-            // if you have all hunt spots null, you're done
-            finished[levelNumber] = true;
-            for (int i = 0; i < hunt[levelNumber].length; i++) {
-                if (!hunt[levelNumber][i].isRemoved()) {
-                    finished[levelNumber] = false;
-                    break;
+                isNearHunt = false;
+                // check if you're near hunt spots
+                for (int i = 0; i < hunt[levelNumber].length; i++) {
+                    if (!hunt[levelNumber][i].isRemoved()) {
+                        if (hunt[levelNumber][i].v.distFrom(p.v) < 50) {
+                            isNearHunt = true;
+                        }
+                    }
                 }
-            }
-            if (finished[levelNumber]) {
-                if (levelNumber == levelAmount - 1) {
-                    BusinessSim.bs.screen.updateText(new String[]{"Thank you, kind applicant!", "Now with all these, we can rule the world!", "How you ask?", "Through the addictiveness of the glue of course!", "We use all these skulls to make our special, patented glue which people won't be able to resist.", "No one can stop us now!", "Now for the final skull..."});
-                } else {
+
+                // if you have all hunt spots null, you're done
+                finished[levelNumber] = true;
+                for (int i = 0; i < hunt[levelNumber].length; i++) {
+                    if (!hunt[levelNumber][i].isRemoved()) {
+                        finished[levelNumber] = false;
+                        break;
+                    }
+                }
+                if (finished[levelNumber]) {
+                
                         BusinessSim.bs.screen.updateText("Good Job. Now enter the elevator to go to floor #" + (levelNumber + 2));
-                    System.out.println("Floor done");
+                        System.out.println("Floor done");
                 }
             }
+        } else {
+            if(finished[levelNumber] && BusinessSim.bs.screen.textRequiresUpdate)
+                BusinessSim.bs.changeGameState(BusinessSim.gs_credit);
+            BusinessSim.bs.screen.updateText(new String[]{"Thank you, kind applicant!", "Now with all these, we can rule the world!", "How you ask?", "Through the addictiveness of the glue of course!", "We use all these skulls to make our special, patented glue which people won't be able to resist.", "No one can stop us now!", "Now for the final skull..."});
+            finished[levelNumber] = true;
         }
+                    
     }
-    
+
     public Vector2d makeHuntSpot() {
         boolean ready = false;
         Vector2d coords = new Vector2d(0, 0);
@@ -217,10 +222,10 @@ public class Level {
         }
         return coords;
     }
-    
+
     private void time() {
     }
-    
+
     public void render(int xPos, int yPos, Screen screen, Player p) {
         screen.setOffset(xPos, yPos);
 
@@ -285,7 +290,7 @@ public class Level {
                 }
             }
         }
-        
+
         int px = (int) (p.v.getX()) >> 5;
         int py = (int) (p.v.getY()) >> 5;
         for (int x = x0; x < x1; x++) {
@@ -297,81 +302,81 @@ public class Level {
             }
         }
     }
-    
+
     public Tile getTile(int x, int y) {
-        
+
         if (x < 0 || y < 0 || x >= width || y >= height) {
             return Tile.emptyTile;
         }
-        
+
         int spot = tiles[x + y * width];
-        
+
         Tile t = Tile.getTileFromNumber(spot);
-        
+
         if (t != null) {
             return t;
         } else {
             return Tile.voidTile;
         }
     }
-    
+
     public RaisedObject getObject(int x, int y) {
-        
+
         if (x < 0 || y < 0 || x >= width || y >= height) {
             return RaisedObject.voidObject;
         }
-        
+
         int spot = objects[x + y * width];
-        
+
         RaisedObject r = RaisedObject.getRaisedObjectFromNumber(spot);
-        
+
         if (r != null) {
             return r;
         } else {
             return RaisedObject.voidObject;
         }
     }
-    
+
     public boolean playerNearPickup(Player p) {
         int x0 = ((int) (p.v.getX()) >> 5) - 2;
         int y0 = ((int) (p.v.getY()) >> 5) - 2;
         int x1 = ((int) (p.v.getX()) >> 5) + 2;
         int y1 = ((int) (p.v.getY()) >> 5) + 2;
-        
+
         x0 = Math.max(0, x0);
         y0 = Math.max(0, y0);
         x1 = Math.min(width - 1, x1);
         y1 = Math.min(height - 1, y1);
-        
+
         for (int i = 0; i < hunt[levelNumber].length; i++) {
             double objectDist = hunt[levelNumber][i].v.distFrom(p.v);
-            
+
             if (objectDist < 250) {
                 return true;
             }
         }
         return false;
     }
-    
+
     public boolean playerNearElevator(Player p) {
-        
+
         int x0 = ((int) (p.v.getX()) >> 5) - 2;
         int y0 = ((int) (p.v.getY()) >> 5) - 2;
         int x1 = ((int) (p.v.getX()) >> 5) + 2;
         int y1 = ((int) (p.v.getY()) >> 5) + 2;
-        
+
         x0 = Math.max(0, x0);
         y0 = Math.max(0, y0);
         x1 = Math.min(width - 1, x1);
         y1 = Math.min(height - 1, y1);
-        
+
         for (int x = x0; x < x1; x++) {
             for (int y = y0; y < y1; y++) {
-                
+
                 int e1 = RaisedObject.getNum(RaisedObject.elevatorSE);
                 int e2 = RaisedObject.getNum(RaisedObject.elevatorSW);
                 int spot = objects[x + y * width];
-                
+
                 if (spot == e1 || spot == e2) {
                     return true;
                 }

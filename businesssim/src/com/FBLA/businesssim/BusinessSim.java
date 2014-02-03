@@ -544,6 +544,10 @@ public class BusinessSim extends Canvas implements Runnable {
         gameState = i;
     }
 
+    public void changeGameState(int gs) {
+    gameState = gs;
+    changeGameState();
+    }
     public void changeGameState() {
         switch (gameState) {
             case gs_inGame:
