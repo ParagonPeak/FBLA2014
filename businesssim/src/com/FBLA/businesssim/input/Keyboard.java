@@ -14,9 +14,9 @@ import java.awt.event.KeyListener;
  */
 public class Keyboard implements KeyListener{
     
-    public boolean[] keys = new boolean[120];
+    public boolean[] keys = new boolean[123];
     public boolean up, down, right, left, action, escape, inc, pause;
-    public boolean last_up, last_down, last_right, last_left, last_action, last_inc, last_pause, last_escape;
+    public boolean last_up, last_down, last_right, last_left, last_action, last_inc, last_pause, last_escape, last_full;
     
     /**
      * Called on every update to make sure data is accurate and easy calling.
@@ -44,6 +44,11 @@ public class Keyboard implements KeyListener{
         pause = keys[KeyEvent.VK_P];
         if(escape && !last_escape) BusinessSim.bs.promptExit();
         keys[KeyEvent.VK_ESCAPE] = false;
+        if(keys[KeyEvent.VK_F11] && !last_full) BusinessSim.bs.setFullScreen(!BusinessSim.isFullScreen);
+        last_full = keys[KeyEvent.VK_F11];
+        
+        if(up && left)
+            System.out.println("WORKING");
     }
     
     /**

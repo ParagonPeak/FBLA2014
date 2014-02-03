@@ -392,13 +392,17 @@ public class BusinessSim extends Canvas implements Runnable {
             frame.setResizable(true);
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             frame.setLocationRelativeTo(null);
+            frame.setResizable(false);
         } else {
             width = normWidth;
             height = normHeight;
             frame.setPreferredSize(new Dimension(width, height));
+            frame.setSize(new Dimension(width, height+15));
+            frame.setLocationRelativeTo(null);
             scale = 1;
         }
         isFullScreen = b;
+        frame.setFocusable(true);
         frame.setVisible(true);
     }
 
