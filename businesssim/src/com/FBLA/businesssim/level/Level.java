@@ -1,7 +1,6 @@
 package com.FBLA.businesssim.level;
 
 import com.FBLA.businesssim.BusinessSim;
-import com.FBLA.businesssim.entity.Entity;
 import com.FBLA.businesssim.entity.items.HuntObject;
 import com.FBLA.businesssim.entity.mob.Player;
 import com.FBLA.businesssim.graphics.Screen;
@@ -24,7 +23,7 @@ public class Level {
 
     public int width, height;
     public static int[] tiles; // floor
-    public static Entity[] entities; // walls and other 3d things
+    public static int[] objects; // walls and other 3d things
     public int spawnX = 0;
     public int spawnY = 0;
 //    public Vector2d playerV = new Vector2d(spawnX + (BusinessSim.bs.player.s.W / 2), spawnY + (BusinessSim.bs.player.s.H /2));
@@ -113,12 +112,12 @@ public class Level {
         width = w;
         height = h;
         tiles = new int[w * h];
-        entities = new Entity[w * h];
+        objects = new int[w * h];
         for (int i = 0; i < w * h; i++) {
             //tiles[i] = (int) (Math.random()*3);
             //tiles[i] = Tile.grassTileNum;
             tiles[i] = Tile.getNum(Tile.chkFloorTile);
-            entities[i] = new Entity(RaisedObject.getRaisedObjectFromNumber((int) (Math.random() * 50)));
+            objects[i] = (int) (Math.random() * 50);
         }
     }
 
@@ -149,16 +148,16 @@ public class Level {
             BufferedImage image = ImageIO.read(getClass().getResourceAsStream(objPath));
             width = image.getWidth();
             height = image.getHeight();
-            entities = new Entity[width * height];
+            objects = new int[width * height];
             int[] objPixels = new int[width * height];
             image.getRGB(0, 0, width, height, objPixels, 0, width);
 
             for (int i = 0; i < objPixels.length; i++) {
                 RaisedObject r = RaisedObject.getRaisedObjectFromColor(objPixels[i]);
                 if (r != null) {
-                    entities[i] = RaisedObject.getNum(r);
+                    objects[i] = RaisedObject.getNum(r);
                 } else {
-                    entities[i] = RaisedObject.getNum(RaisedObject.voidObject);
+                    objects[i] = RaisedObject.getNum(RaisedObject.voidObject);
                 }
             }
         } catch (IOException ex) {
@@ -217,7 +216,7 @@ public class Level {
         while (!ready) {
             coords.setX((int) (Math.random() * width) * 32);
             coords.setY((int) (Math.random() * height) * 32);
-            if (coords.distFrom(playerV) > 32 * 4 && getObject(coords.getiX() >> 5, coords.getiY() >> 5) == RaisedObject.voidObject) { // away from entities and player
+            if (coords.distFrom(playerV) > 32 * 4 && getObject(coords.getiX() >> 5, coords.getiY() >> 5) == RaisedObject.voidObject) { // away from objects and player
                 ready = true;
             }
         }
@@ -271,7 +270,7 @@ public class Level {
 //        }
         for (int x = x0; x < x1; x++) {
             for (int y = y0; y < y1; y++) {
-                getTile(x, y).render(x - 1, y - 1, screen); // shifted over 1 to account for raised entities being 1 space higher than they should be
+                getTile(x, y).render(x - 1, y - 1, screen); // shifted over 1 to account for raised objects being 1 space higher than they should be
             }
         }
         if(levelNumber < hunt.length) {
@@ -327,7 +326,7 @@ public class Level {
             return RaisedObject.voidObject;
         }
 
-        int spot = entities[x + y * width];
+        int spot = objects[x + y * width];
 
         RaisedObject r = RaisedObject.getRaisedObjectFromNumber(spot);
 
@@ -376,7 +375,7 @@ public class Level {
 
                 int e1 = RaisedObject.getNum(RaisedObject.elevatorSE);
                 int e2 = RaisedObject.getNum(RaisedObject.elevatorSW);
-                int spot = entities[x + y * width];
+                int spot = objects[x + y * width];
 
                 if (spot == e1 || spot == e2) {
                     return true;

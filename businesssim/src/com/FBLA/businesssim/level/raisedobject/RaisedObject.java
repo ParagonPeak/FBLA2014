@@ -1,6 +1,5 @@
 package com.FBLA.businesssim.level.raisedobject;
 
-import com.FBLA.businesssim.entity.Entity;
 import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
 import java.util.HashMap;
@@ -77,20 +76,11 @@ public class RaisedObject {
     }
     
     public static RaisedObject getRaisedObjectFromNumber(int number) {
-        if(raisedObjsNumMap.get(number) == null) return (RaisedObject) voidObject;
         return (RaisedObject) raisedObjsNumMap.get(number);
     }
     
     public static RaisedObject getRaisedObjectFromColor(int color) {
-        if(raisedObjsRGBMap.get(color) == null) return (RaisedObject) voidObject;
         return (RaisedObject) raisedObjsRGBMap.get(color);
-    }
-    
-    public static String getEntityType(int number)
-    {
-        if(number < 1 || number > 41) return Entity.class.toString();
-        if(number <= 28) return Wall.class.toString();
-        if(number <= 30) return Storage.class.toString();
     }
     
     public static int getColor(RaisedObject r) {
