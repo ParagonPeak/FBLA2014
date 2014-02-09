@@ -43,19 +43,19 @@ public class Level {
     public static int[] xOff = {48, 48, 48, 48, 48, 48};
     public static int[] yOff = {128, 128, 128, 128, 128, 128};
     public static HuntObject[][] hunt = new HuntObject[levelTilePaths.length][totalItems];
-    public static final String[][] levelMessage = {{"Ground Floor: ", "This is where we conduct job application testing.", "It's normally filled with people applying."},
-        {"Floor 2: ", "We store things here. ", "Luckily for you, it's very organized", "Except for the power cables near the motorized chairs", "We just can't seem to unplug them"},
+    public static final String[][] levelMessage = {{"Ground Floor: ", "This is where we conduct job application testing.", "It's normally filled with more people applying."},
+        {"Floor 2: ", "We store things here. ", "Luckily for you, it's very organized,", "except for the power cables near the motorized chairs.", "We just can't seem to unplug them."},
         {"Floor 3: ", "This is where we design our glue.", "We don't go ahead with anything until it's prefectly planned out!", "Why the open space, desks, and mini-maze?", "Because we planned it out perfectly that way."},
-        {"Floor 4: ", "This floor is where we conduct glue testing.", "Walls and corners are strewn all about!", "Don't get stuck trying to find your way around! HahaHAHAha"},
+        {"Floor 4: ", "This floor is where we conduct glue testing.", "Walls and corners are strewn all about!", "Don't get stuck trying to find your way around! Hahahaha!"},
         {"Floor 5: ", "You remember the ground floor? ", "There's a reason it was designed the way it was!", "It was modeled after this floor, which we built first.", "Don't ask how."},
-        {"Floor 6: ", "You made it! Congratulations.", "Wondering what to do next?", "Join FBLA!"}
+        {"Floor 6: ", "You made it! Congratulations.", "Wondering what to do next?", "Join FBLA!"} //Change?
     };
     
     // [level][pickup#][description line]
-    public static final String[][][] pickUpDescriptions = {{{"JOB INTERVIEW",                    "A job interview assesses a job applicants suitability for the job they are applying to", "In FBLA, the job interview event has two parts: a letter of application, résumé, and a job application form; and an interview"},
-                                                            { "LIFESMARTS",                      "The Lifesmarts competition encourages teams to learn about economics, personal finance, and consumer issues", "The event requires a quiz and personal finance assessment and", "integrates business knowledge, critical thinking, and teamwork"},
+    public static final String[][][] pickUpDescriptions = {{{"JOB INTERVIEW",                    "A job interview assesses a job applicants suitability for the job they are applying to.", "In FBLA, the job interview event has two parts: a letter of application, or résumé, and a job application form.", "There is usually an interview, unless you're interviewing to our", "sister organization: Cyberdyne Systems."},
+                                                            { "LIFESMARTS",                      "The Lifesmarts competition encourages teams to learn about economics, personal finance, and consumer issues.", "The event requires a quiz and personal finance assessment while", "integrating business knowledge, critical thinking, and teamwork"},
                                                             { "INTRO TO BUSINESS",               "In this event, students learn about businesses from an aggregate and individual perspective,", "taking an objective test with topics ranging from", "business communication to technology and beyond."},
-                                                            { "BUSINESS COMMUNICATIONS",         "the art of communication is vital for a thriving business.", "This event tests your english in everything from proofreading to oral communication."},
+                                                            { "BUSINESS COMMUNICATIONS",         "The art of communication is vital for a thriving business.", "This event tests your English in everything from proofreading to oral communication."},
                                                             { "BUSINESS MATH",                   "A business cannot thrive without math.", "This event tests your basic business math concepts from fractions to simple interest to", "knowing that in bookkeeping, parentheses around a number means it's negative."}},
                                                          {  {"SPREADSHEET APPLICATIONS",         "Spreadsheets are necessary in all aspects of business:", "They turn data into important information for your business.", "This event tests your spreadsheet capabilities both on paper and computer."},
                                                             { "COMPUTER APPLICATIONS",           "A modern business uses computer applications in all of its daily aspects.", "This event tests your computer knowledge from terminology to e-mail to word processing to", "database applications."}, 
