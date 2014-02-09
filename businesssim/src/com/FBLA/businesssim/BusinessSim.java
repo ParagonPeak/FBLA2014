@@ -47,7 +47,6 @@ public class BusinessSim extends Canvas implements Runnable {
     public double scale = 1, fullScale = 1;
     public Keyboard key;
     public Mouse mouse;
-    public boolean mouseIsClicked = false, last_mouseIsClicked = false;
     public Screen screen;
     private boolean running;
     private Thread mThread;
@@ -81,6 +80,7 @@ public class BusinessSim extends Canvas implements Runnable {
     private boolean nearElevator = false;
     private Font tahoma;// = new Font("Tahoma", Font.ITALIC, 36);
     private int FPS = 0;
+    private boolean actionClicked = false;
 
     //Starts the game, used for frame set up
     public static void main(String[] args) {
@@ -94,7 +94,7 @@ public class BusinessSim extends Canvas implements Runnable {
         bs.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         bs.frame.setFocusable(true);
         bs.frame.setLocationRelativeTo(null);
-        bs.setFullScreen(false);
+        bs.setFullScreen(isFullScreen);
         bs.start();
     }
 
@@ -306,6 +306,8 @@ public class BusinessSim extends Canvas implements Runnable {
 
     public void update() {
         mouse.update();
+        actionClicked = (key.action && !key.last_action) || mouse.lastMouseClicked;
+        
         // if in game and not paused, do in game stuff
         if (!isPaused && gameState == gs_inGame) {
             player.update();
@@ -318,7 +320,7 @@ public class BusinessSim extends Canvas implements Runnable {
             }
 
             // ingame actions
-            if (key.action & !key.last_action) {
+            if (actionClicked) {
                 // level changing 
                 if (Level.isNearHunt) {
                     for (int i = 0; i < hunt[currentLevel].length; i++) {
@@ -364,7 +366,7 @@ public class BusinessSim extends Canvas implements Runnable {
         }
 
         // if action is pressed in main menu. inc key/mouse don't actually make this do stuff yet for some reason
-        if ((key.action && !key.last_action) || (!mouseIsClicked && last_mouseIsClicked)) {
+        if ((actionClicked) || (mouse.lastMouseClicked)) {
             if (mainScreenPointerPosition == mspp_quit) {
                 System.exit(3); // if in menu and on quit, quit
             }
@@ -400,12 +402,14 @@ public class BusinessSim extends Canvas implements Runnable {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             frame.setLocationRelativeTo(null);
             frame.setResizable(false);
+            frame.requestFocus();
         } else {
             width = normWidth;
             height = normHeight;
             frame.setPreferredSize(new Dimension(width, height));
             frame.setSize(new Dimension(width, height+15));
             frame.setLocationRelativeTo(null);
+            frame.requestFocus();
             scale = 1;
         }
         isFullScreen = b;
@@ -511,7 +515,7 @@ public class BusinessSim extends Canvas implements Runnable {
     }
 
     private void updateMainPointer() {
-
+        
         if (mouse.xPos > 600 * scale && mouse.yPos > 310 * scale) {
             if (mouse.yPos < 355 * scale) {
                 mainScreenPointerPosition = gs_inGame;
@@ -523,7 +527,7 @@ public class BusinessSim extends Canvas implements Runnable {
                 mainScreenPointerPosition = mspp_quit;
             }
         }
-        if ((key.up & !key.last_up) | (key.down & !key.last_down)) {
+        if ((key.up && !key.last_up) | (key.down && !key.last_down)) {
             if (key.up) {
                 mainScreenPointerPosition--;
             }
@@ -537,7 +541,7 @@ public class BusinessSim extends Canvas implements Runnable {
             }
         }
 
-        if ((key.left & !key.last_left) | (key.right & !key.last_right)) {
+        if ((key.left && !key.last_left) | (key.right && !key.last_right)) {
             if (key.left) {
                 MusicPlayer.mp.decreaseVolume();
             }
@@ -552,9 +556,10 @@ public class BusinessSim extends Canvas implements Runnable {
     }
 
     public void changeGameState(int gs) {
-    gameState = gs;
-    changeGameState();
+        gameState = gs;
+        changeGameState();
     }
+    
     public void changeGameState() {
         switch (gameState) {
             case gs_inGame:
@@ -568,7 +573,7 @@ public class BusinessSim extends Canvas implements Runnable {
                 } catch (IOException ex) {
                     Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 }
-                if (key.action & !key.last_action & !loaded) {
+                if (actionClicked && !loaded) {
                     gameState = gs_startScreen;
                 }
                 break;
@@ -580,7 +585,7 @@ public class BusinessSim extends Canvas implements Runnable {
                 } catch (IOException ex) {
                     Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 }
-                if (key.action & !key.last_action & !loaded) {
+                if (actionClicked && !loaded) {
                     gameState = gs_startScreen;
                 }
 
@@ -595,7 +600,7 @@ public class BusinessSim extends Canvas implements Runnable {
                 } catch (IOException ex) {
                     Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 }
-                if (key.action & !key.last_action & !loaded) {
+                if (actionClicked && !loaded) {
                     gameState = mainScreenPointerPosition;
                     mainScreenPointerPosition = gs_inGame;
                 }

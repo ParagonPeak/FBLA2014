@@ -39,7 +39,7 @@ public class MusicPlayer {
         if (i == currentTrack | i < 0 | i >= sounds.length) {
             return;
         }
-        if (currentTrack >= 0 & currentTrack < sounds.length) {
+        if (currentTrack >= 0 && currentTrack < sounds.length) {
             if (sounds[currentTrack].isRunning()) {
                 sounds[currentTrack].stop();
             }

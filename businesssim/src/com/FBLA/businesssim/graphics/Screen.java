@@ -185,7 +185,7 @@ public class Screen {
             index += 3;
             System.out.println("INCREASE"); //Remove in the end
         }
-        if (index > lines.length - 3 && (key.inc & !lastKeyAction)) {
+        if (index > lines.length - 3 && (key.inc && !lastKeyAction)) {
             textRequiresUpdate = queue.isEmpty();
             index = 0;
             System.out.println("Waiting for update!"); //Remove in the end
