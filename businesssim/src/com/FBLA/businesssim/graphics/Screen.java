@@ -177,11 +177,12 @@ public class Screen {
         g.drawRect(left, top, right, bottom);
         g.drawString("Press Space...", right - 60, top + 90);
         String[] displayedLines = new String[3];
-        for (int i = index; i < index + 3 && i < lines.length; i++) {
-            displayedLines[i - index] = lines[i];
+        for (int i = index; i < index + 3 && i < lines.length; i++){// : i += (lines.length - index)) {
+            if(i < lines.length)
+                displayedLines[i - index] = lines[i];
         }
         if (key.inc && !lastKeyAction) {
-            index++;
+            index += 3;
             System.out.println("INCREASE"); //Remove in the end
         }
         if (index > lines.length - 3 && (key.inc & !lastKeyAction)) {
@@ -200,8 +201,8 @@ public class Screen {
 //        drawText(displayedLines, g).dispose();
         return drawText(displayedLines, g);
     }
-    
-    public void speak(int x, int y, String[] prompt, Graphics g){
+
+    public void speak(int x, int y, String[] prompt, Graphics g) {
     }
 
     public Graphics drawText(String[] lines, Graphics g) {
@@ -217,8 +218,7 @@ public class Screen {
         return g;
     }
 
-
-public void renderRaisedSprite(int xp, int yp, Sprite s) {
+    public void renderRaisedSprite(int xp, int yp, Sprite s) {
         int w = s.W;
         int h = s.H;
         xp -= xOffs;
@@ -244,7 +244,8 @@ public void renderRaisedSprite(int xp, int yp, Sprite s) {
             }
         }
     }
-public void renderRaisedMob(int xp, int yp, Sprite s) {
+
+    public void renderRaisedMob(int xp, int yp, Sprite s) {
         int w = s.W;
         int h = s.H;
         xp -= xOffs;
