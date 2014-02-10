@@ -38,8 +38,8 @@ public class HuntObject extends Entity {
     public void event() {
         remove();
 
-        BusinessSim.bs.screen.updateText(new String[]{"Woah! You picked up a skill!", "Let's see what it is.."});
-        BusinessSim.bs.screen.updateText(pickupText);
+        BusinessSim.bs.td.updateText(new String[]{"Woah! You picked up a skill!", "Let's see what it is.."});
+        BusinessSim.bs.td.updateText(pickupText);
         // play a sound, write a message
         MusicPlayer m = new MusicPlayer();
         m.init();

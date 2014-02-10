@@ -4,6 +4,7 @@ import com.FBLA.businesssim.entity.items.HuntObject;
 import com.FBLA.businesssim.entity.mob.Player;
 import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
+import com.FBLA.businesssim.graphics.TextDisplayer;
 import com.FBLA.businesssim.input.Keyboard;
 import com.FBLA.businesssim.input.Mouse;
 import com.FBLA.businesssim.level.Level;
@@ -48,6 +49,7 @@ public class BusinessSim extends Canvas implements Runnable {
     public Keyboard key;
     public Mouse mouse;
     public Screen screen;
+    public TextDisplayer td;
     private boolean running;
     private Thread mThread;
     private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB), screenImage = image;
@@ -118,6 +120,7 @@ public class BusinessSim extends Canvas implements Runnable {
         addMouseListener(mouse);
         addMouseMotionListener(mouse);
         screen = new Screen(width, height);
+        td = new TextDisplayer(screen);
         addKeyListener(key);
 //        level = new Level("level/Floor1.png");
         level = new Level(Level.levelTilePaths[0], Level.levelObjPaths[0], 0, Level.xOff[0], Level.yOff[0]);
@@ -246,7 +249,7 @@ public class BusinessSim extends Canvas implements Runnable {
             }
             g.setColor(Color.WHITE);
 //            g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
-            g = (Graphics2D) screen.displayText(currentText, key, g);
+            g = (Graphics2D) td.displayText(currentText, key, g);
             g.setColor(Color.RED);
             g.setFont(tahoma);
             g.drawString("FPS: " + FPS, (int) ((screen.width - 150) * scale), (int) (40 * scale));
@@ -312,7 +315,7 @@ public class BusinessSim extends Canvas implements Runnable {
                         if (!hunt[currentLevel][i].isRemoved()) {
                             if (hunt[currentLevel][i].v.distFrom(player.v) < 50) {
                                 hunt[currentLevel][i].event();
-                                screen.updateText("" + (level.itemCount - 1) + " items left on this floor.");
+                                td.updateText("" + (level.itemCount - 1) + " items left on this floor.");
                             }
                         }
                     }
@@ -408,7 +411,7 @@ public class BusinessSim extends Canvas implements Runnable {
             return g;
         }
         if (!Level.finished[0]) {
-            screen.updateText(new String[]{"Hey, what do you think you're doing?", "You can't possibly think we'd grant you elevator privleges", "without completing the entrance testing, do you?", "Finish this up here before you try again"});
+            td.updateText(new String[]{"Hey, what do you think you're doing?", "You can't possibly think we'd grant you elevator privleges", "without completing the entrance testing, do you?", "Finish this up here before you try again"});
             isPrompting = false;
             System.out.println("FAILED ATTEMPT");
             return g;
@@ -457,7 +460,7 @@ public class BusinessSim extends Canvas implements Runnable {
         System.out.println("SWITCH");
         currentLevel = elevatorPointer = levelNum;
         level = new Level(Level.levelTilePaths[levelNum], Level.levelObjPaths[levelNum], levelNum, player.v.getX(), player.v.getY());
-        screen.updateText(Level.levelMessage[currentLevel]);
+        td.updateText(Level.levelMessage[currentLevel]);
         isPrompting = false;
 
     }
