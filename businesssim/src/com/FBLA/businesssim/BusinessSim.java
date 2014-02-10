@@ -2,6 +2,7 @@ package com.FBLA.businesssim;
 
 import com.FBLA.businesssim.entity.items.HuntObject;
 import com.FBLA.businesssim.entity.mob.Player;
+import com.FBLA.businesssim.graphics.HUD;
 import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.graphics.TextDisplayer;
@@ -79,10 +80,10 @@ public class BusinessSim extends Canvas implements Runnable {
     public static final int gs_startScreen = 5;
     public static int gameState = gs_startScreen;
     private int mainScreenPointerPosition = gs_inGame;
-    private boolean nearElevator = false;
-    private Font tahoma;// = new Font("Tahoma", Font.ITALIC, 36);
-    private int FPS = 0;
-    private boolean actionClicked = false;
+    public boolean nearElevator = false;
+    public static Font tahoma;// = new Font("Tahoma", Font.ITALIC, 36);
+    public int FPS = 0;
+    public boolean actionClicked = false;
 
     //Starts the game, used for frame set up
     public static void main(String[] args) {
@@ -177,7 +178,7 @@ public class BusinessSim extends Canvas implements Runnable {
                 timer += 1000;
                 FPS = frames;
 //                frame.setTitle(title + version + " | FPS: " + frames + " UPS: " + updates + " px: " + player.v.getX() + " py: " + player.v.getY());
-                frame.setTitle(((isPaused) ? "***PAUSED*** " : "") + title + version + " | FPS: " + frames + " Floor: " + (currentLevel + 1) + " Pickups left here: " + level.itemCount);
+                frame.setTitle(((isPaused) ? "***PAUSED*** " : "") + title + version + " | FPS: " + frames);
                 updates = frames = 0;
             }
         }
@@ -217,27 +218,13 @@ public class BusinessSim extends Canvas implements Runnable {
         level.render(xScroll, yScroll, screen, player);
         System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
 
-        // blur
-//        int[] temp = Arrays.copyOf(pixels, pixels.length);
-//        int pArrScale = pixels.length / 800 / 500;
-//        int pArrWidth = pixels.length / (500 * pArrScale);
-//        for(int i = 1 + pArrWidth; i < pixels.length - 1 - pArrWidth; i++) {
-//            int r = (avg(getR(temp[i-1-pArrWidth]),getR(temp[i-pArrWidth]),getR(temp[i+1-pArrWidth]),getR(temp[i-1]),getR(temp[i]),getR(temp[i+1]),getR(temp[i-1+pArrWidth]),getR(temp[i+pArrWidth]),getR(temp[i+1+pArrWidth])));
-//            int g = avg(getG(temp[i-1-pArrWidth]),getG(temp[i-pArrWidth]),getG(temp[i+1-pArrWidth]),getG(temp[i-1]),getG(temp[i]),getG(temp[i+1]),getG(temp[i-1+pArrWidth]),getG(temp[i+pArrWidth]),getG(temp[i+1+pArrWidth]));
-//            int b = avg(getB(temp[i-1-pArrWidth]),getB(temp[i-pArrWidth]),getB(temp[i+1-pArrWidth]),getB(temp[i-1]),getB(temp[i]),getB(temp[i+1]),getB(temp[i-1+pArrWidth]),getB(temp[i+pArrWidth]),getB(temp[i+1+pArrWidth]));
-//            r = avg(r, getR(temp[i]));
-//            g = avg(g, getG(temp[i]));
-//            b = avg(b, getB(temp[i]));
-//            pixels[i] = r + (g << 8) + (b << 16);
-//        }
-//        lastPixels = Arrays.copyOf(temp, temp.length);
-
         Graphics2D g = (Graphics2D) bs.getDrawGraphics();
         {
 //            g.drawImage(image, 0, 0, null);
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 //            g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            
             int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - fullWidth;
             if (isFullScreen) {
                 g.setColor(Color.BLACK);
@@ -249,24 +236,17 @@ public class BusinessSim extends Canvas implements Runnable {
             }
             g.setColor(Color.WHITE);
 //            g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
+            
+            // Text Displayer
             g = (Graphics2D) td.displayText(currentText, key, g);
-            g.setColor(Color.RED);
-            g.setFont(tahoma);
-            g.drawString("FPS: " + FPS, (int) ((screen.width - 150) * scale), (int) (40 * scale));
+            
+            // HUD
+            HUD.displayHUD(g);
+            
             if (nearElevator && isPrompting) {
                 g = promptFloorSwitch(g);
             }
-//            if (nearElevator) {
-//                g.setColor(Color.WHITE);
-//                g.setFont(tahoma);
-//                if (level.finished[currentLevel] && currentLevel != Level.levelAmount) {
-//                    g.drawString("Press X to continue", 10, 50);
-//                } else if (currentLevel == 0) {
-//                    g.drawString("Not ready to advance", 10, 50);
-//                } else {
-//                    g.drawString("Press X for the first level", 10, 50);
-//                }
-//            }
+            
             g = drawLineToObjects(g);
         }
         g.dispose();
