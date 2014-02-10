@@ -15,8 +15,4 @@ public class Elevator extends Entity {
     public Elevator(Vector2d v) {
         super(v, "Elevator");
     }
-
-    public Elevator() {
-        name = "Elevator";
-    }
 }

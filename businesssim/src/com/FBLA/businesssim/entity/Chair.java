@@ -15,8 +15,4 @@ public class Chair extends Entity {
     public Chair(Vector2d v) {
         super(v, "Chair");
     }
-
-    public Chair() {
-        name = "Chair";
-    }
 }

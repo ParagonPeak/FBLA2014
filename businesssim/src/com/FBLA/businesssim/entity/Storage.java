@@ -15,8 +15,4 @@ public class Storage extends Entity {
     public Storage(Vector2d v) {
         super(v, "Storage");
     }
-
-    public Storage() {
-        name = "Storage";
-    }
 }

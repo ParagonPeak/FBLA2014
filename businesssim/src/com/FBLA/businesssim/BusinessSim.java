@@ -181,23 +181,6 @@ public class BusinessSim extends Canvas implements Runnable {
         stop();
     }
 
-    // used for pixel manipulation like blurring
-//    public int getR(int col) {
-//        return col % 256;
-//    }
-//    public int getG(int col) {
-//        return (col >> 8) % 256;
-//    }
-//    public int getB(int col) {
-//        return (col >> 16) % 256;
-//    }
-//    public int avg(Integer... ints) {
-//        int sum = 0;
-//        for(int i = 0; i < ints.length; i++) {
-//            sum += ints[i];
-//        }
-//        return sum / ints.length;
-//    }
     public void render() {
         BufferStrategy bs = getBufferStrategy();
         int xScroll = (int) (player.v.getX() - screen.width / 2);
@@ -207,6 +190,8 @@ public class BusinessSim extends Canvas implements Runnable {
             createBufferStrategy(3);
             return;
         }
+        
+        // if not in game, draw a premade screen image
         if (gameState != gs_inGame && !(screenImage == null)) {
             Graphics2D g = (Graphics2D) bs.getDrawGraphics();
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -224,7 +209,7 @@ public class BusinessSim extends Canvas implements Runnable {
             bs.show();
             return;
         }
-
+        
         screen.clear();
         level.render(xScroll, yScroll, screen, player);
         System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
