@@ -41,9 +41,10 @@ public class HUD {
             } else {
                 g.drawString("Press X for elevator panel", (int) (3 * scale), (int) (24 * scale));
             }
-        } else if(false) { // if you're near a pickup, lets you know you can pick it up
-            
-        } else {
+        } else if(Level.isNearHunt) { // if you're near a pickup, lets you know you can pick it up
+             g.setColor(new Color(0xdd, 0xff, 0xcc, 200));
+            g.drawString("Press X to collect", (int) (3 * scale), (int) (24 * scale));
+        } else { // if nothing special's going on, show the floor you're on / pickups left
             // floor
             g.setColor(new Color(0xdd, 0xff, 0xaa, 200));
             g.drawString("Floor: " + (BusinessSim.bs.currentLevel + 1), (int) (3 * scale), (int) (25 * scale));

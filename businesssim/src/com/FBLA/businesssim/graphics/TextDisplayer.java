@@ -8,6 +8,7 @@ import com.FBLA.businesssim.BusinessSim;
 import com.FBLA.businesssim.input.Keyboard;
 import com.FBLA.businesssim.level.Level;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -22,6 +23,7 @@ public class TextDisplayer {
     private boolean lastKeyAction = false;
     private ArrayList<String[]> queue = new ArrayList<String[]>();
     private Screen screen;
+    private double scale;
     
     public TextDisplayer(Screen s) {
         screen = s;
@@ -38,6 +40,11 @@ public class TextDisplayer {
             queue.add(lines);
         }
         textRequiresUpdate = false;
+    }
+    
+    public void moveOn() {
+        index += 3;
+        System.out.println("INCREASE"); //Remove in the end
     }
 
     public Graphics displayText(Keyboard key, Graphics g) {
@@ -57,13 +64,23 @@ public class TextDisplayer {
             lastKeyAction = false;
             return g;
         }
+        scale = BusinessSim.bs.scale;
+        Font tahoma = new Font("Tahoma", Font.PLAIN, (int) (24 * scale));
+        // boolean inc = (key.inc && !key.last_inc);
+        
+        int top = (int) (scale * 175), 
+            bottom = (int) (scale * 100), 
+            right = (int) (scale * screen.width - 75), 
+            left = (int) (scale * 50);
+        
+        // draw the dialog box and "Press Space"
         g.setColor(new Color(0xcc, 0xcc, 0xcc, 150));
-
-        int top = 175, bottom = 100, right = screen.width - 75, left = 50;
         g.fillRect(left, top, right, bottom);
         g.setColor(Color.BLACK);
         g.drawRect(left, top, right, bottom);
-        g.drawString("Press Space...", right - 60, top + 90);
+        g.drawString("Press Space...", right - (int) (60 * scale), top + (int) (90 * scale));
+        
+        // create an array with the up to 3 lines to be displayed
         String[] displayedLines = new String[3];
         for (int i = index; i < index + 3 && i < lines.length; i++){// : i += (lines.length - index)) {
             if(i < lines.length)
@@ -78,7 +95,7 @@ public class TextDisplayer {
             index = 0;
             System.out.println("Waiting for update!"); //Remove in the end
             if (Level.finished[Level.finished.length - 1] && textRequiresUpdate) {
-                BusinessSim.bs.setGameState(BusinessSim.gs_startScreen);
+                BusinessSim.bs.setGameState(BusinessSim.gs_startScreen); // possibly move this to the main class update method
             }
             if (!textRequiresUpdate) {
                 BusinessSim.bs.currentText = queue.get(0);
