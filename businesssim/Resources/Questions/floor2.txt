@@ -1,0 +1,5 @@
+"SPREADSHEET APPLICATIONS",        
+ "COMPUTER APPLICATIONS",          
+ "PUBLIC SPEAKING",                
+ "ACCOUNTING",                     
+ "COMPUTER PROBLEM SOLVING",       
