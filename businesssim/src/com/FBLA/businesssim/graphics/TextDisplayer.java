@@ -70,15 +70,15 @@ public class TextDisplayer {
         
         int top = (int) (scale * 175), 
             bottom = (int) (scale * 100), 
-            right = (int) (scale * screen.width - 75), 
-            left = (int) (scale * 50);
+            right = (int) (scale * screen.width - 75) - ((BusinessSim.isFullScreen)?60:0), 
+            left = (int) (scale * 50) + ((BusinessSim.isFullScreen)? 60:0);
         
         // draw the dialog box and "Press Space"
         g.setColor(new Color(0xcc, 0xcc, 0xcc, 150));
         g.fillRect(left, top, right, bottom);
         g.setColor(Color.BLACK);
         g.drawRect(left, top, right, bottom);
-        g.drawString("Press Space...", right - (int) (60 * scale), top + (int) (90 * scale));
+        g.drawString("Press Space...", right - ((BusinessSim.isFullScreen)?0:60), top + (int) (90 * scale));
         
         // create an array with the up to 3 lines to be displayed
         String[] displayedLines = new String[3];
@@ -115,7 +115,7 @@ public class TextDisplayer {
             if (lines[i] == null) {
                 return g;
             }
-            g.drawString(lines[i], 60, ((i + 1) * 25 + 175));
+            g.drawString(lines[i], 60 + ((BusinessSim.isFullScreen)? 80:0),(int)(((i + 1) * 25 + 175) * scale));
         }
         return g;
     }
