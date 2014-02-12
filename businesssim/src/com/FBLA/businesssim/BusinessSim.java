@@ -63,7 +63,7 @@ public class BusinessSim extends Canvas implements Runnable {
     public static BusinessSim bs;
     public static Level level;
     public static int currentLevel = 0;
-    public String[] currentText = {
+    public String[] startText = {
         "Welcome to the Arctic branch of \"Pleasant Smells\" Glue Company.",
         "This room is used for promising applicants, such as yourself.",
         "(Though you are the only one who applied.)",
@@ -124,6 +124,7 @@ public class BusinessSim extends Canvas implements Runnable {
         addMouseMotionListener(mouse);
         screen = new Screen(width, height);
         td = new TextDisplayer(screen);
+        td.addLines(startText);
         addKeyListener(key);
 //        level = new Level("level/Floor1.png");
         level = new Level(Level.levelTilePaths[0], Level.levelObjPaths[0], 0, Level.xOff[0], Level.yOff[0]);
@@ -240,7 +241,7 @@ public class BusinessSim extends Canvas implements Runnable {
 //            g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
 
             // Text Displayer
-            g = (Graphics2D) td.displayText(currentText, key, g);
+            td.displayText(g);
 
             // HUD
             HUD.displayHUD(g);
@@ -299,14 +300,17 @@ public class BusinessSim extends Canvas implements Runnable {
             }
 
             // ingame actions
-            if (actionClicked) {
+            if (!key.inc && key.last_inc) { // text has priority over action button
+                td.moveOn();
+            }
+            else if (actionClicked) {
                 // level changing 
                 if (Level.isNearHunt) {
                     for (int i = 0; i < hunt[currentLevel].length; i++) {
                         if (!hunt[currentLevel][i].isRemoved()) {
                             if (hunt[currentLevel][i].v.distFrom(player.v) < 50) {
                                 hunt[currentLevel][i].event();
-                                td.updateText("" + (level.itemCount - 1) + " items left on this floor.");
+                                td.addLine("" + (level.itemCount - 1) + " items left on this floor.");
                             }
                         }
                     }
@@ -402,7 +406,7 @@ public class BusinessSim extends Canvas implements Runnable {
             return g;
         }
         if (!Level.finished[0]) {
-            td.updateText(new String[]{"Hey, what do you think you're doing?", "You can't possibly think we'd grant you elevator privleges", "without completing the entrance testing, do you?", "Finish this up here before you try again"});
+            td.addLines(new String[]{"Hey, what do you think you're doing?", "You can't possibly think we'd grant you elevator privleges", "without completing the entrance testing, do you?", "Finish this up here before you try again"});
             isPrompting = false;
             System.out.println("FAILED ATTEMPT");
             return g;
@@ -451,7 +455,7 @@ public class BusinessSim extends Canvas implements Runnable {
         System.out.println("SWITCH");
         currentLevel = elevatorPointer = levelNum;
         level = new Level(Level.levelTilePaths[levelNum], Level.levelObjPaths[levelNum], levelNum, player.v.getX(), player.v.getY());
-        td.updateText(Level.levelMessage[currentLevel]);
+        td.addLines(Level.levelMessage[currentLevel]);
         isPrompting = false;
 
     }

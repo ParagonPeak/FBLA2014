@@ -197,14 +197,15 @@ public class Level {
                 }
                 if (finished[levelNumber]) {
                 
-                        BusinessSim.bs.td.updateText("Good Job. Now enter the elevator to go to floor #" + (levelNumber + 2));
+                        BusinessSim.bs.td.addLine("Good Job. Now enter the elevator to go to floor #" + (levelNumber + 2));
                         System.out.println("Floor done");
                 }
             }
         } else {
-            if(finished[levelNumber] && BusinessSim.bs.td.textRequiresUpdate)
+            if(finished[levelNumber] && !BusinessSim.bs.td.hasText) {
                 BusinessSim.bs.changeGameState(BusinessSim.gs_credit);
-            BusinessSim.bs.td.updateText(new String[]{"Thank you, kind applicant!", "Now with all these, we can rule the world!", "How you ask?", "Through the addictiveness of the glue of course!", "We use all these skulls to make our special, patented glue which people won't be able to resist.", "No one can stop us now!", "Now for the final skull..."});
+            }
+            BusinessSim.bs.td.addLines(new String[]{"Thank you, kind applicant!", "Now with all these, we can rule the world!", "How you ask?", "Through the addictiveness of the glue of course!", "We use all these skulls to make our special, patented glue which people won't be able to resist.", "No one can stop us now!", "Now for the final skull..."});
             finished[levelNumber] = true;
         }
                     
@@ -338,15 +339,15 @@ public class Level {
     }
 
     public boolean playerNearPickup(Player p) {
-        int x0 = ((int) (p.v.getX()) >> 5) - 2;
-        int y0 = ((int) (p.v.getY()) >> 5) - 2;
-        int x1 = ((int) (p.v.getX()) >> 5) + 2;
-        int y1 = ((int) (p.v.getY()) >> 5) + 2;
-
-        x0 = Math.max(0, x0);
-        y0 = Math.max(0, y0);
-        x1 = Math.min(width - 1, x1);
-        y1 = Math.min(height - 1, y1);
+//        int x0 = ((int) (p.v.getX()) >> 5) - 2;
+//        int y0 = ((int) (p.v.getY()) >> 5) - 2;
+//        int x1 = ((int) (p.v.getX()) >> 5) + 2;
+//        int y1 = ((int) (p.v.getY()) >> 5) + 2;
+//
+//        x0 = Math.max(0, x0);
+//        y0 = Math.max(0, y0);
+//        x1 = Math.min(width - 1, x1);
+//        y1 = Math.min(height - 1, y1);
 
         for (int i = 0; i < hunt[levelNumber].length; i++) {
             double objectDist = hunt[levelNumber][i].v.distFrom(p.v);

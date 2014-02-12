@@ -5,8 +5,6 @@
 package com.FBLA.businesssim.graphics;
 
 import com.FBLA.businesssim.BusinessSim;
-import com.FBLA.businesssim.input.Keyboard;
-import com.FBLA.businesssim.level.Level;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -14,14 +12,16 @@ import java.util.ArrayList;
 
 /**
  *
- * @author RAPHAEL
+ * @author RAPHAEL and Tripp
  */
 public class TextDisplayer {
        
-    int index = 0;
-    public boolean textRequiresUpdate = false;
-    private boolean lastKeyAction = false;
-    private ArrayList<String[]> queue = new ArrayList<String[]>();
+    public static final int MAX_LINES = 3;
+    private String[] currentText; // hold the String[] being displayed on the screen at the moment
+    int index = 0; // index you're at in currentText since the String[] can have more than MAX_LINES amout of lines
+    public boolean hasText = false; // true if currentText has text
+    private ArrayList<String[]> queue = new ArrayList<>(); // hold the String[]s that will be put into currentText
+    
     private Screen screen;
     private double scale;
     
@@ -29,44 +29,83 @@ public class TextDisplayer {
         screen = s;
     }
     
-    public void updateText(String line) {
-        updateText(new String[]{line});
-    }
-
-    public void updateText(String[] lines) {
-        if (textRequiresUpdate) {
-            BusinessSim.bs.currentText = lines;
-        } else {
-            queue.add(lines);
-        }
-        textRequiresUpdate = false;
+    /**
+     * Helper method for addLines
+     * Adds a single line to the queue/dialog box
+     * @param line line to add to the dialog box
+     */
+    public void addLine(String line) {
+        addLines(new String[]{line});
     }
     
+    /**
+     * Add lines to be displayed
+     * If nothing is currently displayed, immediately goes to the dialog box
+     * Else it goes into the queue
+     * @param lines 
+     */
+    public void addLines(String[] lines) {
+        if (hasText) {
+            queue.add(lines);
+        } else {
+            currentText = lines;
+        }
+        hasText = true;
+    }
+    
+    /**
+     * Moves on to the next line in the current text or the
+     * next set of lines in the queue
+     */
     public void moveOn() {
         index += 3;
         System.out.println("INCREASE"); //Remove in the end
+        
+        if(currentText != null && index >= currentText.length) {
+            currentText = null;
+            hasText = false;
+            index = 0;
+            if(!queue.isEmpty()) {
+                currentText = queue.get(0);
+                queue.remove(0);
+                hasText = true;
+            }
+        }
     }
-
-    public Graphics displayText(Keyboard key, Graphics g) {
-        return displayText(queue.get(0), key, g);
+    
+    /**
+     * Takes a lines array and turns it into one that has the lines 
+     * from [index] to [index + maxLength] and doesn't go out of array bounds
+     */
+    private String[] subTextArray(String[] lines, int index, int maxLength) {
+        int linesToCopy = Math.min(maxLength, lines.length - index);
+        String[] text = new String[linesToCopy];
+        System.arraycopy(lines, index, text, 0, linesToCopy);
+        return text;
+    }
+    
+    /**
+     * Displays the current text
+     * @param g Graphics object to draw to
+     */
+    public void displayText(Graphics g) {
+        // String[] text = subTextArray(currentText, index, MAX_LINES);
+        displayText(currentText, index, g);
     }
 
     /**
-     * This method will display a line of text in a text box for the player to
-     * read.
-     *
-     * @param lines is the array of all the text to display.
-     * @param key keyboard to check if the key is pressed.
+     * Displays lines of text in a dialog box for a player to read
+     * @param lines contains the lines the player will read
+     * @param index index of the lines you want to start reading from
+     * @param g Graphics object to draw to
      */
-    public Graphics displayText(String[] lines, Keyboard key, Graphics g) {
-        //The lines currently on the screen, with a max of three to following convention
-        if (g == null || lines == null || key == null || textRequiresUpdate) {
-            lastKeyAction = false;
-            return g;
+    private void displayText(String[] lines, int index, Graphics g) {
+        if (g == null || lines == null || lines.length == 0) {
+            return;
         }
+        
         scale = BusinessSim.bs.scale;
-        Font tahoma = new Font("Tahoma", Font.PLAIN, (int) (24 * scale));
-        // boolean inc = (key.inc && !key.last_inc);
+        // Font tahoma = new Font("Tahoma", Font.PLAIN, (int) (24 * scale));
         
         int top = (int) (scale * 175), 
             bottom = (int) (scale * 100), 
@@ -80,43 +119,24 @@ public class TextDisplayer {
         g.drawRect(left, top, right, bottom);
         g.drawString("Press Space...", right - ((BusinessSim.isFullScreen)?0:60), top + (int) (90 * scale));
         
-        // create an array with the up to 3 lines to be displayed
-        String[] displayedLines = new String[3];
-        for (int i = index; i < index + 3 && i < lines.length; i++){// : i += (lines.length - index)) {
-            if(i < lines.length)
-                displayedLines[i - index] = lines[i];
-        }
-        if (key.inc && !lastKeyAction) {
-            index += 3;
-            System.out.println("INCREASE"); //Remove in the end
-        }
-        if (index > lines.length - 3 && (key.inc && !lastKeyAction)) {
-            textRequiresUpdate = queue.isEmpty();
-            index = 0;
-            System.out.println("Waiting for update!"); //Remove in the end
-            if (Level.finished[Level.finished.length - 1] && textRequiresUpdate) {
-                BusinessSim.bs.setGameState(BusinessSim.gs_startScreen); // possibly move this to the main class update method
-            }
-            if (!textRequiresUpdate) {
-                BusinessSim.bs.currentText = queue.get(0);
-                queue.remove(0);
-            }
-        }
-        lastKeyAction = key.inc;
-//        drawText(displayedLines, g).dispose();
-        return drawText(displayedLines, g);
+        String[] text = subTextArray(lines, index, MAX_LINES);
+        drawText(text, g);
     }
     
-    public Graphics drawText(String[] lines, Graphics g) {
+    /**
+     * Called by displayText to actually drawString the lines to the Graphics object
+     * @param lines
+     * @param g 
+     */
+    private void drawText(String[] lines, Graphics g) {
         if (g == null || lines == null) {
-            return g;
+            return;
         }
         for (int i = 0; i < lines.length; i++) {
             if (lines[i] == null) {
-                return g;
+                continue;
             }
             g.drawString(lines[i], 60 + ((BusinessSim.isFullScreen)? 80:0),(int)(((i + 1) * 25 + 175) * scale));
         }
-        return g;
     }
 }
