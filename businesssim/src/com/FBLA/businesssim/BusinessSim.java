@@ -11,6 +11,7 @@ import com.FBLA.businesssim.input.Mouse;
 import com.FBLA.businesssim.level.Level;
 import static com.FBLA.businesssim.level.Level.hunt;
 import com.FBLA.businesssim.sound.MusicPlayer;
+import com.FBLA.businesssim.util.Vector2d;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -83,6 +84,7 @@ public class BusinessSim extends Canvas implements Runnable {
     public boolean nearElevator = false;
     public static Font tahoma;// = new Font("Tahoma", Font.ITALIC, 36);
     public int FPS = 0;
+    private boolean newGame = true;
     public boolean actionClicked = false;
 
     //Starts the game, used for frame set up
@@ -531,6 +533,7 @@ public class BusinessSim extends Canvas implements Runnable {
     public void changeGameState() {
         switch (gameState) {
             case gs_inGame:
+                newGame = false;
                 screenImage = null;
                 break;
             case gs_about:
@@ -572,8 +575,24 @@ public class BusinessSim extends Canvas implements Runnable {
                     gameState = mainScreenPointerPosition;
                     mainScreenPointerPosition = gs_inGame;
                 }
+                if(!newGame)
+                {
+                    reset();
+                    newGame = true;
+                }
                 break;
         }
+    }
+    
+    private void reset(){
+        currentLevel = 0;
+        for(int i = 0; i < Level.finished.length; i++)
+            Level.finished[i] = false;
+        for(int i = 0; i < Level.levelAmount; i++)
+            for(int huntObj = 0; huntObj < Level.hunt[i].length; huntObj++)
+                Level.hunt[i][huntObj] = null;
+        level = new Level(Level.levelTilePaths[0], Level.levelObjPaths[0], 0, Level.xOff[0], Level.yOff[0]);
+        player.v = new Vector2d(0,0);
     }
 
     public void promptExit() {
