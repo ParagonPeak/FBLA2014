@@ -1,5 +1,5 @@
-"ENTREPENEURSHIP",                 
- "ECONOMICS",                      
- "GLOBAL BUSINESS",                
- "BUSINESS LAW",                   
- "FUTURE BUSINESS LEADER",         
+ENTREPENEURSHIP#What are some characteristics of a successful entrepreneur?#Ability to make quick decisions#Use of intuitive methods to solve problems#Success in the business world by starting their own idea#Writing a business plan to persuade customers to purchase their product
+ECONOMICS#Where does the Federal Government get most of its revenue from?#Personal Income Tax#Loans from other countries#They earn it#Donations
+GLOBAL BUSINESS#Good educational opportunities are found in:#Industrial Economies#Developing Countries#Developed Countries#High-Income Families
+BUSINESS LAW#Which of the following is true?#Liability for negligence is not effective unless there is actual harm#A pledge is binding unless pledged to a non-profit organization#Auction bids are final#You must be in jail before you can go on trial
+FUTURE BUSINESS LEADER#What is the most effective method of job seeking?#Networking#Career building websites#College courses#Internships
