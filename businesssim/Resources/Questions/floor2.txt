@@ -1,5 +1,5 @@
-"SPREADSHEET APPLICATIONS",        
- "COMPUTER APPLICATIONS",          
- "PUBLIC SPEAKING",                
- "ACCOUNTING",                     
- "COMPUTER PROBLEM SOLVING",       
+SPREADSHEET APPLICATIONS#In an Excel window, where is the status bar located?#Bottom of the window#Side of the window#Top toolbar#Top of the window
+COMPUTER APPLICATIONS#The application WordArt is included in which application?#All Microsoft Office Applications#Google Docs#Microsoft Publisher#Microsoft Word
+PUBLIC SPEAKING#What is the best way to give an effective speech?#Adequately address the topic, logically sequence your ideas, accomplish your purpose#Make a connection, get your audience to laugh, seem confident#Address the issue, pinpoint your ideas, state your conclusion#Impress your audience, put on a ‘good show’, leave them wanting more
+ACCOUNTING#What does Accounting keep track of?#Financial Information#Labor Reviews#Business Procedures#Small Businesses
+COMPUTER PROBLEM SOLVING#A message that appears on a computer screen to alert you that something went wrong is called:#An alert#A warning#A message#A red flag
