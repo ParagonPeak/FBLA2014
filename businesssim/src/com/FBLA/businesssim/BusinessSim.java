@@ -64,12 +64,12 @@ public class BusinessSim extends Canvas implements Runnable {
     public static Level level;
     public static int currentLevel = 0;
     public String[] currentText = {
-        "Welcome to the Arctic branch of \"Pleasant Smells\" Glue Company.", 
-        "This room is used for promising applicants, such as yourself.", 
-        "(Though you are the only one who applied.)", 
-        "We want to test the skills you will need to work here.", 
+        "Welcome to the Arctic branch of \"Pleasant Smells\" Glue Company.",
+        "This room is used for promising applicants, such as yourself.",
+        "(Though you are the only one who applied.)",
+        "We want to test the skills you will need to work here.",
         "Please collect 5 FBLA items for us from each floor.", //Change for the question stuff
-        "We promise there's meaning to this.", 
+        "We promise there's meaning to this.",
         "That is all. Penguins out!"};
     public static boolean isPaused = false, loaded = false,
             isFullScreen = false,
@@ -196,7 +196,7 @@ public class BusinessSim extends Canvas implements Runnable {
             createBufferStrategy(3);
             return;
         }
-        
+
         // if not in game, draw a premade screen image
         if (gameState != gs_inGame && !(screenImage == null)) {
             Graphics2D g = (Graphics2D) bs.getDrawGraphics();
@@ -215,7 +215,7 @@ public class BusinessSim extends Canvas implements Runnable {
             bs.show();
             return;
         }
-        
+
         screen.clear();
         level.render(xScroll, yScroll, screen, player);
         System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
@@ -226,7 +226,7 @@ public class BusinessSim extends Canvas implements Runnable {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 //            g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            
+
             int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - fullWidth;
             if (isFullScreen) {
                 g.setColor(Color.BLACK);
@@ -238,18 +238,27 @@ public class BusinessSim extends Canvas implements Runnable {
             }
             g.setColor(Color.WHITE);
 //            g.drawString("X: " + (int) (player.v.getX()) + "\n Y: " + (int) (player.v.getY()), 50, 250);
-            
+
             // Text Displayer
             g = (Graphics2D) td.displayText(currentText, key, g);
-            
+
             // HUD
             HUD.displayHUD(g);
-            
+
             if (nearElevator && isPrompting) {
                 g = promptFloorSwitch(g);
             }
-            
+
             g = drawLineToObjects(g);
+            
+            if (isPaused) {
+                //Draw the Pause Screen, definitely a better way to do this, but will work for now
+                try {
+                    g.drawImage(ImageIO.read(this.getClass().getResourceAsStream("/Textures/Screens/Pause.png")), (isFullScreen) ? screenWidth : 0, 0, width, height, 0, 0, normWidth, normHeight, null);
+                } catch (IOException ex) {
+                    Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                }
+            }
         }
         g.dispose();
         bs.show();
@@ -277,7 +286,7 @@ public class BusinessSim extends Canvas implements Runnable {
     public void update() {
         mouse.update();
         actionClicked = (key.action && !key.last_action) || mouse.lastMouseClicked;
-        
+
         // if in game and not paused, do in game stuff
         if (!isPaused && gameState == gs_inGame) {
             player.update();
@@ -377,7 +386,7 @@ public class BusinessSim extends Canvas implements Runnable {
             width = normWidth;
             height = normHeight;
             frame.setPreferredSize(new Dimension(width, height));
-            frame.setSize(new Dimension(width, height+15));
+            frame.setSize(new Dimension(width, height + 15));
             frame.setLocationRelativeTo(null);
             frame.requestFocus();
             scale = 1;
@@ -485,7 +494,7 @@ public class BusinessSim extends Canvas implements Runnable {
     }
 
     private void updateMainPointer() {
-        
+
         if (mouse.xPos > 600 * scale && mouse.yPos > 310 * scale) {
             if (mouse.yPos < 355 * scale) {
                 mainScreenPointerPosition = gs_inGame;
@@ -529,7 +538,7 @@ public class BusinessSim extends Canvas implements Runnable {
         gameState = gs;
         changeGameState();
     }
-    
+
     public void changeGameState() {
         switch (gameState) {
             case gs_inGame:
@@ -575,24 +584,26 @@ public class BusinessSim extends Canvas implements Runnable {
                     gameState = mainScreenPointerPosition;
                     mainScreenPointerPosition = gs_inGame;
                 }
-                if(!newGame)
-                {
+                if (!newGame) {
                     reset();
                     newGame = true;
                 }
                 break;
         }
     }
-    
-    private void reset(){
+
+    private void reset() {
         currentLevel = 0;
-        for(int i = 0; i < Level.finished.length; i++)
+        for (int i = 0; i < Level.finished.length; i++) {
             Level.finished[i] = false;
-        for(int i = 0; i < Level.levelAmount; i++)
-            for(int huntObj = 0; huntObj < Level.hunt[i].length; huntObj++)
+        }
+        for (int i = 0; i < Level.levelAmount; i++) {
+            for (int huntObj = 0; huntObj < Level.hunt[i].length; huntObj++) {
                 Level.hunt[i][huntObj] = null;
+            }
+        }
         level = new Level(Level.levelTilePaths[0], Level.levelObjPaths[0], 0, Level.xOff[0], Level.yOff[0]);
-        player.v = new Vector2d(0,0);
+        player.v = new Vector2d(0, 0);
     }
 
     public void promptExit() {
