@@ -239,7 +239,7 @@ public class Level {
                     }
                 }
                 if (finished[levelNumber]) {
-                
+                        BusinessSim.bs.score += 20;
                         BusinessSim.bs.td.addLine("Good Job. Now enter the elevator to go to floor #" + (levelNumber + 2));
                         System.out.println("Floor done");
                 }

@@ -291,7 +291,7 @@ public class BusinessSim extends Canvas implements Runnable {
         actionClicked = (key.action && !key.last_action) || mouse.lastMouseClicked;
         
         if(td.updateMultipleChoice(mouse.lastMouseClicked, mouse.mouseHeld, mouse.xPos, mouse.yPos) == TextDisplayer.RIGHT_ANSWER_CLICKED) {
-            score++;
+            score += 10;
         }
 
         // if in game and not paused, do in game stuff
@@ -356,7 +356,7 @@ public class BusinessSim extends Canvas implements Runnable {
             updateMainPointer();
         }
 
-        // if action is pressed in main menu. inc key/mouse don't actually make this do stuff yet for some reason
+        // if action is pressed in main menu.
         if ((actionClicked) || (mouse.lastMouseClicked)) {
             if (mainScreenPointerPosition == mspp_quit) {
                 System.exit(3); // if in menu and on quit, quit
