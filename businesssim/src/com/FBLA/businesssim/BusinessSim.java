@@ -124,7 +124,7 @@ public class BusinessSim extends Canvas implements Runnable {
         addMouseMotionListener(mouse);
         screen = new Screen(width, height);
         td = new TextDisplayer(screen);
-        td.addLines(startText);
+        td.addLines(startText, TextDisplayer.TEXT);
         addKeyListener(key);
 //        level = new Level("level/Floor1.png");
         level = new Level(Level.levelTilePaths[0], Level.levelObjPaths[0], 0, Level.xOff[0], Level.yOff[0]);
@@ -406,7 +406,7 @@ public class BusinessSim extends Canvas implements Runnable {
             return g;
         }
         if (!Level.finished[0]) {
-            td.addLines(new String[]{"Hey, what do you think you're doing?", "You can't possibly think we'd grant you elevator privleges", "without completing the entrance testing, do you?", "Finish this up here before you try again"});
+            td.addLines(new String[]{"Hey, what do you think you're doing?", "You can't possibly think we'd grant you elevator privleges", "without completing the entrance testing, do you?", "Finish this up here before you try again"}, TextDisplayer.TEXT);
             isPrompting = false;
             System.out.println("FAILED ATTEMPT");
             return g;
@@ -455,7 +455,7 @@ public class BusinessSim extends Canvas implements Runnable {
         System.out.println("SWITCH");
         currentLevel = elevatorPointer = levelNum;
         level = new Level(Level.levelTilePaths[levelNum], Level.levelObjPaths[levelNum], levelNum, player.v.getX(), player.v.getY());
-        td.addLines(Level.levelMessage[currentLevel]);
+        td.addLines(Level.levelMessage[currentLevel], TextDisplayer.TEXT);
         isPrompting = false;
 
     }

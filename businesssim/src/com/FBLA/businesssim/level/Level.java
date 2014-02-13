@@ -6,12 +6,16 @@ import com.FBLA.businesssim.entity.mob.Player;
 import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.graphics.SpriteSheet;
+import com.FBLA.businesssim.graphics.TextDisplayer;
 import com.FBLA.businesssim.level.raisedobject.RaisedObject;
 import com.FBLA.businesssim.level.tile.Tile;
 import com.FBLA.businesssim.util.Vector2d;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
@@ -78,7 +82,14 @@ public class Level {
                                                             { "BUSINESS LAW",                    "Businesses need to understand legal boundaries.", "This event tests your knowledge in that field, from liabilities to contracts and more."}, 
                                                             { "FUTURE BUSINESS LEADER",          "This event honors outstanding FBLA members, based on", "their leadership, participation in FBLA, and knowledge.", "This event consists of a submission of a letter of application and résumé, an objective test, and an interview"}},
         {{""}} // no level 6 pickups
-    };
+    }; 
+    
+    public static final String[][] level1Questions = loadQuestionsFromFile("/Questions/floor1.txt");
+    public static final String[][] level2Questions = loadQuestionsFromFile("/Questions/floor2.txt");
+    public static final String[][] level3Questions = loadQuestionsFromFile("/Questions/floor3.txt");
+    public static final String[][] level4Questions = loadQuestionsFromFile("/Questions/floor4.txt");
+    public static final String[][] level5Questions = loadQuestionsFromFile("/Questions/floor5.txt");
+    public static final String[][][] levelQuestions = {level1Questions, level2Questions, level3Questions, level4Questions, level5Questions};
 
     public Level(String tilePath, String objPath, int number) {
         this.tilePath = tilePath;
@@ -164,16 +175,48 @@ public class Level {
             Logger.getLogger(SpriteSheet.class.getName()).log(java.util.logging.Level.SEVERE, "Could not load level objects", ex);
         }
     }
+    
+    /**
+     * Given a file location, returns the lines of text (and the lines of text in those lines of text) in the file
+     * First index is question number, Second index is line number
+     */
+    public static String[][] loadQuestionsFromFile(String path) {
+        int QUESTION_AMOUNT = 5; // should always be 5 questions, 5 lines (4 answers and question), hence capitalization for constants
+        int LINE_AMOUNT = 5;
+        
+        String[][] result = new String[QUESTION_AMOUNT][LINE_AMOUNT]; 
+        
+        try {
+            InputStream in = Level.class.getClass().getResourceAsStream(path);
+            BufferedReader input = new BufferedReader(new InputStreamReader(in));
+            
+            for(int i = 0; i < QUESTION_AMOUNT; i++) {
+                String wholeLine = input.readLine();
+                result[i] = wholeLine.split("#");
+            }
+            
+            return result;
+        } catch (Exception e) {
+            Logger.getLogger(SpriteSheet.class.getName()).log(java.util.logging.Level.SEVERE, "Could not load level questions at " + path, e);
+        }
+        
+        return null;
+    }
 
     public void update(Player p) {
         playerV = p.v;
-        if (levelNumber < levelAmount - 1) {
-            if (!finished[levelNumber]) {
+        if (levelNumber < levelAmount - 1) { // if not on last level
+            if (!finished[levelNumber]) { // if level not finished
                 if (hunt[levelNumber][0] == null) { // ready hunt spots if necessary
                     hunt[levelNumber] = new HuntObject[totalItems];
 
                     for (int i = 0; i < totalItems; i++) {
-                        hunt[levelNumber][i] = new HuntObject(makeHuntSpot(), Sprite.huntSprite2, BusinessSim.bs.screen, pickUpDescriptions[levelNumber][i]);
+                        Vector2d huntSpot = makeHuntSpot();
+                        Sprite sprite = Sprite.huntSprite2;
+                        Screen sc = BusinessSim.bs.screen;
+                        String[] pickupText = pickUpDescriptions[levelNumber][i];
+                        String[] questionText = levelQuestions[levelNumber][i];
+                        hunt[levelNumber][i] = new HuntObject(huntSpot, sprite, sc, pickupText, questionText);
                     }
                 }
 
@@ -205,7 +248,7 @@ public class Level {
             if(finished[levelNumber] && !BusinessSim.bs.td.hasText) {
                 BusinessSim.bs.changeGameState(BusinessSim.gs_credit);
             }
-            BusinessSim.bs.td.addLines(new String[]{"Thank you, kind applicant!", "Now with all these, we can rule the world!", "How you ask?", "Through the addictiveness of the glue of course!", "We use all these skulls to make our special, patented glue which people won't be able to resist.", "No one can stop us now!", "Now for the final skull..."});
+            BusinessSim.bs.td.addLines(new String[]{"Thank you, kind applicant!", "Now with all these, we can rule the world!", "How you ask?", "Through the addictiveness of the glue of course!", "We use all these skulls to make our special, patented glue which people won't be able to resist.", "No one can stop us now!", "Now for the final skull..."}, TextDisplayer.TEXT);
             finished[levelNumber] = true;
         }
                     

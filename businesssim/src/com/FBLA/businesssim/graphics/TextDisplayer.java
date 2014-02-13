@@ -16,11 +16,25 @@ import java.util.ArrayList;
  */
 public class TextDisplayer {
        
-    public static final int MAX_LINES = 3;
+    public static final int MAX_LINES = 6;
     private String[] currentText; // hold the String[] being displayed on the screen at the moment
     int index = 0; // index you're at in currentText since the String[] can have more than MAX_LINES amout of lines
     public boolean hasText = false; // true if currentText has text
     private ArrayList<String[]> queue = new ArrayList<>(); // hold the String[]s that will be put into currentText
+    
+    public static final boolean MULTIPLE_CHOICE = true;
+    public static final boolean TEXT = false;
+    public boolean currentTextType = false;
+    private ArrayList<Boolean> isMC = new ArrayList<>();
+    
+    private int mouseX, mouseY;
+    private boolean mouseWasClicked;
+    
+    public static final int WRONG_ANSWER_CLICKED = 0;
+    public static final int RIGHT_ANSWER_CLICKED = 1;
+    public static final int NO_ANSWER_CLICKED = -1;
+    private int hoveredOverOption = -1;
+    private int heldOption = -1;
     
     private Screen screen;
     private double scale;
@@ -35,7 +49,7 @@ public class TextDisplayer {
      * @param line line to add to the dialog box
      */
     public void addLine(String line) {
-        addLines(new String[]{line});
+        addLines(new String[]{line}, TEXT);
     }
     
     /**
@@ -44,11 +58,15 @@ public class TextDisplayer {
      * Else it goes into the queue
      * @param lines 
      */
-    public void addLines(String[] lines) {
+    public void addLines(String[] lines, boolean lineType) {
         if (hasText) {
             queue.add(lines);
+            isMC.add(lineType);
         } else {
             currentText = lines;
+            if(lineType == MULTIPLE_CHOICE) {
+                currentTextType = MULTIPLE_CHOICE;
+            }
         }
         hasText = true;
     }
@@ -58,8 +76,8 @@ public class TextDisplayer {
      * next set of lines in the queue
      */
     public void moveOn() {
-        index += 3;
-        System.out.println("INCREASE"); //Remove in the end
+        index += MAX_LINES;
+        // System.out.println("INCREASE"); //Remove in the end
         
         if(currentText != null && index >= currentText.length) {
             currentText = null;
@@ -71,6 +89,56 @@ public class TextDisplayer {
                 hasText = true;
             }
         }
+    }
+    
+    /**
+     * @return whether currentText is a multiple choice questions
+     */
+    public boolean inMultipleChoice() {
+        return currentTextType;
+    }
+    
+    /**
+     * Updates mouse data
+     * Check whether mouse is over a question/isHeld
+     * Checks whether an answer was clicked and if so then whether it was width
+     * 
+     * @return whether an answer was clicked and if so then whether it was width or wrong
+     */
+    public int updateMultipleChoice(boolean mouseWasClicked, boolean mouseIsHeld, int mouseX, int mouseY) {
+        // we want the class to have its own store of these for proper updating
+        this.mouseWasClicked = mouseWasClicked;
+        this.mouseX = mouseX;
+        this.mouseY = mouseY;
+        
+        int boxRight = (int) (scale * screen.width - 75) - ((BusinessSim.isFullScreen)?60:0), 
+            boxLeft = (int) (scale * 50) + ((BusinessSim.isFullScreen)? 60:0);
+        // int stringX = 60 + ((BusinessSim.isFullScreen)? 80:0); 
+        
+        // determine what's hovered over/held
+        if(mouseX > boxLeft && mouseX < boxRight) {
+            hoveredOverOption = -1;
+            heldOption = -1;
+            for(int i = 1; i < Math.min(MAX_LINES, currentText.length); i++) {
+                int stringY = (int)(((i + 1) * 25 + 175) * scale);
+                if(mouseY < stringY && mouseY > stringY - 20 * scale) {
+                    hoveredOverOption = i;
+                    if(mouseIsHeld) {
+                        heldOption = i;
+                    }
+                    break;
+                }
+            }
+        }
+        
+        if(mouseWasClicked && hoveredOverOption != -1) {
+            if(hoveredOverOption == 1) { // because there's nothing wrong with every width answer being "A", width?
+                return RIGHT_ANSWER_CLICKED;
+            } 
+            return WRONG_ANSWER_CLICKED;
+        }
+        
+        return NO_ANSWER_CLICKED;
     }
     
     /**
@@ -107,17 +175,17 @@ public class TextDisplayer {
         scale = BusinessSim.bs.scale;
         // Font tahoma = new Font("Tahoma", Font.PLAIN, (int) (24 * scale));
         
-        int top = (int) (scale * 175), 
-            bottom = (int) (scale * 100), 
-            right = (int) (scale * screen.width - 75) - ((BusinessSim.isFullScreen)?60:0), 
-            left = (int) (scale * 50) + ((BusinessSim.isFullScreen)? 60:0);
+        int left = (int) (scale * 50) + ((BusinessSim.isFullScreen)? 60:0),
+            top = (int) (scale * 175), 
+            width = (int) (scale * screen.width - 75) - ((BusinessSim.isFullScreen)?60:0),
+            height = (int) (scale * 100 * MAX_LINES / 3.5);
         
         // draw the dialog box and "Press Space"
         g.setColor(new Color(0xcc, 0xcc, 0xcc, 150));
-        g.fillRect(left, top, right, bottom);
+        g.fillRect(left, top, width, height);
         g.setColor(Color.BLACK);
-        g.drawRect(left, top, right, bottom);
-        g.drawString("Press Space...", right - ((BusinessSim.isFullScreen)?0:60), top + (int) (90 * scale));
+        g.drawRect(left, top, width, height);
+        g.drawString("Press Space...", width - ((BusinessSim.isFullScreen)?0:60), top + (int) (90 * scale));
         
         String[] text = subTextArray(lines, index, MAX_LINES);
         drawText(text, g);
