@@ -86,6 +86,8 @@ public class BusinessSim extends Canvas implements Runnable {
     public int FPS = 0;
     private boolean newGame = true;
     public boolean actionClicked = false;
+    
+    public int score = 0;
 
     //Starts the game, used for frame set up
     public static void main(String[] args) {
@@ -287,6 +289,10 @@ public class BusinessSim extends Canvas implements Runnable {
     public void update() {
         mouse.update();
         actionClicked = (key.action && !key.last_action) || mouse.lastMouseClicked;
+        
+        if(td.updateMultipleChoice(mouse.lastMouseClicked, mouse.mouseHeld, mouse.xPos, mouse.yPos) == TextDisplayer.RIGHT_ANSWER_CLICKED) {
+            score++;
+        }
 
         // if in game and not paused, do in game stuff
         if (!isPaused && gameState == gs_inGame) {
@@ -301,7 +307,9 @@ public class BusinessSim extends Canvas implements Runnable {
 
             // ingame actions
             if (!key.inc && key.last_inc) { // text has priority over action button
-                td.moveOn();
+                if(!td.inMultipleChoice()) { // can't skip multiple choice
+                    td.moveOn();
+                }
             }
             else if (actionClicked) {
                 // level changing 

@@ -86,6 +86,8 @@ public class TextDisplayer {
             if(!queue.isEmpty()) {
                 currentText = queue.get(0);
                 queue.remove(0);
+                currentTextType = isMC.get(0);
+                isMC.remove(0);
                 hasText = true;
             }
         }
@@ -116,10 +118,10 @@ public class TextDisplayer {
         // int stringX = 60 + ((BusinessSim.isFullScreen)? 80:0); 
         
         // determine what's hovered over/held
-        if(mouseX > boxLeft && mouseX < boxRight) {
-            hoveredOverOption = -1;
-            heldOption = -1;
-            for(int i = 1; i < Math.min(MAX_LINES, currentText.length); i++) {
+        hoveredOverOption = -1;
+        heldOption = -1;
+        if(inMultipleChoice() && currentText != null && currentText.length != 0 && mouseX > boxLeft && mouseX < boxRight) {
+            for(int i = 2; i < Math.min(MAX_LINES, currentText.length); i++) {
                 int stringY = (int)(((i + 1) * 25 + 175) * scale);
                 if(mouseY < stringY && mouseY > stringY - 20 * scale) {
                     hoveredOverOption = i;
@@ -132,7 +134,8 @@ public class TextDisplayer {
         }
         
         if(mouseWasClicked && hoveredOverOption != -1) {
-            if(hoveredOverOption == 1) { // because there's nothing wrong with every width answer being "A", width?
+            moveOn();
+            if(hoveredOverOption == 2) { // because there's nothing wrong with every width answer being "A", right?
                 return RIGHT_ANSWER_CLICKED;
             } 
             return WRONG_ANSWER_CLICKED;
@@ -147,6 +150,10 @@ public class TextDisplayer {
      */
     private String[] subTextArray(String[] lines, int index, int maxLength) {
         int linesToCopy = Math.min(maxLength, lines.length - index);
+        if(linesToCopy <= 0) {
+            String[] empty = {""};
+            return empty;
+        }
         String[] text = new String[linesToCopy];
         System.arraycopy(lines, index, text, 0, linesToCopy);
         return text;
@@ -203,6 +210,13 @@ public class TextDisplayer {
         for (int i = 0; i < lines.length; i++) {
             if (lines[i] == null) {
                 continue;
+            }
+            g.setColor(Color.BLACK);
+            if(inMultipleChoice() && hoveredOverOption == i) {
+                g.setColor(Color.GREEN);
+                if(heldOption == i) {
+                    g.setColor(Color.BLUE);
+                }
             }
             g.drawString(lines[i], 60 + ((BusinessSim.isFullScreen)? 80:0),(int)(((i + 1) * 25 + 175) * scale));
         }

@@ -61,6 +61,10 @@ public class HUD {
             // pickups left
             g.setColor(new Color(0xff, 0xff, 0xaa, 200));
             g.drawString("Pickups left here: " + BusinessSim.bs.level.itemCount, (int) (100 * scale)+ ((BusinessSim.isFullScreen) ? 140:0), (int) (25 * scale));
+            
+            // score
+            g.setColor(new Color(0xff, 0xff, 0xcc, 200));
+            g.drawString("Score: " + BusinessSim.bs.score, (int) (350 * scale)+ ((BusinessSim.isFullScreen) ? 140:0), (int) (25 * scale));
         }
     }
 }
