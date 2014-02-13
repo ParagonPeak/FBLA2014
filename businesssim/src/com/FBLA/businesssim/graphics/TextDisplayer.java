@@ -35,6 +35,7 @@ public class TextDisplayer {
     public static final int NO_ANSWER_CLICKED = -1;
     private int hoveredOverOption = -1;
     private int heldOption = -1;
+    private int correctOption = 2;
     
     private Screen screen;
     private double scale;
@@ -58,6 +59,16 @@ public class TextDisplayer {
      * Else it goes into the queue
      * @param lines 
      */
+    public void addLines(String[] lines) {
+        addLines(lines, TEXT);
+    }
+    
+    /**
+     * Add lines to be displayed
+     * If nothing is currently displayed, immediately goes to the dialog box
+     * Else it goes into the queue
+     * @param lines 
+     */
     public void addLines(String[] lines, boolean lineType) {
         if (hasText) {
             queue.add(lines);
@@ -69,6 +80,17 @@ public class TextDisplayer {
             }
         }
         hasText = true;
+    }
+    
+    /**
+     * Add lines to be displayed
+     * If nothing is currently displayed, immediately goes to the dialog box
+     * Else it goes into the queue
+     * @param lines 
+     */
+    public void addLines(String[] lines, boolean lineType, int correctAnswerIndex) {
+        correctOption = correctAnswerIndex;
+        addLines(lines, lineType);
     }
     
     /**
@@ -135,7 +157,7 @@ public class TextDisplayer {
         
         if(mouseWasClicked && hoveredOverOption != -1) {
             moveOn();
-            if(hoveredOverOption == 2) { // because there's nothing wrong with every width answer being "A", right?
+            if(hoveredOverOption == correctOption) {
                 return RIGHT_ANSWER_CLICKED;
             } 
             return WRONG_ANSWER_CLICKED;
