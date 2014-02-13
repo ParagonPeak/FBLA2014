@@ -192,7 +192,13 @@ public class TextDisplayer {
         g.fillRect(left, top, width, height);
         g.setColor(Color.BLACK);
         g.drawRect(left, top, width, height);
-        g.drawString("Press Space...", width - ((BusinessSim.isFullScreen)?0:60), top + (int) (90 * scale));
+        
+        
+        if(inMultipleChoice()) {
+            g.drawString("Click an answer", width - ((BusinessSim.isFullScreen)?0:60), top + (int) (90 * scale));
+        } else {
+            g.drawString("Press Space...", width - ((BusinessSim.isFullScreen)?0:60), top + (int) (90 * scale));
+        }
         
         String[] text = subTextArray(lines, index, MAX_LINES);
         drawText(text, g);
