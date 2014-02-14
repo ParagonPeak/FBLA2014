@@ -125,8 +125,6 @@ public class BusinessSim extends Canvas implements Runnable {
         normWidth = width;
         fullScale = fullHeight * 1.0 / normHeight;
         fullWidth = (int) (normWidth * fullScale);
-//        System.out.println(normWidth);
-//        System.out.println(fullWidth);
         Dimension size = new Dimension((int) (width * scale), (int) (height * scale));
         setPreferredSize(size);
 
@@ -149,7 +147,6 @@ public class BusinessSim extends Canvas implements Runnable {
      */
     public synchronized void start() {
         running = true;
-        System.out.println("Start");
         mThread = new Thread(this, title + version);
         mThread.start();
     }
@@ -159,7 +156,6 @@ public class BusinessSim extends Canvas implements Runnable {
      */
     public synchronized void stop() {
         running = false;
-        System.out.println("Stop");
         try {
             mThread.join();
         } catch (Exception e) {
@@ -412,7 +408,6 @@ public class BusinessSim extends Canvas implements Runnable {
         // Pause the game if 'P' is pressed and the player is in the game.
         if ((key.pause && !key.last_pause) && gameState == gs_inGame) {
             isPaused = !isPaused;
-            System.out.println("isPaused = " + isPaused);
         }
     }
 

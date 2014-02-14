@@ -71,7 +71,7 @@ public class Level {
                                                             { "WORD PROCESSING",                 "Documents are staples of business, and effective word processing is effective business.", "This event tests you knowledge and abilities in creating all types of documents, ", "from memos to tables to reports."},
                                                             { "PUBLIC SERVICE ANNOUNCEMENT",     "Public Service Announcements help raise awareness on social issues.", "This exciting FBLA event requires a 30 second PSA on a specific topic,", "raising awareness of it and affecting viewers' attitudes toward it."}},
                                                          {  {"BANKING AND FINANCIAL SYSTEMS",    "Successful business ownership and management requires understanfding of financial institutions.", "This event requires takers to both take a test and ", "develop a case study on a problem", "in the banking or financial business community."}, 
-                                                            { "MANAGEMENT DECISION MAKING",      "Managers need to make high-quality, instantaneous decision all the time.", "This event examines your management abilities with both an objective test and a case study on a managemtn decision."}, 
+                                                            { "MANAGEMENT DECISION MAKING",      "Managers need to make high-quality, instantaneous decision all the time.", "This event examines your management abilities with both an objective test and a case study on a management decision."}, 
                                                             { "BUSINESS ETHICS",                 "Ethical (moral) decisions are necessary for business and beyond.", "This event requires a case study into an ethical dilemna a business could have."}, 
                                                             { "AMERICAN ENTERPRISE PROJECT",     "This event encourages knowledge of the American Enterpries System.", "It requires an FBLA Chapter to create a program educating the school or community about American Enterprise."}, 
                                                             { "WEB SITE DESIGN",                 "Websites are integral to effective businesses.", "This event requires a specified business website to be submitted, judged, and presented."}}, 
@@ -258,14 +258,20 @@ public class Level {
                 if (finished[levelNumber]) {
                         BusinessSim.bs.score += 20;
                         BusinessSim.bs.td.addLine("Good Job. Now enter the elevator to go to floor #" + (levelNumber + 2));
-                        System.out.println("Floor done");
                 }
             }
         } else {
             if(finished[levelNumber] && !BusinessSim.bs.td.hasText) {
                 BusinessSim.bs.changeGameState(BusinessSim.gs_credit);
             }
-            BusinessSim.bs.td.addLines(new String[]{"Thank you, kind applicant!", "Now with all these, we can rule the world!", "How you ask?", "Through the addictiveness of the glue of course!", "We use all these skulls to make our special, patented glue which people won't be able to resist.", "No one can stop us now!", "Now for the final skull..."}, TextDisplayer.TEXT);
+            
+            BusinessSim.bs.td.addLines(new String[]{"Thank you, kind applicant!",
+                "Now with all these, we can rule the world!", 
+                "How you ask?", 
+                "With the glue of course!", 
+                "We use all these skulls to make our special, patented glue which people won't be able to resist.", 
+                "No one can stop us now!", 
+                "Now for the final skull..."}, TextDisplayer.TEXT);
             finished[levelNumber] = true;
         }
                     

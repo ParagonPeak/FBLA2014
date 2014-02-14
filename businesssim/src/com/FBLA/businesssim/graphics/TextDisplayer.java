@@ -6,7 +6,6 @@ package com.FBLA.businesssim.graphics;
 
 import com.FBLA.businesssim.BusinessSim;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -98,9 +97,7 @@ public class TextDisplayer {
      * next set of lines in the queue
      */
     public void moveOn() {
-        index += MAX_LINES;
-        // System.out.println("INCREASE"); //Remove in the end
-        
+        index += MAX_LINES;        
         if(currentText != null && index >= currentText.length) {
             currentText = null;
             hasText = false;

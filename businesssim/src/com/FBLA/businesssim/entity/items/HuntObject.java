@@ -13,8 +13,8 @@ import com.FBLA.businesssim.sound.MusicPlayer;
 import com.FBLA.businesssim.util.Vector2d;
 
 /**
- *
- * @author Tripp
+ *  This class is used to represented the objects that can be picked up during the
+ * game
  */
 public class HuntObject extends Entity {
 
@@ -23,6 +23,14 @@ public class HuntObject extends Entity {
     private String[] question;
     private int correctAnswerIndex = 2;
 
+    /**
+     * The constructor of the hunt objects 
+     * @param v The placement vector
+     * @param s the sprite to be drawn
+     * @param sc where to draw
+     * @param pickupText the 
+     * @param questionText 
+     */
     public HuntObject(Vector2d v, Sprite s, Screen sc, String[] pickupText, String[] questionText) {
         super(v);
         sprite = s;
@@ -54,10 +62,8 @@ public class HuntObject extends Entity {
         correctAnswerIndex = newAnswerIndex;
         
         BusinessSim.bs.td.addLines(question, TextDisplayer.MULTIPLE_CHOICE, correctAnswerIndex);
-        
-        String[] correctString = {"The correct answer was: ", question[correctAnswerIndex]};
-        BusinessSim.bs.td.addLines(correctString, TextDisplayer.MULTIPLE_CHOICE, correctAnswerIndex);
-        
+        String[] correctString = {"","The correct answer was: ", question[correctAnswerIndex]};
+        BusinessSim.bs.td.addLines(correctString, TextDisplayer.TEXT, correctAnswerIndex);
         
         // play a sound, write a message
         MusicPlayer m = new MusicPlayer();

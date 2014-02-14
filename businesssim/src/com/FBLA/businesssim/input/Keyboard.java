@@ -46,9 +46,6 @@ public class Keyboard implements KeyListener{
         keys[KeyEvent.VK_ESCAPE] = false;
         if(keys[KeyEvent.VK_F11] && !last_full) BusinessSim.bs.setFullScreen(!BusinessSim.isFullScreen);
         last_full = keys[KeyEvent.VK_F11];
-        
-        if(up && left)
-            System.out.println("WORKING");
     }
     
     /**

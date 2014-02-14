@@ -44,7 +44,6 @@ public class NPC extends Mob{
                 text += line;
             }while(line != null);
             speak = text.split("/n");
-            System.out.println(speak.length);
         } catch (FileNotFoundException ex) {
             System.out.println("Problem loading text");
         } catch (IOException ex) {
