@@ -32,7 +32,7 @@ public class Level {
     
     public Vector2d playerV = new Vector2d(0, 128); // default location for player
     public static boolean isNearHunt = false; // true if player is near one of the objects they're hunting for
-    
+    public static boolean lastLevelText = false;
     // variables to store level variables that will change
     public static boolean[] finished = {false, false, false, false, false, false}; // indexes are levels. When level requirements are finished, the thing gets set to true
     public int levelNumber; // I put this here in case we want to hardcode some level-specific commands
@@ -262,16 +262,19 @@ public class Level {
             }
         } else {
             if(finished[levelNumber] && !BusinessSim.bs.td.hasText) {
-                BusinessSim.bs.changeGameState(BusinessSim.gs_credit);
+                BusinessSim.bs.changeGameState(BusinessSim.gs_startScreen);
             }
-            
+            if(!lastLevelText)
+            {
             BusinessSim.bs.td.addLines(new String[]{"Thank you, kind applicant!",
                 "Now with all these, we can rule the world!", 
                 "How you ask?", 
                 "With the glue of course!", 
                 "We use all these skulls to make our special, patented glue which people won't be able to resist.", 
-                "No one can stop us now!", 
-                "Now for the final skull..."}, TextDisplayer.TEXT);
+                "No one can stop us now!"}, TextDisplayer.TEXT);
+            BusinessSim.bs.td.addLines(new String[]{"","","Game over", "Join FBLA and have a great time!"}, TextDisplayer.TEXT);
+            lastLevelText = true;
+            }
             finished[levelNumber] = true;
         }
                     
