@@ -30,7 +30,7 @@ public class Level {
     public String tilePath; // location of the level's tile file
     public String objPath; // location of the level's objects file
     
-    public Vector2d playerV = new Vector2d(0, 128); // default location for player
+    public Vector2d playerV = new Vector2d(48, 128); // default location for player
     public static boolean isNearHunt = false; // true if player is near one of the objects they're hunting for
     public static boolean lastLevelText = false;
     // variables to store level variables that will change

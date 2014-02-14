@@ -50,7 +50,8 @@ public class BusinessSim extends Canvas implements Runnable {
             FPS = 0, 
             score = 0;;
     private int mainScreenPointerPosition = gs_inGame, 
-            elevatorPointer = 0;
+            elevatorPointer = 0,
+            pausePointer = 0;
     public static final int gs_inGame = 0, 
             gs_about = 1, 
             gs_controls = 2, 
@@ -80,8 +81,8 @@ public class BusinessSim extends Canvas implements Runnable {
         "This room is used for promising applicants, such as yourself.",
         "(Though you are the only one who applied.)",
         "We want to test the skills you will need to work here.",
-        "Please collect 5 FBLA items for us from each floor.", //Change for the question stuff
-        "We promise there's meaning to this.",
+        "Please learn 5 skills for us from each floor.",
+        "We will be assessing you based on your answers.",
         "That is all. Penguins out!"};
     public static boolean isPaused = false, loaded = false,
             isFullScreen = false,
@@ -406,6 +407,19 @@ public class BusinessSim extends Canvas implements Runnable {
         if ((key.pause && !key.last_pause) && gameState == gs_inGame) {
             isPaused = !isPaused;
         }
+        if(isPaused)
+        {
+            if(mouse.yPos > 360 && mouse.yPos < 420)
+                pausePointer = 1;
+            else if(mouse.yPos >420)
+                pausePointer = 2;
+            else
+                pausePointer = 0;
+            if(mouse.mouseHeld && pausePointer == 1)
+                isPaused = false;
+            else if(mouse.mouseHeld && pausePointer == 2)
+                changeGameState(gs_startScreen);
+        }
     }
 
     
@@ -672,6 +686,7 @@ public class BusinessSim extends Canvas implements Runnable {
      */
     private void reset() {
         currentLevel = 0;
+        isPaused = false;
         for (int i = 0; i < Level.finished.length; i++) {
             Level.finished[i] = false;
         }
