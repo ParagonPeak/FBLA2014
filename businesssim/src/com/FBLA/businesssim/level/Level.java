@@ -10,7 +10,6 @@ import com.FBLA.businesssim.graphics.TextDisplayer;
 import com.FBLA.businesssim.level.raisedobject.RaisedObject;
 import com.FBLA.businesssim.level.tile.Tile;
 import com.FBLA.businesssim.util.Vector2d;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,28 +24,29 @@ import javax.imageio.ImageIO;
  */
 public class Level {
 
-    public int width, height;
+    public int width, height; // stores how many tiles the level has in each direction
     public static int[] tiles; // floor
-    public static int[] objects; // walls and other 3d things
-    public int spawnX = 0;
-    public int spawnY = 0;
-//    public Vector2d playerV = new Vector2d(spawnX + (BusinessSim.bs.player.s.W / 2), spawnY + (BusinessSim.bs.player.s.H /2));
-    public Vector2d playerV = new Vector2d(0, 128); // why is this here?
-    public static Rectangle[] rects;
+    public static int[] objects; // walls and other "3d" things
+    public String tilePath; // location of the level's tile file
+    public String objPath; // location of the level's objects file
+    
+    public Vector2d playerV = new Vector2d(0, 128); // default location for player
+    public static boolean isNearHunt = false; // true if player is near one of the objects they're hunting for
+    
+    // variables to store level variables that will change
     public static boolean[] finished = {false, false, false, false, false, false}; // indexes are levels. When level requirements are finished, the thing gets set to true
-    public String tilePath;
-    public String objPath;
     public int levelNumber; // I put this here in case we want to hardcode some level-specific commands
     public int itemCount = 0;
-    public static boolean isNearHunt = false;
-    // arrays to store level specific values to make them easier to call and change
+    
+    // variables/constants to store level specific constants to make them easier to call
     public static final int levelAmount = 6;
-    public static final int totalItems = 5;
+    public static final int totalItems = 5; // amount of HuntObjects in a level
     public static final String[] levelTilePaths = {"/Textures/Levels/Level0Tiles.png", "/Textures/Levels/Level2Tiles.png", "/Textures/Levels/Level3Tiles.png", "/Textures/Levels/Level4Tiles.png", "/Textures/Levels/Level0Tiles.png", "/Textures/Levels/Level3Tiles.png"};
     public static final String[] levelObjPaths = {"/Textures/Levels/Level0Objects.png", "/Textures/Levels/Level2Objects.png", "/Textures/Levels/Level3Objects.png", "/Textures/Levels/Level4Objects.png", "/Textures/Levels/Level0Objects.png", "/Textures/Levels/Level3Objects.png"};
-    public static int[] xOff = {48, 48, 48, 48, 48, 48};
+    public static int[] xOff = {48, 48, 48, 48, 48, 48}; // default spawns for each level
     public static int[] yOff = {128, 128, 128, 128, 128, 128};
-    public static HuntObject[][] hunt = new HuntObject[levelTilePaths.length][totalItems];
+    public static HuntObject[][] hunt = new HuntObject[levelTilePaths.length][totalItems]; // stores all HuntObjects by level and index
+    // messages displayed when you start a floor
     public static final String[][] levelMessage = {{"Ground Floor: ", "This is where we conduct job application testing.", "It's normally filled with more people applying."},
         {"Floor 2: ", "We store things here. ", "Luckily for you, it's very organized,", "except for the power cables near the motorized chairs.", "We just can't seem to unplug them."},
         {"Floor 3: ", "This is where we design our glue.", "We don't go ahead with anything until it's prefectly planned out!", "Why the open space, desks, and mini-maze?", "Because we planned it out perfectly that way."},
@@ -54,7 +54,6 @@ public class Level {
         {"Floor 5: ", "You remember the ground floor? ", "There's a reason it was designed the way it was!", "It was modeled after this floor, which we built first.", "Don't ask how."},
         {"Floor 6: ", "You made it! Congratulations.", "Wondering what to do next?", "Join FBLA!"} //Change?
     };
-    
     // [level][pickup#][description line]
     public static final String[][][] pickUpDescriptions = {{{"JOB INTERVIEW",                    "A job interview assesses a job applicants suitability for the job they are applying to.", "In FBLA, the job interview event has two parts: a letter of application, or résumé, and a job application form.", "There is usually an interview, unless you're interviewing to our", "sister organization: Cyberdyne Systems."},
                                                             { "LIFESMARTS",                      "The Lifesmarts competition encourages teams to learn about economics, personal finance, and consumer issues.", "The event requires a quiz and personal finance assessment while", "integrating business knowledge, critical thinking, and teamwork"},
@@ -83,7 +82,7 @@ public class Level {
                                                             { "FUTURE BUSINESS LEADER",          "This event honors outstanding FBLA members, based on", "their leadership, participation in FBLA, and knowledge.", "This event consists of a submission of a letter of application and résumé, an objective test, and an interview"}},
         {{""}} // no level 6 pickups
     }; 
-    
+    // questions lists. questions displayed when HuntObjects are picked up
     public static final String[][] level1Questions = loadQuestionsFromFile("/Questions/floor1.txt");
     public static final String[][] level2Questions = loadQuestionsFromFile("/Questions/floor2.txt");
     public static final String[][] level3Questions = loadQuestionsFromFile("/Questions/floor3.txt");
@@ -91,16 +90,23 @@ public class Level {
     public static final String[][] level5Questions = loadQuestionsFromFile("/Questions/floor5.txt");
     public static final String[][][] levelQuestions = {level1Questions, level2Questions, level3Questions, level4Questions, level5Questions};
 
+    /**
+     * Creates a level from the given tiles/objects
+     * @param number is the floor number - 1, aka level number
+     */
     public Level(String tilePath, String objPath, int number) {
         this.tilePath = tilePath;
         this.objPath = objPath;
         this.levelNumber = number;
         loadLevelTiles();
         loadLevelObjects();
-//        loadLevelTiles("Resources/Textures/Levels/ExampleLevelTiles.png");
-//        loadLevelObjects("Resources/Textures/Levels/ExampleLevelObjects.png");
     }
 
+    /**
+     * Creates a level from the given tiles/objects
+     * Gives the player a starting Vector2d of (px, py)
+     * @param number is the floor number - 1, aka level number
+     */
     public Level(String tilePath, String objPath, int number, double px, double py) {
         this.tilePath = tilePath;
         this.objPath = objPath;
@@ -109,8 +115,6 @@ public class Level {
         loadLevelObjects();
         playerV.setX(px);
         playerV.setY(py);
-//        loadLevelTiles("Resources/Textures/Levels/ExampleLevelTiles.png");
-//        loadLevelObjects("Resources/Textures/Levels/ExampleLevelObjects.png");
     }
 
     /**
@@ -132,6 +136,9 @@ public class Level {
         }
     }
 
+    /**
+     * Loads the level tiles at tilePath into tiles[]
+     */
     protected void loadLevelTiles() {
         try {
             BufferedImage image = ImageIO.read(getClass().getResourceAsStream(tilePath));
@@ -154,6 +161,9 @@ public class Level {
         }
     }
 
+    /**
+     * Loads the level objects at objPath into objects[]
+     */
     protected void loadLevelObjects() {
         try {
             BufferedImage image = ImageIO.read(getClass().getResourceAsStream(objPath));
@@ -203,6 +213,13 @@ public class Level {
         return null;
     }
 
+    /**
+     * Basically updates the player's relationship with the HuntObjects
+     *  creates HuntObject first time a level is started
+     *  knows when you're near a HuntObject 
+     *  knows when you got all the HntObjects
+     * When everything is collected and you're on the 6th floor displays the end text
+     */
     public void update(Player p) {
         playerV = p.v;
         if (levelNumber < levelAmount - 1) { // if not on last level
@@ -254,6 +271,11 @@ public class Level {
                     
     }
 
+    
+    /**
+     * Creates a location for a HuntObject to go that isn't too close to the player or colliding with something
+     * @return 
+     */
     public Vector2d makeHuntSpot() {
         boolean ready = false;
         Vector2d coords = new Vector2d(0, 0);
@@ -267,56 +289,25 @@ public class Level {
         return coords;
     }
 
-    private void time() {
-    }
-
+    /**
+     * Draws the level onto the screen
+     */
     public void render(int xPos, int yPos, Screen screen, Player p) {
         screen.setOffset(xPos, yPos);
 
-        //corner pins (tile not pixel array)
-        // it's >> 6 and >> 5 since the sprites we use are 64x32 pixels
-//        int x0 = (xPos >> 6);
-//        int x1 = (xPos + screen.width) >> 6;
-//        int y0 = yPos >> 5;
-//        int y1 = (yPos + screen.height) >> 5;
-
-//        int[] iso0 = screen.twoDToIso(x0, y0);
-//        x0 = iso0[0];
-//        y0 = iso0[1];
-//        int[] iso1 = screen.twoDToIso(x1, y1);
-//        x1 = iso1[0];
-//        y1 = iso1[1];
-
-//        int[] twoD0 = screen.isoTo2D(xPos, yPos - screen.height * 2);
-//        x0 = (twoD0[0]) >> 5;
-//        y0 = (twoD0[1]) >> 5;
-//        int[] twoD1 = screen.isoTo2D(xPos, yPos + screen.height * 2);
-//        x1 = (twoD1[0]) >> 5;
-//        y1 = (twoD1[1]) >> 5;
-
-//        int[] twoD0 = screen.isoTo2D(xPos, yPos - screen.height*2);
-//        x0 = (twoD0[0]) >> 5;
-//        y0 = (twoD0[1]) >> 5;
-//        int[] twoD1 = screen.isoTo2D(xPos + screen.width, yPos + screen.height*2);
-//        x1 = (twoD1[0]) >> 5;
-//        y1 = (twoD1[1]) >> 5;
-
-        // after multiple attempts at getting isometric corner pins to work I just render the whole level now
+        // after multiple attempts at getting isometric corner pins to work I just hardcoded in the values
         int x0 = ((int) (p.v.getX()) >> 5) - 12;
         int y0 = ((int) (p.v.getY()) >> 5) - 11;
         int x1 = ((int) (p.v.getX()) >> 5) + 18;
         int y1 = ((int) (p.v.getY()) >> 5) + 19;
 
-//        for (int y = y1 - 1; y >= y0; y--) {
-//            for (int x = x0; x < x1; x++) {
-//                getTile(x, y).render(x, y, screen);
-//            }
-//        }
+        // draw tiles
         for (int x = x0; x < x1; x++) {
             for (int y = y0; y < y1; y++) {
                 getTile(x, y).render(x - 1, y - 1, screen); // shifted over 1 to account for raised objects being 1 space higher than they should be
             }
         }
+        // draw HuntObjects
         if(levelNumber < hunt.length) {
             if (hunt != null && hunt[levelNumber] != null && hunt[levelNumber][0] != null) {
                 for (int i = 0; i < hunt[levelNumber].length; i++) {
@@ -334,7 +325,8 @@ public class Level {
                 }
             }
         }
-
+        
+        // draw Objects and Player
         int px = (int) (p.v.getX()) >> 5;
         int py = (int) (p.v.getY()) >> 5;
         for (int x = x0; x < x1; x++) {
@@ -347,6 +339,9 @@ public class Level {
         }
     }
 
+    /**
+     * @return tile in tiles[] at x + y * width
+     */
     public Tile getTile(int x, int y) {
 
         if (x < 0 || y < 0 || x >= width || y >= height) {
@@ -364,6 +359,10 @@ public class Level {
         }
     }
 
+    
+    /**
+     * @return RaisedObject in objects[] at x + y * width
+     */
     public RaisedObject getObject(int x, int y) {
 
         if (x < 0 || y < 0 || x >= width || y >= height) {
@@ -381,17 +380,10 @@ public class Level {
         }
     }
 
+    /**
+     * @return whether player is within 250 units of a HnutObject
+     */
     public boolean playerNearPickup(Player p) {
-//        int x0 = ((int) (p.v.getX()) >> 5) - 2;
-//        int y0 = ((int) (p.v.getY()) >> 5) - 2;
-//        int x1 = ((int) (p.v.getX()) >> 5) + 2;
-//        int y1 = ((int) (p.v.getY()) >> 5) + 2;
-//
-//        x0 = Math.max(0, x0);
-//        y0 = Math.max(0, y0);
-//        x1 = Math.min(width - 1, x1);
-//        y1 = Math.min(height - 1, y1);
-
         for (int i = 0; i < hunt[levelNumber].length; i++) {
             double objectDist = hunt[levelNumber][i].v.distFrom(p.v);
 
@@ -402,6 +394,9 @@ public class Level {
         return false;
     }
 
+    /**
+     * @return whether any of the objects close to the player are elevators
+     */
     public boolean playerNearElevator(Player p) {
 
         int x0 = ((int) (p.v.getX()) >> 5) - 2;
