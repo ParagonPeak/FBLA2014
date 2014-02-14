@@ -46,35 +46,12 @@ public class HuntObject extends Entity {
         BusinessSim.bs.td.addLines(pickupText, TextDisplayer.TEXT);
         
         // swap correct answer location with a different one
-        if(Math.random() < 0.25) {
-            int newAnswerIndex = 2;
-            String correct = question[correctAnswerIndex];
-            String incorrect = question[newAnswerIndex];
-            question[correctAnswerIndex] = incorrect;
-            question[newAnswerIndex] = correct;
-            correctAnswerIndex = newAnswerIndex;
-        } else if(Math.random() < 0.5) {
-            int newAnswerIndex = 3;
-            String correct = question[correctAnswerIndex];
-            String incorrect = question[newAnswerIndex];
-            question[correctAnswerIndex] = incorrect;
-            question[newAnswerIndex] = correct;
-            correctAnswerIndex = newAnswerIndex;
-        } else if (Math.random() < 0.75) {
-            int newAnswerIndex = 4;
-            String correct = question[correctAnswerIndex];
-            String incorrect = question[newAnswerIndex];
-            question[correctAnswerIndex] = incorrect;
-            question[newAnswerIndex] = correct;
-            correctAnswerIndex = newAnswerIndex;
-        } else {
-            int newAnswerIndex = 5;
-            String correct = question[correctAnswerIndex];
-            String incorrect = question[newAnswerIndex];
-            question[correctAnswerIndex] = incorrect;
-            question[newAnswerIndex] = correct;
-            correctAnswerIndex = newAnswerIndex;
-        }
+        int newAnswerIndex = (int) (Math.random() * 4 + 2);
+        String correct = question[correctAnswerIndex];
+        String incorrect = question[newAnswerIndex];
+        question[correctAnswerIndex] = incorrect;
+        question[newAnswerIndex] = correct;
+        correctAnswerIndex = newAnswerIndex;
         
         BusinessSim.bs.td.addLines(question, TextDisplayer.MULTIPLE_CHOICE, correctAnswerIndex);
         
