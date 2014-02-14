@@ -112,6 +112,9 @@ public class TextDisplayer {
                 isMC.remove(0);
                 hasText = true;
             }
+        } else if(currentText == null) {
+            hasText = false;
+            index = 0;
         }
     }
     
@@ -172,10 +175,6 @@ public class TextDisplayer {
      */
     private String[] subTextArray(String[] lines, int index, int maxLength) {
         int linesToCopy = Math.min(maxLength, lines.length - index);
-        if(linesToCopy <= 0) {
-            String[] empty = {""};
-            return empty;
-        }
         String[] text = new String[linesToCopy];
         System.arraycopy(lines, index, text, 0, linesToCopy);
         return text;
