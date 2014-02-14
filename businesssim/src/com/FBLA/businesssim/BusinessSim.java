@@ -326,7 +326,8 @@ public class BusinessSim extends Canvas implements Runnable {
         mouse.update();
         actionClicked = (key.action && !key.last_action) || mouse.lastMouseClicked;
         
-        if(td.updateMultipleChoice(mouse.lastMouseClicked, mouse.mouseHeld, mouse.xPos, mouse.yPos) == TextDisplayer.RIGHT_ANSWER_CLICKED) {
+        int MC = td.updateMultipleChoice(mouse.lastMouseClicked, mouse.mouseHeld, mouse.xPos, mouse.yPos);
+        if(MC == TextDisplayer.RIGHT_ANSWER_CLICKED) {
             score += 10;
         }
 

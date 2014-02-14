@@ -55,6 +55,9 @@ public class HuntObject extends Entity {
         
         BusinessSim.bs.td.addLines(question, TextDisplayer.MULTIPLE_CHOICE, correctAnswerIndex);
         
+        String[] correctString = {"The correct answer was: ", question[correctAnswerIndex]};
+        BusinessSim.bs.td.addLines(correctString, TextDisplayer.MULTIPLE_CHOICE, correctAnswerIndex);
+        
         
         // play a sound, write a message
         MusicPlayer m = new MusicPlayer();
