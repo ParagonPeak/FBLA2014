@@ -8,7 +8,6 @@ import java.awt.Rectangle;
 
 /**
  * Entity Purpose: Base stamp for all mobs and items.
- * @needs collision, event, sprites
  * -----
  *
  * @author Tripp

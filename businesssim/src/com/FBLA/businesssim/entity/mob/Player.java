@@ -6,32 +6,49 @@ import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.input.Keyboard;
 import com.FBLA.businesssim.util.Vector2d;
 
-public class Player extends Mob{
-    
-    private Screen screen;
+/**
+ * The player class. This uses player input to move the player around and have
+ * player interact with the environment.
+ *
+ * @author Tripp
+ */
+public class Player extends Mob {
+
     private Keyboard keys;
     public boolean actionDown = false;
-    
-    public Player(Vector2d v, Screen sc, Keyboard k)
-    {
-        super(v,"Player");
+
+    /**
+     * Constructor of the player
+     * @param v the starting vector/position
+     * @param k used for movement and interaction
+     */
+    public Player(Vector2d v, Keyboard k) {
+        super(v, "Player");
         keys = k;
-        screen = sc;
         sprite = Sprite.sprites.get(0);
     }
-    
-    public void render(Screen screen)
-    {
+
+    /**
+     * Draws the player
+     *
+     * @param screen
+     */
+    public void render(Screen screen) {
         screen.renderPlayer(v.getiX(), v.getiY(), sprite);
     }
-    
+
+    @Override
+    /**
+     * Uses keyboard to move player around and animate the sprite
+     */
     public void update() {
         actionDown = false;
-        if(keys.action) {
+        //Allows the player to interact with environment with the action button 
+        if (keys.action) {
             actionDown = true;
         }
-        if(BusinessSim.isPrompting) 
-        {
+        //Keeps the player form moving if they are being prompted
+        if (BusinessSim.isPrompting) {
             moving = false;
             return;
         }
@@ -53,6 +70,7 @@ public class Player extends Mob{
             sprite = Sprite.playerSpriteFlip;
         }
 
+        //Checks for collision and sets movement
         moving = (dx != 0 || dy != 0);
         if (moving) {
             if (collision(dy, true)) {
@@ -63,16 +81,5 @@ public class Player extends Mob{
             }
             move(dx, dy);
         }
-//        if(++ups % 6 == 0)
-//        for(Enemy e: JFTC.enemies)
-//        {
-//            if(colBox.intersects(e.colBox))
-//                if(e.getClass().equals(King.class))
-//                {e.health--;}
-//                else if(e.getClass().equals(Enemy.class))
-//                {
-//                    
-//                }
-//        }
     }
 }

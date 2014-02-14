@@ -9,6 +9,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Used as a random mob to wander the halls with interactive text
+ */
 public class NPC extends Mob{
     
     protected String[] speak;

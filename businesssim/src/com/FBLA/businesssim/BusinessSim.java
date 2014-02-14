@@ -140,7 +140,7 @@ public class BusinessSim extends Canvas implements Runnable {
         td.addLines(startText, TextDisplayer.TEXT);
         addKeyListener(key);
         level = new Level(Level.levelTilePaths[0], Level.levelObjPaths[0], 0, Level.xOff[0], Level.yOff[0]);
-        player = new Player(level.playerV, screen, key);
+        player = new Player(level.playerV, key);
         MusicPlayer.init();
     }
 
