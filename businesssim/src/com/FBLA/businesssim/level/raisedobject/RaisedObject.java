@@ -57,6 +57,7 @@ public class RaisedObject {
     public static RaisedObject wallSE                   = new RaisedObject(Sprite.wallSE            ,38, 0xffeeeecc);
     public static RaisedObject elevatorSW               = new RaisedObject(Sprite.elevatorSW        ,39, 0xffeeee55);
     public static RaisedObject elevatorSE               = new RaisedObject(Sprite.elevatorSE        ,40, 0xffeeee00);
+    public static RaisedObject cornerWall               = new RaisedObject(Sprite.cornerWall        ,42, 0xffeeee99);
     public static RaisedObject chairObject              = new RaisedObject(Sprite.chair             ,41, 0xff404040);
 //    public static RaisedObject chairSEObject    = new RaisedObject(Sprite.chairSE, 33, 0x000000);
 //    public static RaisedObject  chairSObject    = new RaisedObject( Sprite.chairS, 34, 0x000000);

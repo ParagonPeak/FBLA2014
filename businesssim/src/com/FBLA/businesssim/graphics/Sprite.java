@@ -95,6 +95,7 @@ public class Sprite {
     public static Sprite deskNW             = new Sprite(64, 128, 3, 8, SpriteSheet.walls, 1);
     public static Sprite wallSW             = new Sprite(64, 128, 0, 9, SpriteSheet.walls, 1);
     public static Sprite wallSE             = new Sprite(64, 128, 1, 9, SpriteSheet.walls, 1);
+    public static Sprite cornerWall         = new Sprite(64, 128, 1, 10, SpriteSheet.walls, 1);
     public static Sprite elevatorSW         = new Sprite(64, 128, 2, 9, SpriteSheet.walls, 1);
     public static Sprite elevatorSE         = new Sprite(64, 128, 3, 9, SpriteSheet.walls, 1);
     public static Sprite chair              = new Sprite(64, 77, 0, 0, SpriteSheet.chair, 8, 10); // we'll have to make chairs into entities

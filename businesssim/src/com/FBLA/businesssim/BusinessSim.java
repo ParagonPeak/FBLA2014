@@ -49,8 +49,7 @@ public class BusinessSim extends Canvas implements Runnable {
             width = 800,
             FPS = 0, 
             score = 0;;
-    private int updates = 0, 
-            mainScreenPointerPosition = gs_inGame, 
+    private int mainScreenPointerPosition = gs_inGame, 
             elevatorPointer = 0;
     public static final int gs_inGame = 0, 
             gs_about = 1, 
@@ -185,7 +184,6 @@ public class BusinessSim extends Canvas implements Runnable {
             time = now;
             while (delta >= 1) {
                 update();
-                updates++;
                 delta--;
             }
             render();
@@ -194,9 +192,8 @@ public class BusinessSim extends Canvas implements Runnable {
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
                 FPS = frames;
-//                frame.setTitle(title + version + " | FPS: " + frames + " UPS: " + updates + " px: " + player.v.getX() + " py: " + player.v.getY());
                 frame.setTitle(((isPaused) ? "***PAUSED*** " : "") + title + version + " | FPS: " + frames);
-                updates = frames = 0;
+                frames = 0;
             }
         }
         stop();

@@ -8,7 +8,6 @@ import com.FBLA.businesssim.util.Vector2d;
 
 /**
  * Mob Purpose: The template for all moving entities
- *
  */
 public class Mob extends Entity {
 

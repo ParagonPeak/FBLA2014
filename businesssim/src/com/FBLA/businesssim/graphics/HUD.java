@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.FBLA.businesssim.graphics;
 
 import com.FBLA.businesssim.BusinessSim;
@@ -11,8 +7,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 /**
- *
- * @author RAPHAEL
+ * Displays the overhead information such as floor number and score
  */
 public class HUD {
 
@@ -32,8 +27,6 @@ public class HUD {
             g.setColor(Color.BLACK);
             g.drawRect(-3, -3, BusinessSim.bs.width, BusinessSim.bs.height / 14 + 3);
         }
-//        g.setColor(Color.BLACK);
-//        g.drawRect(-3, -3, BusinessSim.bs.width, BusinessSim.bs.height / 14 + 3);
 
         // FPS Counter
         g.setColor(Color.WHITE);

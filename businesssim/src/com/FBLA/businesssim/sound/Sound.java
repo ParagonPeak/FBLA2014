@@ -23,7 +23,10 @@ public class Sound {
     private Clip clip;
     public boolean isRunning = false;
     private FloatControl volume;
-
+    
+    /**
+     * Initialize the sound files
+     */
     public static void init() {
         mainMenuMusic = new Sound("MainTheme.wav", Clip.LOOP_CONTINUOUSLY);
         floorEvenMusic = new Sound("GameMusic.wav", Clip.LOOP_CONTINUOUSLY);
@@ -33,10 +36,19 @@ public class Sound {
         sfx_elevatorDing = new Sound("sfx/Elevator_Ding.wav");
     }
 
+    /**
+     * Construct the sound file to be looped once
+     * @param url the location and name of the particular sound file
+     */
     public Sound(String url) {
         this(url, 0);
     }
 
+    /**
+     * Construct sound to be looped a certain number of times.
+     * @param url Location of file
+     * @param timesToLoop number of loops to iterate (-1 loops continuously)
+     */
     public Sound(String url, int timesToLoop) {
         try {
             ais = AudioSystem.getAudioInputStream(BusinessSim.class.getClassLoader().getResource("Audio/" + url));
@@ -48,14 +60,19 @@ public class Sound {
         }
     }
 
+    /**
+     * Stop the sound
+     */
     public void stop() {
         if (clip.isActive()) {
             clip.stop();
             isRunning = false;
         }
-
     }
 
+    /**
+     * Start the sound
+     */
     public void start() {
         try {
             clip.open(ais);
@@ -67,7 +84,11 @@ public class Sound {
             System.out.println("Trouble Playing Track");
         }
     }
-
+    
+    /** 
+     * Checks if the sound is playing or not
+     * @return boolean 
+     */
     public boolean isRunning() {
         return clip.isActive();
     }

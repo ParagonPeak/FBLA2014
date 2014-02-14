@@ -1,7 +1,6 @@
 package com.FBLA.businesssim.graphics;
 
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,13 +23,10 @@ public class SpriteSheet {
     public static SpriteSheet penguinBlue = new SpriteSheet("/Textures/Characters/Penguins_Blue.png");
     public static SpriteSheet player = new SpriteSheet("/Textures/Characters/Player.png");
     public static SpriteSheet huntObj = new SpriteSheet("/Textures/Pickups/Pickups.png");
-    //public static SpriteSheet player = new SpriteSheet("/Textures/Characters/RaphSprites/PlayerRaph.png");
     public static SpriteSheet sample = new SpriteSheet("/Textures/Tiles/sample.gif");
     public static SpriteSheet carpet = new SpriteSheet("/Textures/Tiles/office_tiles/office/out_floor/carpetff00ff.png");
     public static SpriteSheet walls = new SpriteSheet("/Textures/Tiles/office_tiles/office/out_walls/cubiclesff00ff.png");
     public static SpriteSheet chair = new SpriteSheet("/Textures/Tiles/office_tiles/office/out_chair/chairff00ffline.png");
-    //Example for loading a spritesheet. All should be static
-    //public static SpriteSheet tiles = new SpriteSheet("textures/spritesheet.png", 256);
 
     /**
      * This creates an instance of a SpriteSheet, taking the path data, size in
@@ -54,7 +50,6 @@ public class SpriteSheet {
      */
     private int load() {
         try {
-//            BufferedImage image = ImageIO.read(new FileInputStream(path));
             BufferedImage image = ImageIO.read(getClass().getResourceAsStream(path));
             getClass().getResourceAsStream(path).close();
             int w = image.getWidth();

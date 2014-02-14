@@ -41,8 +41,8 @@ public class Level {
     // variables/constants to store level specific constants to make them easier to call
     public static final int levelAmount = 6;
     public static final int totalItems = 5; // amount of HuntObjects in a level
-    public static final String[] levelTilePaths = {"/Textures/Levels/Level0Tiles.png", "/Textures/Levels/Level2Tiles.png", "/Textures/Levels/Level3Tiles.png", "/Textures/Levels/Level4Tiles.png", "/Textures/Levels/Level0Tiles.png", "/Textures/Levels/Level3Tiles.png"};
-    public static final String[] levelObjPaths = {"/Textures/Levels/Level0Objects.png", "/Textures/Levels/Level2Objects.png", "/Textures/Levels/Level3Objects.png", "/Textures/Levels/Level4Objects.png", "/Textures/Levels/Level0Objects.png", "/Textures/Levels/Level3Objects.png"};
+    public static final String[] levelTilePaths = {"/Textures/Levels/Level1Tiles.png", "/Textures/Levels/Level2Tiles.png", "/Textures/Levels/Level3Tiles.png", "/Textures/Levels/Level4Tiles.png", "/Textures/Levels/Level1Tiles.png", "/Textures/Levels/Level3Tiles.png"};
+    public static final String[] levelObjPaths = {"/Textures/Levels/Level1Objects.png", "/Textures/Levels/Level2Objects.png", "/Textures/Levels/Level3Objects.png", "/Textures/Levels/Level4Objects.png", "/Textures/Levels/Level11bjects.png", "/Textures/Levels/Level3Objects.png"};
     public static int[] xOff = {48, 48, 48, 48, 48, 48}; // default spawns for each level
     public static int[] yOff = {128, 128, 128, 128, 128, 128};
     public static HuntObject[][] hunt = new HuntObject[levelTilePaths.length][totalItems]; // stores all HuntObjects by level and index

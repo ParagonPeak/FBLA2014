@@ -1,11 +1,6 @@
 package com.FBLA.businesssim.graphics;
 
-import com.FBLA.businesssim.BusinessSim;
-import com.FBLA.businesssim.input.Keyboard;
-import com.FBLA.businesssim.level.Level;
-import java.awt.Color;
 import java.awt.Graphics;
-import java.util.ArrayList;
 
 /**
  * Class purpose: Create the bulk of the screen that has to load/render sprites
@@ -137,6 +132,12 @@ public class Screen {
     public void speak(int x, int y, String[] prompt, Graphics g) {
     }
 
+    /**
+     * Renders in Isometric cords and sprite moved up by the sprite height 
+     * @param xp the Non-Isometric X position
+     * @param yp the non-isometric Y position
+     * @param s the sprite to be rendered
+     */
     public void renderRaisedSprite(int xp, int yp, Sprite s) {
         int w = s.W;
         int h = s.H;
@@ -163,7 +164,13 @@ public class Screen {
             }
         }
     }
-
+    /**
+     * Renders in Isometric cords and sprite moved up by the sprite height
+     * This version slides the sprite up 20 to compensate for the base of the tiles
+     * @param xp the Non-Isometric X position
+     * @param yp the non-isometric Y position
+     * @param s the sprite to be rendered
+     */
     public void renderRaisedMob(int xp, int yp, Sprite s) {
         int w = s.W;
         int h = s.H;

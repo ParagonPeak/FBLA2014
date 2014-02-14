@@ -6,11 +6,6 @@ import java.awt.event.KeyListener;
 
 /**
  * Keyboard purpose: Handle user input
- * -----
- * @author  Tripp
- * @date    11/12/13
- * @update  Made the class, but will need updates for more user input
- * -----
  */
 public class Keyboard implements KeyListener{
     
