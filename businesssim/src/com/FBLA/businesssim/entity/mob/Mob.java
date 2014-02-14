@@ -2,16 +2,13 @@ package com.FBLA.businesssim.entity.mob;
 
 import com.FBLA.businesssim.BusinessSim;
 import com.FBLA.businesssim.entity.Entity;
-import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
-import com.FBLA.businesssim.level.Level;
 import com.FBLA.businesssim.util.Node;
 import com.FBLA.businesssim.util.Vector2d;
 
 /**
  * Mob Purpose: The template for all moving entities
  *
- * @author Tripp and Raphael
  */
 public class Mob extends Entity {
 
@@ -46,11 +43,19 @@ public class Mob extends Entity {
     public Mob(int x, int y) {
         super(x, y, "Mob");
     }
-
+    
+    /**
+     * Moves the player by the vector sent to it.
+     * @param vector 
+     */
     public void move(Vector2d vector) {
         v.add(vector);
     }
 
+    /**
+     * Sets a vector to be moved to
+     * @param vector The vector the mob wants to move to.
+     */
     public void moveTo(Vector2d vector) {
         moveToVector = vector;
     }
@@ -61,6 +66,12 @@ public class Mob extends Entity {
     public void aMove(Node end) {
     }
 
+    /**
+     * checks to see if the mob is colliding with another object
+     * @param d how much the mob is changing on x or y
+     * @param isDy tells if handling x or y
+     * @return if there is collision
+     */
     public boolean collision(double d, boolean isDy) {
         int tileX;
         int tileY;
@@ -71,22 +82,31 @@ public class Mob extends Entity {
             tileX = (int) (v.getX() + d) >> 5;
             tileY = (int) (v.getY()) >> 5;
         }
-        if (tileX < 0 || tileX >= BusinessSim.level.width) {
+        if (tileX < 0 || tileX >= BusinessSim.bs.level.width) {
             return true;
         }
-        if (tileY < 0 || tileY >= BusinessSim.level.height) {
+        if (tileY < 0 || tileY >= BusinessSim.bs.level.height) {
             return true;
         }
-        if (BusinessSim.level.getObject(tileX, tileY).sprite.equals(Sprite.emptySprite)) { // if it's empty
+        if (BusinessSim.bs.level.getObject(tileX, tileY).sprite.equals(Sprite.emptySprite)) { // if it's empty
             return false;
         }
         return true; // if it's not empty
     }
 
+    /**
+     * Move the mob by x and y to a new vector
+     * @param dx change in x
+     * @param dy change in y
+     */
     public void move(double dx, double dy) {
         v.add(dx, dy);
     }    
+    
     @Override
+    /**
+     * Currently just used to move a mob to a certain vector
+     */
     public void update() {
         if (moveToVector != null) {
             double dx = v.getX() - moveToVector.getX();
@@ -98,6 +118,10 @@ public class Mob extends Entity {
         }
     }
     
+    /**
+     * Tells if the mob is changing it's x or y position
+     * @return 
+     */
     public boolean isMoving()
     {
         return moving;
