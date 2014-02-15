@@ -415,9 +415,9 @@ public class BusinessSim extends Canvas implements Runnable {
                 pausePointer = 2;
             else
                 pausePointer = 0;
-            if(mouse.mouseHeld && pausePointer == 1)
+            if(mouse.lastMouseHeld && mouse.mouseHeld && pausePointer == 1)
                 isPaused = false;
-            else if(mouse.mouseHeld && pausePointer == 2)
+            else if(mouse.lastMouseHeld && mouse.mouseHeld && pausePointer == 2)
                 changeGameState(gs_startScreen);
         }
     }
@@ -695,8 +695,9 @@ public class BusinessSim extends Canvas implements Runnable {
                 Level.hunt[i][huntObj] = null;
             }
         }
+        td.clear();
         level = new Level(Level.levelTilePaths[0], Level.levelObjPaths[0], 0, Level.xOff[0], Level.yOff[0]);
-        player.v = new Vector2d(0, 0);
+        player.v = new Vector2d(48, 128);
     }
 
     /**

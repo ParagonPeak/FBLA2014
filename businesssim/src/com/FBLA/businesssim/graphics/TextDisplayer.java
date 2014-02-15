@@ -63,6 +63,13 @@ public class TextDisplayer {
     }
     
     /**
+     * Deletes all lines in queue
+     */
+    public void clear(){
+        queue.clear();
+    }
+    
+    /**
      * Add lines to be displayed
      * If nothing is currently displayed, immediately goes to the dialog box
      * Else it goes into the queue
