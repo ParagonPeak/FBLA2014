@@ -37,10 +37,11 @@ public class Player extends Mob {
         screen.renderPlayer(v.getiX(), v.getiY(), sprite);
     }
 
-    @Override
+    
     /**
      * Uses keyboard to move player around and animate the sprite
      */
+    @Override
     public void update() {
         actionDown = false;
         //Allows the player to interact with environment with the action button 

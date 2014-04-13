@@ -48,7 +48,7 @@ public class BusinessSim extends Canvas implements Runnable {
     public int height = 500, 
             width = 800,
             FPS = 0, 
-            score = 0;;
+            score = 0;
     private int mainScreenPointerPosition = gs_inGame, 
             elevatorPointer = 0,
             pausePointer = 0;

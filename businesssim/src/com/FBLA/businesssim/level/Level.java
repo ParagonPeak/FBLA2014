@@ -267,10 +267,10 @@ public class Level {
             if(!lastLevelText)
             {
             BusinessSim.bs.td.addLines(new String[]{"Thank you, kind applicant!",
-                "Now with all these, we can rule the world!", 
+                "Now with your skills, we can rule the world!", 
                 "How you ask?", 
                 "With the glue of course!", 
-                "We use all these skulls to make our special, patented glue which people won't be able to resist.", 
+                "We can use your skills to make our special, patented glue which people won't be able to resist!", 
                 "No one can stop us now!"}, TextDisplayer.TEXT);
             BusinessSim.bs.td.addLines(new String[]{"","","Game over", "Join FBLA and have a great time!"}, TextDisplayer.TEXT);
             lastLevelText = true;

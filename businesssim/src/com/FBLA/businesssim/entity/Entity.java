@@ -78,6 +78,18 @@ public class Entity {
     public void render(Screen screen) {
     }
 
+    /**
+     * Allows for a check for a collision between two entities
+     * @param e the entity to check against
+     * @return if they collide or not
+     */
+    public boolean collidesWith(Entity e)
+    {
+        e.colBox.setLocation(e.v.getiX(), e.v.getiY());
+        colBox.setLocation(v.getiX(), v.getiY());
+        return e.colBox.intersects(colBox);
+    }
+    
     public void remove() {
         removed = true;
     }
