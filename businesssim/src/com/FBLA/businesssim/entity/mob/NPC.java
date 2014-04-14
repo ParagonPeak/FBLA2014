@@ -84,12 +84,6 @@ public class NPC extends Mob {
                 String fileName = "floor" + (floor + 1) + ".txt";
                 File file = new File(BusinessSim.class.getResource("/Text/NPC_Sayings/" + fileName).getFile());
                 
-                // count how many different sayings the floor has
-                // int sayingsCount = countLines(file);
-                
-                // set the size of the sayings array for this floor to sayingsCount
-                // sayings[floor] = new String[sayingsCount][0];
-                
                 // create a bufferedReader for reading the file's lines
                 BufferedReader br = new BufferedReader(new FileReader(file));
                 
@@ -98,7 +92,6 @@ public class NPC extends Mob {
                 // store the sayings in the sayings array
                 String line = br.readLine();
                 while(line != null) {
-                    //sayings[floor][saying] = line.split("&");
                     floorsayings.add(line.split("&"));
                     line = br.readLine();
                 }
@@ -113,19 +106,6 @@ public class NPC extends Mob {
                 System.out.println("Error closing npc file or reading a line");
                 Logger.getLogger(NPC.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-    }
-    
-    public static int countLines(File aFile) throws IOException {
-        try {
-            reader = new LineNumberReader(new FileReader(aFile));
-            while ((reader.readLine()) != null);
-            return reader.getLineNumber();
-        } catch (Exception ex) {
-            return -1;
-        } finally { // reminder: finally blocks are run even if return is called first
-            if(reader != null) 
-                reader.close();
         }
     }
 
