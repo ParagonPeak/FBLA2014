@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.LineNumberReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +24,7 @@ public class NPC extends Mob {
     private boolean isSpeaking = false;
     private String[] currentSaying;
     private Sprite[] sprites = new Sprite[4];
+    static LineNumberReader reader = null;
     
 
     /**
@@ -75,44 +77,61 @@ public class NPC extends Mob {
      * that can be accessed later by NPC's
      */
     public static void readFiles() {
-        for (int i = 0; i < 6; i++) {
+        for (int floor = 0; floor < 6; floor++) {
             try {
-                String fileName = "floor" + i + ".txt";
-                File file = new File(BusinessSim.class.getResource("/StoryBoard/" + fileName).getFile());
+                // get the floor's sayings file
+                String fileName = "floor" + (floor + 1) + ".txt";
+                File file = new File(BusinessSim.class.getResource("/Text/NPC_Sayings/" + fileName).getFile());
+                
+                // count how many different sayings the floor has
+                int sayingsCount = countLines(file);
+                
+                // set the size of the sayings array for this floor to sayingsCount
+                sayings[floor] = new String[sayingsCount][0];
+                
+                // create a bufferedReader for reading the file's lines
                 BufferedReader br = new BufferedReader(new FileReader(file));
-                String line;
-                int counter = 0;
-                //Reads the whole file
-                while ((line = br.readLine()) != null) {
-                    //Avoids an OutOfBounds error
-                    if (sayings[i].length <= counter) {
-                        expandSayingsArray(i);
-                    }
-
-                    //Parses the data for later interpretation by our text displayer
-                    sayings[i][counter++] = line.split("&");
+                
+                // store the sayings in the sayings array
+                for(int saying = 0; saying < sayingsCount; saying++) {
+                    String line = br.readLine();
+                    sayings[floor][saying] = line.split("&");
                 }
+                
                 br.close();
             } catch (FileNotFoundException ex) {
-                System.out.println("Error Opening file");
+                System.out.println("Error opening npc file");
                 Logger.getLogger(NPC.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-                System.out.println("Error closing file");
+                System.out.println("Error closing npc file or reading a line");
                 Logger.getLogger(NPC.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
-
-    /*
-     * Expands the array to avoid an OutOfBounds error
-     */
-    public static void expandSayingsArray(int level) {
-        String[][][] temp = sayings.clone();
-        sayings = new String[6][sayings[level].length + 1][0];
-        for (int first = 0; first < temp.length; first++) {
-            System.arraycopy(temp[first], 0, sayings[first], 0, temp[first].length);
+    
+    public static int countLines(File aFile) throws IOException {
+        try {
+            reader = new LineNumberReader(new FileReader(aFile));
+            while ((reader.readLine()) != null);
+            return reader.getLineNumber();
+        } catch (Exception ex) {
+            return -1;
+        } finally { // reminder: finally blocks are run even if return is called first
+            if(reader != null) 
+                reader.close();
         }
     }
+
+   // /*
+   //  * Expands the array to avoid an OutOfBounds error
+   //  */
+   // public static void expandSayingsArray(int level) {
+   //     String[][][] temp = sayings.clone();
+   //     sayings = new String[6][sayings[level].length + 1][0];
+   //     for (int first = 0; first < temp.length; first++) {
+   //         System.arraycopy(temp[first], 0, sayings[first], 0, temp[first].length);
+   //     }
+   // }
 
     /**
      * Sets the script from an array of text

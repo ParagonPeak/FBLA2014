@@ -41,8 +41,8 @@ public class Level {
     // variables/constants to store level specific constants to make them easier to call
     public static final int levelAmount = 6;
     public static final int totalItems = 5; // amount of HuntObjects in a level
-    public static final String[] levelTilePaths = {"/Textures/Levels/Level1Tiles.png", "/Textures/Levels/Level2Tiles.png", "/Textures/Levels/Level3Tiles.png", "/Textures/Levels/Level4Tiles.png", "/Textures/Levels/Level1Tiles.png", "/Textures/Levels/Level3Tiles.png"};
-    public static final String[] levelObjPaths = {"/Textures/Levels/Level1Objects.png", "/Textures/Levels/Level2Objects.png", "/Textures/Levels/Level3Objects.png", "/Textures/Levels/Level4Objects.png", "/Textures/Levels/Level11bjects.png", "/Textures/Levels/Level3Objects.png"};
+    public static final String[] levelTilePaths = {"/Textures/Levels/Level1Tiles.png", "/Textures/Levels/Level2Tiles.png", "/Textures/Levels/Level3Tiles.png", "/Textures/Levels/Level4Tiles.png", "/Textures/Levels/Level5Tiles.png", "/Textures/Levels/Level6Tiles.png"};
+    public static final String[] levelObjPaths = {"/Textures/Levels/Level1Objects.png", "/Textures/Levels/Level2Objects.png", "/Textures/Levels/Level3Objects.png", "/Textures/Levels/Level4Objects.png", "/Textures/Levels/Level5Objects.png", "/Textures/Levels/Level6Objects.png"};
     public static int[] xOff = {48, 48, 48, 48, 48, 48}; // default spawns for each level
     public static int[] yOff = {128, 128, 128, 128, 128, 128};
     public static HuntObject[][] hunt = new HuntObject[levelTilePaths.length][totalItems]; // stores all HuntObjects by level and index
@@ -83,11 +83,11 @@ public class Level {
         {{""}} // no level 6 pickups
     }; 
     // questions lists. questions displayed when HuntObjects are picked up
-    public static final String[][] level1Questions = loadQuestionsFromFile("/Questions/floor1.txt");
-    public static final String[][] level2Questions = loadQuestionsFromFile("/Questions/floor2.txt");
-    public static final String[][] level3Questions = loadQuestionsFromFile("/Questions/floor3.txt");
-    public static final String[][] level4Questions = loadQuestionsFromFile("/Questions/floor4.txt");
-    public static final String[][] level5Questions = loadQuestionsFromFile("/Questions/floor5.txt");
+    public static final String[][] level1Questions = loadQuestionsFromFile("/Text/Questions/floor1.txt");
+    public static final String[][] level2Questions = loadQuestionsFromFile("/Text/Questions/floor2.txt");
+    public static final String[][] level3Questions = loadQuestionsFromFile("/Text/Questions/floor3.txt");
+    public static final String[][] level4Questions = loadQuestionsFromFile("/Text/Questions/floor4.txt");
+    public static final String[][] level5Questions = loadQuestionsFromFile("/Text/Questions/floor5.txt");
     public static final String[][][] levelQuestions = {level1Questions, level2Questions, level3Questions, level4Questions, level5Questions};
 
     /**
