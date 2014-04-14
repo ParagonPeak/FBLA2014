@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -84,19 +85,25 @@ public class NPC extends Mob {
                 File file = new File(BusinessSim.class.getResource("/Text/NPC_Sayings/" + fileName).getFile());
                 
                 // count how many different sayings the floor has
-                int sayingsCount = countLines(file);
+                // int sayingsCount = countLines(file);
                 
                 // set the size of the sayings array for this floor to sayingsCount
-                sayings[floor] = new String[sayingsCount][0];
+                // sayings[floor] = new String[sayingsCount][0];
                 
                 // create a bufferedReader for reading the file's lines
                 BufferedReader br = new BufferedReader(new FileReader(file));
                 
+                ArrayList<String[]> floorsayings = new ArrayList<>();
+                
                 // store the sayings in the sayings array
-                for(int saying = 0; saying < sayingsCount; saying++) {
-                    String line = br.readLine();
-                    sayings[floor][saying] = line.split("&");
+                String line = br.readLine();
+                while(line != null) {
+                    //sayings[floor][saying] = line.split("&");
+                    floorsayings.add(line.split("&"));
+                    line = br.readLine();
                 }
+                
+                sayings[floor] = floorsayings.toArray(sayings[floor]);
                 
                 br.close();
             } catch (FileNotFoundException ex) {

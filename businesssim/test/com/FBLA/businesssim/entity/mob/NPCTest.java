@@ -62,8 +62,11 @@ public class NPCTest {
         System.out.println("readFiles");
         NPC.readFiles();
         
+        assertEquals("Is the first floor's first saying's 1st line's text 'LINE3'?", NPC.sayings[0][0][0].equals("LINE1"), true);
+        assertEquals("Is the third floor's first saying's second line's text 'LINE3'?", NPC.sayings[2][0][1].equals("LINE2"), true);
         assertEquals("Is the sixth floor's second saying's 3rd line's text 'LINE3'?", NPC.sayings[5][1][2].equals("LINE3"), true);
     }
+    
     /**
      * Test of setSpeak method, of class NPC.
      */
@@ -78,7 +81,6 @@ public class NPCTest {
         }
         
     }
-
 
     /**
      * Test of getSaying method, of class NPC.
