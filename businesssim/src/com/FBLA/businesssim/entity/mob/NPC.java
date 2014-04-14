@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +24,6 @@ public class NPC extends Mob {
     private boolean isSpeaking = false;
     private String[] currentSaying;
     private Sprite[] sprites = new Sprite[4];
-    static LineNumberReader reader = null;
     
 
     /**
@@ -166,25 +164,33 @@ public class NPC extends Mob {
             return;
         }
         double dx = 0, dy = 0;
+        
+        //Up
         if (dir == 1) {
             dy -= speed;
+            //Backwards Flipped Sprite
             sprite = sprites[1];
-//            sprite = Sprite.backwardsPlayerSpriteFlip;
         }
+        
+        //Down
         if (dir == 2) {
             dy += speed;
+            //Forward Sprite
             sprite = sprites[2];
-//            sprite = Sprite.playerSprite;
         }
+        
+        //Left
         if (dir == 3) {
             dx -= speed;
+            //Backwards Sprite
             sprite = sprites[0];
-//            sprite = Sprite.backwardsPlayerSprite;
         }
+        
+        //Right
         if (dir == 4) {
             dx += speed;
+            //Forwards Flipped Sprite
             sprite = sprites[3];
-//            sprite = Sprite.playerSpriteFlip;
         }
 
         //Checks for collision and sets movement
@@ -199,15 +205,22 @@ public class NPC extends Mob {
             move(dx, dy);
         }
 
+        //If the player collides with the NPC and they aren't speaking already
         if (currentSayingTimeout < System.currentTimeMillis() && collidesWith(BusinessSim.bs.player)) {
+            //Picks one of the sayings for that floor at random
             currentSaying = getSaying();
-            currentSayingTimeout = System.currentTimeMillis() + 1500;
+            
+            //Sets the time they can talk to to 2 seconds
+            currentSayingTimeout = System.currentTimeMillis() + 2000;
             isSpeaking = true;
         }
+        
+        //Checks if the current saying has timed out
         if(currentSayingTimeout > System.currentTimeMillis())
             isSpeaking = false;
+        
         if(isSpeaking)
-          speak();
+          speak();  //Sends the current saying to the speech bubble object to be shown in game
     }
 
     @Override
