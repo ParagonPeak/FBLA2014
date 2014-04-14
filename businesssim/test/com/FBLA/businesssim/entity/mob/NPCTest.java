@@ -66,21 +66,6 @@ public class NPCTest {
         assertEquals("Is the third floor's first saying's second line's text 'LINE3'?", NPC.sayings[2][0][1].equals("LINE2"), true);
         assertEquals("Is the sixth floor's second saying's 3rd line's text 'LINE3'?", NPC.sayings[5][1][2].equals("LINE3"), true);
     }
-    
-    /**
-     * Test of setSpeak method, of class NPC.
-     */
-    @Test
-    public void testCountLines() {
-        System.out.println("countLines");
-        try {
-            File file = new File(BusinessSim.class.getResource("/Text/NPC_Sayings/" + "floor1").getFile());
-            assertEquals("Is the first floor's sayings file 2 lines long?", NPC.countLines(file), 2);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-    }
 
     /**
      * Test of getSaying method, of class NPC.
