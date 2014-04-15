@@ -111,7 +111,7 @@ public class Screen {
      * @param y
      * @return
      */
-    public int[] isoTo2D(double x, double y) {
+    public static int[] isoTo2D(double x, double y) {
         int[] twoD = {(int) ((2 * y + x) / 2), (int) ((2 * y - x) / 2)};
         return twoD;
     }
@@ -124,7 +124,7 @@ public class Screen {
      * @param y
      * @return
      */
-    public int[] twoDToIso(double x, double y) {
+    public static int[] twoDToIso(double x, double y) {
         int[] iso = {(int) (x - y), (int) ((x + y) / 2)};
         return iso;
     }

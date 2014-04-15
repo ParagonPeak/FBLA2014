@@ -1,6 +1,8 @@
 package com.FBLA.businesssim.entity.mob;
 
 import com.FBLA.businesssim.BusinessSim;
+import com.FBLA.businesssim.graphics.Dialogue;
+import com.FBLA.businesssim.graphics.DialogueDisplayer;
 import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.util.Vector2d;
@@ -144,7 +146,8 @@ public class NPC extends Mob {
      * The method that sends the current text bubble to the screen to be displayed
      */
     public void speak() {
-//        BusinessSim.bs.screen.speakPrompt(v.getiX(), v.getiY(), speak, BusinessSim.bs.getGraphics());
+        Dialogue saying = new Dialogue(currentSaying, this.v.getiX(), this.v.getiY());
+        DialogueDisplayer.addDialogue(saying);
     }
 
     /**
@@ -210,8 +213,8 @@ public class NPC extends Mob {
             //Picks one of the sayings for that floor at random
             currentSaying = getSaying();
             
-            //Sets the time they can talk to to 2 seconds
-            currentSayingTimeout = System.currentTimeMillis() + 2000;
+            //Sets the time they can talk to to 5 seconds
+            currentSayingTimeout = System.currentTimeMillis() + 5000;
             isSpeaking = true;
         }
         

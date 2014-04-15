@@ -2,6 +2,7 @@ package com.FBLA.businesssim;
 
 import com.FBLA.businesssim.entity.items.HuntObject;
 import com.FBLA.businesssim.entity.mob.Player;
+import com.FBLA.businesssim.graphics.DialogueDisplayer;
 import com.FBLA.businesssim.graphics.HUD;
 import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
@@ -257,6 +258,9 @@ public class BusinessSim extends Canvas implements Runnable {
                 g.drawImage(image, 0, 0, null);
             }
             g.setColor(Color.WHITE);
+            
+            // dialogue is displayed
+            DialogueDisplayer.displayDialogue(g);
 
             // Text Displayer
             td.displayText(g);
@@ -317,13 +321,18 @@ public class BusinessSim extends Canvas implements Runnable {
      * and keyboard.
      */
     public void update() {
+        // mouse is updated
         mouse.update();
         actionClicked = (key.action && !key.last_action) || mouse.lastMouseClicked;
         
+        // multiple choice is updated
         int MC = td.updateMultipleChoice(mouse.lastMouseClicked, mouse.mouseHeld, mouse.xPos, mouse.yPos);
         if(MC == TextDisplayer.RIGHT_ANSWER_CLICKED) {
             score += 10;
         }
+        
+        // dialogue displayer is cleared
+        DialogueDisplayer.clearDialogue();
 
         // if in game and not paused, do in game stuff
         if (!isPaused && gameState == gs_inGame) {
