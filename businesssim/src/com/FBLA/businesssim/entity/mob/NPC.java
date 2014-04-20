@@ -49,24 +49,28 @@ public class NPC extends Mob {
             sprites[1] = Sprite.backwardsPenguinBlueTuxSpriteFlip;
             sprites[2] = Sprite.penguinBlueTuxSprite;
             sprites[3] = Sprite.penguinBlueTuxSpriteFlip;
+            sprite = sprites[0];
         }
         if (isBlue && !isTux) {
             sprites[0] = Sprite.backwardsPenguinBlueSprite;
             sprites[1] = Sprite.backwardsPenguinBlueSpriteFlip;
             sprites[2] = Sprite.penguinBlueSprite;
             sprites[3] = Sprite.penguinBlueSpriteFlip;
+            sprite = sprites[0];
         }
         if (!isBlue && isTux) {
             sprites[0] = Sprite.backwardsPenguinGrayTuxSprite;
             sprites[1] = Sprite.backwardsPenguinGrayTuxSpriteFlip;
             sprites[2] = Sprite.penguinGrayTuxSprite;
             sprites[3] = Sprite.penguinGrayTuxSpriteFlip;
+            sprite = sprites[0];
         }
         if (!isBlue && !isTux) {
             sprites[0] = Sprite.backwardsPenguinGraySprite;
             sprites[1] = Sprite.backwardsPenguinGraySpriteFlip;
             sprites[2] = Sprite.penguinGraySprite;
             sprites[3] = Sprite.penguinGraySpriteFlip;
+            sprite = sprites[0];
         }
     }
 
@@ -234,6 +238,6 @@ public class NPC extends Mob {
 
     @Override
     public void render(Screen screen) {
-        screen.renderPlayer(v.getiX(), v.getiY(), sprite);
+        screen.renderRaisedMob(v.getiX(), v.getiY(), sprite);
     }
 }
