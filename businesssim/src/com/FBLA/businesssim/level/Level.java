@@ -2,6 +2,7 @@ package com.FBLA.businesssim.level;
 
 import com.FBLA.businesssim.BusinessSim;
 import com.FBLA.businesssim.entity.items.HuntObject;
+import com.FBLA.businesssim.entity.mob.NPC;
 import com.FBLA.businesssim.entity.mob.Player;
 import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
@@ -15,6 +16,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
@@ -90,6 +93,18 @@ public class Level {
     public static final String[][] level5Questions = loadQuestionsFromFile("/Text/Questions/floor5.txt");
     public static final String[][][] levelQuestions = {level1Questions, level2Questions, level3Questions, level4Questions, level5Questions};
 
+    // stores all NPCs that are in the level
+    ArrayList<NPC> npcArray = new ArrayList<>();
+    
+    // stores NPCs by coordinate
+    // Why? To render NPCs properly
+    // How to use:
+    // The Integer coordinate is (x + y * width)
+    // The ArrayList<NPC> Value stores all NPCs at that coordinate
+    // Whenever NPCs move their key in HashMap changes
+    // To get an NPC from a given tile you simply do npcMap.get(x + y * width) and the return ArrayList contains all NPCs at that point
+    HashMap<Integer, ArrayList<NPC>> npcMap = new HashMap<>();
+    
     /**
      * Creates a level from the given tiles/objects
      * @param number is the floor number - 1, aka level number
@@ -100,6 +115,8 @@ public class Level {
         this.levelNumber = number;
         loadLevelTiles();
         loadLevelObjects();
+        
+        addNPCs(1000);
     }
 
     /**
@@ -115,6 +132,8 @@ public class Level {
         loadLevelObjects();
         playerV.setX(px);
         playerV.setY(py);
+        
+        addNPCs(1000);
     }
 
     /**
@@ -133,6 +152,24 @@ public class Level {
             //tiles[i] = Tile.grassTileNum;
             tiles[i] = Tile.getNum(Tile.chkFloorTile);
             objects[i] = (int) (Math.random() * 50);
+        }
+    }
+    
+    public void addNPCs(int amount) {
+        for(int i = 0; i < amount; i++) {
+            double npcX, npcY;
+            Vector2d npcVector;
+            RaisedObject objAtXY;
+            
+            // get random positions for the NPC until one of them is unoccupied (null or voidObject)
+            do {
+                npcX = Math.random() * (width << 5);
+                npcY = Math.random() * (height << 5);
+                npcVector = new Vector2d(npcX, npcY);
+                objAtXY = getObject((int) (npcX) >> 5, (int) (npcY) >> 5);
+            } while(objAtXY != null && objAtXY != RaisedObject.voidObject);
+            
+            npcArray.add(new NPC(npcVector)); // add the new NPC
         }
     }
 
@@ -222,6 +259,25 @@ public class Level {
      */
     public void update(Player p) {
         playerV = p.v;
+        
+        // update NPCs
+        npcMap.clear();
+        for(NPC n : npcArray) {
+            n.update();
+            int coord = (n.v.getiX() >> 5) + (n.v.getiY() >> 5) * width; // x + y * width
+            
+            // check if there's an NPC at that coordinate
+            // if there is, add n to the ArrayList for that coordinate
+            // if there isn't, make an ArrayList for that coordinate and add n
+            if(npcMap.containsKey(coord)) {
+                npcMap.get(coord).add(n);
+            } else {
+                ArrayList<NPC> coordArrayList = new ArrayList<>();
+                coordArrayList.add(n);
+                npcMap.put(coord, coordArrayList);
+            }
+        }
+        
         if (levelNumber < levelAmount - 1) { // if not on last level
             if (!finished[levelNumber]) { // if level not finished
                 if (hunt[levelNumber][0] == null) { // ready hunt spots if necessary
@@ -335,17 +391,37 @@ public class Level {
             }
         }
         
-        // draw Objects and Player
+        // draw Objects, NPCs, and Player
         int px = (int) (p.v.getX()) >> 5;
         int py = (int) (p.v.getY()) >> 5;
         for (int x = x0; x < x1; x++) {
             for (int y = y0; y < y1; y++) {
+                // render object
                 getObject(x, y).render(x, y, screen);
+                
+                // render NPCs
+                ArrayList<NPC> npcsAtXY = npcAt(x, y);
+                if(npcsAtXY != null) {
+                    for(NPC n : npcsAtXY) {
+                        n.render(screen);
+                    }
+                }
+                
+                // render player
                 if (x == px && y == py) {
                     p.render(screen);
                 }
             }
         }
+    }
+    
+    /**
+     * @param x x-coordinate of the tile the NPCs are on
+     * @param y y-coordinate of the tile the NPCs are on
+     * @return an ArrayList with every NPC on that tile
+     */
+    public ArrayList<NPC> npcAt(int x, int y) {
+        return npcMap.get(x + y * width);
     }
 
     /**

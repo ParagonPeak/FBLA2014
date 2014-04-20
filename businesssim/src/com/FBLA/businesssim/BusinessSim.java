@@ -99,8 +99,6 @@ public class BusinessSim extends Canvas implements Runnable {
     public Level level;
     public static BusinessSim bs;
     
-    public static NPC npc;
-    
     
     //The main loop. This starts the game and is used for the frame's set up
     public static void main(String[] args) {
@@ -145,8 +143,6 @@ public class BusinessSim extends Canvas implements Runnable {
         level = new Level(Level.levelTilePaths[0], Level.levelObjPaths[0], 0, Level.xOff[0], Level.yOff[0]);
         player = new Player(level.playerV, key);
         MusicPlayer.init();
-        
-        npc = new NPC(new Vector2d(48, 256));
     }
 
     /**
@@ -243,7 +239,6 @@ public class BusinessSim extends Canvas implements Runnable {
         
         //Draws the level around the player
         level.render(xScroll, yScroll, screen, player);
-        npc.render(screen);
         System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
 
         Graphics2D g = (Graphics2D) bs.getDrawGraphics();
@@ -344,7 +339,6 @@ public class BusinessSim extends Canvas implements Runnable {
 
         // if in game and not paused, do in game stuff
         if (!isPaused && gameState == gs_inGame) {
-            npc.update();
             player.update();
             Sprite.update();
             level.update(player);
