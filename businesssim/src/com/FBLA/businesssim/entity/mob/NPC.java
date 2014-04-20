@@ -36,6 +36,11 @@ public class NPC extends Mob {
      */
     public NPC(Vector2d v) {
         super(v, "NPC");
+        
+        if(sayings[0].length == 0) {
+            init();
+        }
+        
         this.currentSaying = new String[]{""};
         boolean isTux = (Math.random() * 2 < 1) ? true : false;
         boolean isBlue = (Math.random() * 2 < 1) ? true : false;
@@ -96,7 +101,7 @@ public class NPC extends Mob {
                     line = br.readLine();
                 }
                 
-                sayings[floor] = floorsayings.toArray(sayings[floor]);
+                sayings[floor] = floorsayings.toArray(new String[floorsayings.size()][]);
                 
                 br.close();
             } catch (FileNotFoundException ex) {
@@ -135,7 +140,7 @@ public class NPC extends Mob {
      * @param url Name of the file
      */
     public String[] getSaying() {
-        String[] s = sayings[level.levelNumber][(int) (Math.random() * sayings[level.levelNumber].length)];
+        String[] s = sayings[BusinessSim.currentLevel][(int) (Math.random() * sayings[BusinessSim.currentLevel].length)];
         if (s == null) {
             return new String[]{"Isn't this the best place ever?!", "", "(Save me...)"};
         }
@@ -209,7 +214,8 @@ public class NPC extends Mob {
         }
 
         //If the player collides with the NPC and they aren't speaking already
-        if (currentSayingTimeout < System.currentTimeMillis() && collidesWith(BusinessSim.bs.player)) {
+        //if (currentSayingTimeout < System.currentTimeMillis() && collidesWith(BusinessSim.bs.player)) {
+        if (currentSayingTimeout < System.currentTimeMillis() && true) {
             //Picks one of the sayings for that floor at random
             currentSaying = getSaying();
             
