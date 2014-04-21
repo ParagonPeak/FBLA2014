@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -90,11 +92,11 @@ public class NPC extends Mob {
         for (int floor = 0; floor < 6; floor++) {
             try {
                 // get the floor's sayings file
-                String fileName = "floor" + (floor + 1) + ".txt";
-                File file = new File(BusinessSim.class.getResource("/Text/NPC_Sayings/" + fileName).getFile());
+                String fileName = "/Text/NPC_Sayings/floor" + (floor + 1) + ".txt";
+                InputStream in = com.FBLA.businesssim.level.Level.class.getClass().getResourceAsStream(fileName);
                 
                 // create a bufferedReader for reading the file's lines
-                BufferedReader br = new BufferedReader(new FileReader(file));
+                BufferedReader br = new BufferedReader(new InputStreamReader(in));
                 
                 ArrayList<String[]> floorsayings = new ArrayList<>(4); // because every level has at least 4 sayings
                 
