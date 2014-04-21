@@ -7,9 +7,7 @@ import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.util.Vector2d;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -168,11 +166,11 @@ public class NPC extends Mob {
     @Override
     public void update() {
         //changes the direction
-        if (System.currentTimeMillis() < timeout) {
-            dir = (dir == 0) ? (int) (Math.random() * 4) + 1 : 0;
-            timeout = (dir == 0)? System.currentTimeMillis() + 3000 : 500;
+        if (System.currentTimeMillis() > timeout) {
+            dir = (dir == 0) ? (int) (Math.random() * 4) + 1: 0;
+            timeout = (dir == 0)? System.currentTimeMillis() + 1000 : System.currentTimeMillis() + (int) (Math.random() * 1000);
         }
-        //Keeps the player form moving if they are being prompted
+        //Keeps the player from moving if they are being prompted
         if (BusinessSim.isPrompting) {
             moving = false;
             return;
