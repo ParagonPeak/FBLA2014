@@ -116,7 +116,7 @@ public class Level {
         loadLevelTiles();
         loadLevelObjects();
         
-        addNPCs(1000);
+        addNPCs(100);
     }
 
     /**
@@ -133,7 +133,7 @@ public class Level {
         playerV.setX(px);
         playerV.setY(py);
         
-        addNPCs(1000);
+        addNPCs(100);
     }
 
     /**

@@ -26,6 +26,7 @@ public class NPC extends Mob {
     private boolean isSpeaking = false;
     private String[] currentSaying;
     private Sprite[] sprites = new Sprite[4];
+    private double talkThreshold = 200.0; // distance from the player where NPC will begin to talk
     
 
     /**
@@ -219,17 +220,17 @@ public class NPC extends Mob {
 
         //If the player collides with the NPC and they aren't speaking already
         //if (currentSayingTimeout < System.currentTimeMillis() && collidesWith(BusinessSim.bs.player)) {
-        if (currentSayingTimeout < System.currentTimeMillis() && true) {
+        if (currentSayingTimeout < System.currentTimeMillis() && v.distFrom(BusinessSim.bs.player.v) < talkThreshold) {
             //Picks one of the sayings for that floor at random
             currentSaying = getSaying();
             
             //Sets the time they can talk to to 5 seconds
-            currentSayingTimeout = System.currentTimeMillis() + 5000;
+            currentSayingTimeout = System.currentTimeMillis() + (int)(Math.random() * 10000);
             isSpeaking = true;
         }
         
         //Checks if the current saying has timed out
-        if(currentSayingTimeout > System.currentTimeMillis())
+        if(currentSayingTimeout < System.currentTimeMillis())
             isSpeaking = false;
         
         if(isSpeaking)
