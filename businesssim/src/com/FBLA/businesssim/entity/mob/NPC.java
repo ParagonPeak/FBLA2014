@@ -156,7 +156,7 @@ public class NPC extends Mob {
      * The method that sends the current text bubble to the screen to be displayed
      */
     public void speak() {
-        Dialogue saying = new Dialogue(currentSaying, this.v.getiX(), this.v.getiY());
+        Dialogue saying = new Dialogue(currentSaying, v.getiX() - sprite.W * 7, v.getiY() - sprite.H * 2); // 7 and 2 are trial and error numbers that make the text appear over the NPCs' heads
         DialogueDisplayer.addDialogue(saying);
     }
 

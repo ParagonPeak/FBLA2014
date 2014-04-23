@@ -12,7 +12,7 @@ public class Screen {
     public int mapwidth = 64; //image file should be 64 px by 64 px
     private int mapsize = mapwidth * mapwidth;
     public int[] tiles = new int[mapsize]; //64 tiles in both directions
-    public int xOffs, yOffs; //position to look at    
+    public static int xOffs, yOffs; //position to look at    
 
     /**
      * Creates a Screen object, used to fill the GUI that presents the graphics

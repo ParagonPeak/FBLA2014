@@ -16,6 +16,8 @@ public class DialogueDisplayer {
     // holds all dialogue to be displayed
     protected static ArrayList<Dialogue> dialogue = new ArrayList<>();
     
+    private static final int DIST_BETWEEN_LINES = 25;
+    
     public static void addDialogue(Dialogue d) {
         if(d == null) {
             throw new java.lang.NullPointerException("Null dialogue given");
@@ -38,10 +40,8 @@ public class DialogueDisplayer {
         if (g == null)
             return;
         
-        g.setColor(Color.BLACK);
-        
         for(Dialogue d : dialogue) {
-            drawText(d.text, g, d.xIso, d.yIso);
+            drawText(d.text, g, d.x2D - Screen.xOffs, d.y2D - Screen.yOffs);
         }
     }
     
@@ -51,15 +51,33 @@ public class DialogueDisplayer {
      * @param g 
      */
     private static void drawText(String[] lines, Graphics g, int x, int y) {
+        // dont accept bad input
         if (g == null || lines == null) {
             return;
         }
+        
+        // convert x and y from 2D to Iso coordinates
+        int[] coords = Screen.twoDToIso(x, y);
+        x = coords[0];
+        y = coords[1];
+        
+        // draw dialog bubble
+        int dialogWidth = (int) (350 * BusinessSim.bs.scale);
+        int dialogHeight = (int) (DIST_BETWEEN_LINES * lines.length * BusinessSim.bs.scale);
+        g.setColor(new Color(0xcc, 0xcc, 0xcc, 150));
+        g.fillRoundRect((int) ((x - 5) * BusinessSim.bs.scale), (int) (y * BusinessSim.bs.scale + DIST_BETWEEN_LINES/2), dialogWidth, dialogHeight, 20, 20);
+        //g.setColor(Color.BLACK);
+        //g.drawRect((int) ((x - 5) * BusinessSim.bs.scale), (int) (y * BusinessSim.bs.scale + DIST_BETWEEN_LINES/2), dialogWidth, dialogHeight);
+        
+        // draw each line
         for (int i = 0; i < lines.length; i++) {
+            // ignore null lines
             if (lines[i] == null) {
                 continue;
             }
+            
             g.setColor(Color.BLACK);
-            g.drawString(lines[i], (int)(x * ((BusinessSim.isFullScreen)? 7.0/3.0 : 1.0)),(int)(((i + 1) * 25 + y) * BusinessSim.bs.scale));
+            g.drawString(lines[i], (int)(x * BusinessSim.bs.scale),(int)(((i + 1) * DIST_BETWEEN_LINES + y) * BusinessSim.bs.scale));
         }
     }
 }

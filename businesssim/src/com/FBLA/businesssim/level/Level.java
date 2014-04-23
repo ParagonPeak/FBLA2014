@@ -93,6 +93,8 @@ public class Level {
     public static final String[][] level5Questions = loadQuestionsFromFile("/Text/Questions/floor5.txt");
     public static final String[][][] levelQuestions = {level1Questions, level2Questions, level3Questions, level4Questions, level5Questions};
 
+    public static int defaultNPCAmount = 10;
+    
     // stores all NPCs that are in the level
     ArrayList<NPC> npcArray = new ArrayList<>();
     
@@ -116,7 +118,7 @@ public class Level {
         loadLevelTiles();
         loadLevelObjects();
         
-        addNPCs(100);
+        addNPCs(defaultNPCAmount);
     }
 
     /**
@@ -133,7 +135,7 @@ public class Level {
         playerV.setX(px);
         playerV.setY(py);
         
-        addNPCs(100);
+        addNPCs(defaultNPCAmount);
     }
 
     /**

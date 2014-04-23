@@ -32,6 +32,9 @@ public class HUD {
         g.setColor(Color.WHITE);
         g.setFont(courier);
         g.drawString("FPS: " + BusinessSim.bs.FPS, (int) ((BusinessSim.bs.screen.width - 120) * scale), (int) (25 * scale));
+        
+        // X and Y
+        // g.drawString("X: " + BusinessSim.bs.player.v.getiX() + " Y: " + BusinessSim.bs.player.v.getiY(), (int) ((BusinessSim.bs.screen.width - 300) * scale), (int) (25 * scale));
 
         g.setFont(tahoma);
 
