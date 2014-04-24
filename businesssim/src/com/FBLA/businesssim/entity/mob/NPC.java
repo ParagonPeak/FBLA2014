@@ -1,7 +1,7 @@
 package com.FBLA.businesssim.entity.mob;
 
 import com.FBLA.businesssim.BusinessSim;
-import com.FBLA.businesssim.graphics.Dialogue;
+import com.FBLA.businesssim.util.Dialogue;
 import com.FBLA.businesssim.graphics.DialogueDisplayer;
 import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
@@ -119,17 +119,6 @@ public class NPC extends Mob {
         }
     }
 
-   // /*
-   //  * Expands the array to avoid an OutOfBounds error
-   //  */
-   // public static void expandSayingsArray(int level) {
-   //     String[][][] temp = sayings.clone();
-   //     sayings = new String[6][sayings[level].length + 1][0];
-   //     for (int first = 0; first < temp.length; first++) {
-   //         System.arraycopy(temp[first], 0, sayings[first], 0, temp[first].length);
-   //     }
-   // }
-
     /**
      * Sets the script from an array of text
      *
@@ -224,8 +213,8 @@ public class NPC extends Mob {
             //Picks one of the sayings for that floor at random
             currentSaying = getSaying();
             
-            //Sets the time they can talk to to 5 seconds
-            currentSayingTimeout = System.currentTimeMillis() + (int)(Math.random() * 10000);
+            //Sets the time they can talk from 5 to 10 seconds
+            currentSayingTimeout = System.currentTimeMillis() + 5000+ (int)(Math.random() * 5000);
             isSpeaking = true;
         }
         

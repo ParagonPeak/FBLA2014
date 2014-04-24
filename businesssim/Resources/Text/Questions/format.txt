@@ -1,5 +1,5 @@
-CATEGORY#Question#Correct Answer#Wrong answer#Wrong answer#Wrong Answer
-CATEGORY2#Question#Correct Answer#Wrong answer#Wrong answer#Wrong Answer
-CATEGORY3#Question#Correct Answer#Wrong answer#Wrong answer#Wrong Answer
-CATEGORY4#Question#Correct Answer#Wrong answer#Wrong answer#Wrong Answer
-CATEGORY5#Question#Correct Answer#Wrong answer#Wrong answer#Wrong Answer
+CATEGORY#Question#Correct Answer#Wrong answer#Wrong answer#Wrong Answer#Reasoning
+CATEGORY2#Question#Correct Answer#Wrong answer#Wrong answer#Wrong Answer#Reasoning
+CATEGORY3#Question#Correct Answer#Wrong answer#Wrong answer#Wrong Answer#Reasoning
+CATEGORY4#Question#Correct Answer#Wrong answer#Wrong answer#Wrong Answer#Reasoning
+CATEGORY5#Question#Correct Answer#Wrong answer#Wrong answer#Wrong Answer#Reasoning

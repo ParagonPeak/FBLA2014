@@ -3,7 +3,7 @@ package com.FBLA.businesssim;
 import com.FBLA.businesssim.entity.items.HuntObject;
 import com.FBLA.businesssim.entity.mob.NPC;
 import com.FBLA.businesssim.entity.mob.Player;
-import com.FBLA.businesssim.graphics.Dialogue;
+import com.FBLA.businesssim.util.Dialogue;
 import com.FBLA.businesssim.graphics.DialogueDisplayer;
 import com.FBLA.businesssim.graphics.HUD;
 import com.FBLA.businesssim.graphics.Screen;

@@ -1,5 +1,6 @@
 package com.FBLA.businesssim.graphics;
 
+import com.FBLA.businesssim.util.Dialogue;
 import com.FBLA.businesssim.BusinessSim;
 import java.awt.Color;
 import java.awt.Graphics;

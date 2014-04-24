@@ -1,4 +1,6 @@
-package com.FBLA.businesssim.graphics;
+package com.FBLA.businesssim.util;
+
+import com.FBLA.businesssim.graphics.Screen;
 
 /**
  * This class holds the information for snippet of dialogue: the text and its coordinates

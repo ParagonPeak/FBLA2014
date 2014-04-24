@@ -12,10 +12,7 @@ import com.FBLA.businesssim.level.raisedobject.RaisedObject;
 import com.FBLA.businesssim.level.tile.Tile;
 import com.FBLA.businesssim.util.Vector2d;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -50,7 +47,8 @@ public class Level {
     public static int[] yOff = {128, 128, 128, 128, 128, 128};
     public static HuntObject[][] hunt = new HuntObject[levelTilePaths.length][totalItems]; // stores all HuntObjects by level and index
     // messages displayed when you start a floor
-    public static final String[][] levelMessage = {{"Ground Floor: ", "This is where we conduct job application testing.", "It's normally filled with more people applying."},
+    public static final String[][] levelMessage = {
+        {"Ground Floor: ", "This is where we conduct job application testing.", "It's normally filled with more people applying."},
         {"Floor 2: ", "We store things here. ", "Luckily for you, it's very organized,", "except for the power cables near the motorized chairs.", "We just can't seem to unplug them."},
         {"Floor 3: ", "This is where we design our glue.", "We don't go ahead with anything until it's prefectly planned out!", "Why the open space, desks, and mini-maze?", "Because we planned it out perfectly that way."},
         {"Floor 4: ", "This floor is where we conduct glue testing.", "Walls and corners are strewn all about!", "Don't get stuck trying to find your way around! Hahahaha!"},
@@ -85,13 +83,12 @@ public class Level {
                                                             { "FUTURE BUSINESS LEADER",          "This event honors outstanding FBLA members, based on", "their leadership, participation in FBLA, and knowledge.", "This event consists of a submission of a letter of application and résumé, an objective test, and an interview"}},
         {{""}} // no level 6 pickups
     }; 
-    // questions lists. questions displayed when HuntObjects are picked up
-    public static final String[][] level1Questions = loadQuestionsFromFile("/Text/Questions/floor1.txt");
-    public static final String[][] level2Questions = loadQuestionsFromFile("/Text/Questions/floor2.txt");
-    public static final String[][] level3Questions = loadQuestionsFromFile("/Text/Questions/floor3.txt");
-    public static final String[][] level4Questions = loadQuestionsFromFile("/Text/Questions/floor4.txt");
-    public static final String[][] level5Questions = loadQuestionsFromFile("/Text/Questions/floor5.txt");
-    public static final String[][][] levelQuestions = {level1Questions, level2Questions, level3Questions, level4Questions, level5Questions};
+//    // questions lists. questions displayed when HuntObjects are picked up
+//    public static final String[][][][] levelQuestions = {Question.getLevelQuestions(1), 
+//                                                         Question.getLevelQuestions(2), 
+//                                                         Question.getLevelQuestions(3), 
+//                                                         Question.getLevelQuestions(4), 
+//                                                         Question.getLevelQuestions(5)};
 
     public static int defaultNPCAmount = 10;
     
@@ -150,8 +147,6 @@ public class Level {
         tiles = new int[w * h];
         objects = new int[w * h];
         for (int i = 0; i < w * h; i++) {
-            //tiles[i] = (int) (Math.random()*3);
-            //tiles[i] = Tile.grassTileNum;
             tiles[i] = Tile.getNum(Tile.chkFloorTile);
             objects[i] = (int) (Math.random() * 50);
         }
@@ -225,32 +220,7 @@ public class Level {
         }
     }
     
-    /**
-     * Given a file location, returns the lines of text (and the lines of text in those lines of text) in the file
-     * First index is question number, Second index is line number
-     */
-    public static String[][] loadQuestionsFromFile(String path) {
-        int QUESTION_AMOUNT = 5; // should always be 5 questions, 5 lines (4 answers and question), hence capitalization for constants
-        int LINE_AMOUNT = 5;
-        
-        String[][] result = new String[QUESTION_AMOUNT][LINE_AMOUNT]; 
-        
-        try {
-            InputStream in = Level.class.getClass().getResourceAsStream(path);
-            BufferedReader input = new BufferedReader(new InputStreamReader(in));
-            
-            for(int i = 0; i < QUESTION_AMOUNT; i++) {
-                String wholeLine = input.readLine();
-                result[i] = wholeLine.split("#");
-            }
-            
-            return result;
-        } catch (Exception e) {
-            Logger.getLogger(SpriteSheet.class.getName()).log(java.util.logging.Level.SEVERE, "Could not load level questions at " + path, e);
-        }
-        
-        return null;
-    }
+    
 
     /**
      * Basically updates the player's relationship with the HuntObjects
@@ -290,8 +260,8 @@ public class Level {
                         Sprite sprite = Sprite.huntSprite2;
                         Screen sc = BusinessSim.bs.screen;
                         String[] pickupText = pickUpDescriptions[levelNumber][i];
-                        String[] questionText = levelQuestions[levelNumber][i];
-                        hunt[levelNumber][i] = new HuntObject(huntSpot, sprite, sc, pickupText, questionText);
+                        //String[] questionText = levelQuestions[levelNumber][i];
+                        hunt[levelNumber][i] = new HuntObject(huntSpot, sprite, sc, pickupText, levelNumber);//, questionText);
                     }
                 }
 

@@ -10,6 +10,7 @@ import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
 import com.FBLA.businesssim.graphics.TextDisplayer;
 import com.FBLA.businesssim.sound.MusicPlayer;
+import com.FBLA.businesssim.util.Question;
 import com.FBLA.businesssim.util.Vector2d;
 
 /**
@@ -21,6 +22,7 @@ public class HuntObject extends Entity {
     protected Screen screen;
     protected String[] pickupText;
     private String[] question;
+    private String reason;
     private int correctAnswerIndex = 2;
 
     /**
@@ -31,16 +33,20 @@ public class HuntObject extends Entity {
      * @param pickupText the 
      * @param questionText 
      */
-    public HuntObject(Vector2d v, Sprite s, Screen sc, String[] pickupText, String[] questionText) {
+    public HuntObject(Vector2d v, Sprite s, Screen sc, String[] pickupText, int floor){//, int questionTopic) {
         super(v);
         sprite = s;
         screen = sc;
+        String questionTopic = pickupText[0];//The first line
+        question = Question.getQuestion(questionTopic, floor);
+        reason = question[question.length - 1];
+        System.arraycopy(question, 0, question, 0, question.length - 1);
         this.pickupText = pickupText;
-        this.question = questionText;
+        
     }
 
-    public HuntObject(int x, int y, Sprite s, Screen sc, String[] pickupText, String[] questionText) {
-        this(new Vector2d(x, y), s, sc, pickupText, questionText);
+    public HuntObject(int x, int y, Sprite s, Screen sc, String[] pickupText, int floor){//, String[] questionText) {
+        this(new Vector2d(x, y), s, sc, pickupText, floor);//, questionText);
     }
 
     public void render() {
@@ -62,7 +68,7 @@ public class HuntObject extends Entity {
         correctAnswerIndex = newAnswerIndex;
         
         BusinessSim.bs.td.addLines(question, TextDisplayer.MULTIPLE_CHOICE, correctAnswerIndex);
-        String[] correctString = {"","The correct answer was: ", question[correctAnswerIndex]};
+        String[] correctString = {"","The correct answer was: ", question[correctAnswerIndex], reason};
         BusinessSim.bs.td.addLines(correctString, TextDisplayer.TEXT, correctAnswerIndex);
         
         // play a sound, write a message
