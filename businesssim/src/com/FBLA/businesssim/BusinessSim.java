@@ -53,7 +53,7 @@ public class BusinessSim extends Canvas implements Runnable {
             FPS = 0, 
             score = 0;
     private int mainScreenPointerPosition = gs_inGame, 
-            elevatorPointer = 0,
+            elevatorPointer = 0, ep_UP = 1, ep_DOWN = -1, ep_NOCHANGE = 0,
             pausePointer = 0;
     public static final int gs_inGame = 0, 
             gs_about = 1, 
@@ -69,6 +69,15 @@ public class BusinessSim extends Canvas implements Runnable {
     public boolean actionClicked = false, 
             nearElevator = false;
     private Thread mThread; //Main Game Thread
+    
+    // elevator panel
+    private int panelLeft = (int) (((width - 100 * scale) / 2)),
+                panelTop = (int) (((height - 250 * scale) / 2)),
+                panelWidth = (int) (60 * scale),
+                panelHeight = (int) (110 * scale);
+    // elevator buttons
+    private int buttonX = panelLeft + panelWidth / 2,
+                buttonR = 10;
     
     //*******
     //The bits used to pull the image from the JFrame for editing
@@ -365,17 +374,17 @@ public class BusinessSim extends Canvas implements Runnable {
                             }
                         }
                     }
-                } else if (nearElevator && !isPrompting) {
+                } else if (nearElevator && !isPrompting && key.action) {
                     isPrompting = true;
-                } else if (nearElevator && isPrompting) {
-                    if (elevatorPointer != currentLevel) {
-                        if (elevatorPointer == 0) {
-                            switchLevel(elevatorPointer);
+                } else if (nearElevator && isPrompting && mouse.lastMouseClicked) {
+                    if (elevatorPointer != ep_NOCHANGE) {
+                        if (elevatorPointer == ep_UP && level.finished[currentLevel]) {
+                            switchLevel(currentLevel + elevatorPointer);
                             MusicPlayer o = new MusicPlayer();
                             o.init();
                             o.changeTrack(5);
-                        } else if (Level.finished[elevatorPointer - 1]) {
-                            switchLevel(elevatorPointer);
+                        } else if (elevatorPointer == ep_DOWN) {
+                            switchLevel(currentLevel + elevatorPointer);
                             MusicPlayer o = new MusicPlayer();
                             o.init();
                             o.changeTrack(5);
@@ -489,43 +498,61 @@ public class BusinessSim extends Canvas implements Runnable {
             return g;
         }
         //******Draws the switch board******
+        // bg
         g.setColor(new Color(0x7f, 0x6a, 0, 0xb0));
-        int left = (int) (((width - 100 * scale) / 2)),
-                top = (int) (((height - 250 * scale) / 2)),
-                right = (int) (100 * scale),
-                bottom = (int) (150 * scale);
-        g.fillRoundRect(left, top, right, bottom, 10, 10);
+        panelLeft = (int) (((width - 100 * scale) / 2));
+        panelTop = (int) (((height - 250 * scale) / 2));
+        panelWidth = (int) (60 * scale);
+        panelHeight = (int) (110 * scale);
+        g.fillRoundRect(panelLeft, panelTop, panelWidth, panelHeight, 10, 10);
+        
+        // label
         g.setColor(Color.black);
         g.setFont(new Font("Tahoma", Font.PLAIN, (int) (12 * scale)));
-        top += 15;
-        g.drawString("FLOOR", (int) (left + (35 * scale)), top);
-        left += 20 * scale;
-        for (int i = 0; i < Level.levelAmount; i++) {
-            if (i % 2 == 0) {
-                top += (30 * scale);
-            } else {
-                left += (40 * scale);
-            }
-            g.setColor(Color.BLACK);
-            g.fillOval(left, top, (int) (20 * scale), (int) (scale * 20));
-            if (i == 0) {
+        panelTop += 15;
+        g.drawString("FLOOR", (int) (panelLeft + panelWidth / 2 - 18), panelTop + 15);
+        
+        // buttons
+        buttonX = panelLeft + panelWidth / 2;
+        buttonR = 10;
+        g.setColor(Color.BLACK);
+        if(currentLevel != 5) { // up button
+            g.fillOval(buttonX - buttonR, panelTop + panelHeight / 3, buttonR * 2, buttonR * 2);
+            if (Level.finished[currentLevel]) {
                 g.setColor(Color.white);
-            } else if (Level.finished[i - 1]) {
-                g.setColor(Color.white);
+                if(elevatorPointer == ep_UP) {
+                    g.setColor(Color.YELLOW);
+                    if(mouse.lastMouseHeld) {
+                        g.setColor(Color.GREEN);
+                    }
+                }
             } else {
                 g.setColor(Color.DARK_GRAY);
+                if(elevatorPointer == ep_UP) {
+                    g.setColor(new Color(100, 100, 0));
+                }
             }
-            if (i == elevatorPointer) {
-                g.setColor(Color.yellow);
-            }
-            g.fillOval((int) (left + (2 * scale)), (int) (top + (2 * scale)), (int) (16 * scale), (int) (16 * scale));
+            
+            g.fillOval(buttonX - buttonR, panelTop + panelHeight / 3, buttonR * 9/5, buttonR * 9/5);
+            
             g.setColor(Color.black);
-            g.drawString("" + (i + 1), (float) (left + 7 * scale), (float) (top + 14 * scale));
-
-            if (i % 2 == 1) {
-                left -= (40 * scale);
-            }
+            g.drawString("^", buttonX - buttonR/2, panelTop + panelHeight / 3 + buttonR);
         }
+        if(currentLevel != 0) { // down button
+            g.fillOval(buttonX - buttonR, panelTop + panelHeight*2/3, buttonR * 2, buttonR * 2);
+            g.setColor(Color.white);
+            if(elevatorPointer == ep_DOWN) {
+                    g.setColor(Color.YELLOW);
+                    if(mouse.lastMouseHeld) {
+                        g.setColor(Color.GREEN);
+                    }
+                }
+            g.fillOval(buttonX - buttonR, panelTop + panelHeight*2/3, buttonR * 9/5, buttonR * 9/5);
+            
+            g.setColor(Color.black);
+            g.drawString("v", buttonX - buttonR/2, panelTop + panelHeight*2/3 + buttonR);
+        }
+        
         return g;
     }
 
@@ -534,7 +561,7 @@ public class BusinessSim extends Canvas implements Runnable {
  * @param levelNum the level that we change to
  */    
     private void switchLevel(int levelNum) {
-        currentLevel = elevatorPointer = levelNum;
+        currentLevel = levelNum;
         level = new Level(Level.levelTilePaths[levelNum], Level.levelObjPaths[levelNum], levelNum, player.v.getX(), player.v.getY());
         td.addLines(Level.levelMessage[currentLevel], TextDisplayer.TEXT);
         isPrompting = false;
@@ -560,25 +587,40 @@ public class BusinessSim extends Canvas implements Runnable {
      * Moves the pointer for the elevator prompt to switch floors 
      */
     public void updateElevatorPointer() {
-        if (key.up && !key.last_up) {
-            if (elevatorPointer > 1) {
-                elevatorPointer -= 2; //moves the pointer up one in the grid selection in the same left-right spot.
-            } else {
-                elevatorPointer += 4; //moves the pointer to the bottom row in the same left-right spot.
-            }
-        } else if (key.down && !key.last_down) {
-            if (elevatorPointer < 4) {
-                elevatorPointer += 2; //Moves the pointer down one y spot in the grid selection in same left-right spot.
-            } else {
-                elevatorPointer %= 2; //Moves the pointer to the top row in the same left-right spot.
-            }
-        } else if ((key.right && !key.last_right) || (key.left && !key.last_left)) {
-            if (elevatorPointer % 2 == 0) {
-                elevatorPointer += 1; //Changes the left right position, but won't change the up, down position;
-            } else {
-                elevatorPointer -= 1; //Changes the left right position, but won't change the up, down position;
+        if(Math.sqrt(Math.pow(mouse.xPos - buttonX, 2) + Math.pow(mouse.yPos - (panelTop + panelHeight / 3), 2)) < buttonR) { // over up button
+            elevatorPointer = ep_UP;
+        }
+        else if(Math.sqrt(Math.pow(mouse.xPos - buttonX, 2) + Math.pow(mouse.yPos - (panelTop + panelHeight*2/3), 2)) < buttonR) { // over down button
+            elevatorPointer = ep_DOWN;
+        }
+        else if(mouse.xPos < panelLeft || mouse.xPos > panelLeft + panelWidth || mouse.yPos < panelTop || mouse.yPos > panelTop + panelHeight) {
+            elevatorPointer = ep_NOCHANGE;
+            if(mouse.lastMouseClicked) {
+                isPrompting = false;
+                elevatorPointer = ep_NOCHANGE;
+                mouse.lastMouseClicked = false;
             }
         }
+        
+        //if (key.up && !key.last_up) {
+        //    if (elevatorPointer > 1) {
+        //        elevatorPointer -= 2; //moves the pointer up one in the grid selection in the same panelLeft-panelWidth spot.
+        //    } else {
+        //        elevatorPointer += 4; //moves the pointer to the panelHeight row in the same panelLeft-panelWidth spot.
+        //    }
+        //} else if (key.down && !key.last_down) {
+        //    if (elevatorPointer < 4) {
+        //        elevatorPointer += 2; //Moves the pointer down one y spot in the grid selection in same panelLeft-panelWidth spot.
+        //    } else {
+        //        elevatorPointer %= 2; //Moves the pointer to the panelTop row in the same panelLeft-panelWidth spot.
+        //    }
+        //} else if ((key.right && !key.last_right) || (key.left && !key.last_left)) {
+        //    if (elevatorPointer % 2 == 0) {
+        //        elevatorPointer += 1; //Changes the panelLeft panelWidth position, but won't change the up, down position;
+        //    } else {
+        //        elevatorPointer -= 1; //Changes the panelLeft panelWidth position, but won't change the up, down position;
+        //    }
+        //}
     }
 
     /**
@@ -612,7 +654,7 @@ public class BusinessSim extends Canvas implements Runnable {
             }
         }
         
-        //Changes the volume using left or right.
+        //Changes the volume using panelLeft or panelWidth.
         if ((key.left && !key.last_left) | (key.right && !key.last_right)) {
             if (key.left) {
                 MusicPlayer.mp.decreaseVolume();

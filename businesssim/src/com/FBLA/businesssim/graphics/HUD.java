@@ -33,8 +33,11 @@ public class HUD {
         g.setFont(courier);
         g.drawString("FPS: " + BusinessSim.bs.FPS, (int) ((BusinessSim.bs.screen.width - 120) * scale), (int) (25 * scale));
         
-        // X and Y
+        // player X and Y
         // g.drawString("X: " + BusinessSim.bs.player.v.getiX() + " Y: " + BusinessSim.bs.player.v.getiY(), (int) ((BusinessSim.bs.screen.width - 300) * scale), (int) (25 * scale));
+        
+        // mouse X and Y
+        // g.drawString("X: " + BusinessSim.bs.mouse.xPos + " Y: " + BusinessSim.bs.mouse.yPos, (int) ((BusinessSim.bs.screen.width - 300) * scale), (int) (25 * scale));
 
         g.setFont(tahoma);
 
