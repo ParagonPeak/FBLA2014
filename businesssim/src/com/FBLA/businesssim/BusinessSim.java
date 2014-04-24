@@ -1,9 +1,7 @@
 package com.FBLA.businesssim;
 
 import com.FBLA.businesssim.entity.items.HuntObject;
-import com.FBLA.businesssim.entity.mob.NPC;
 import com.FBLA.businesssim.entity.mob.Player;
-import com.FBLA.businesssim.util.Dialogue;
 import com.FBLA.businesssim.graphics.DialogueDisplayer;
 import com.FBLA.businesssim.graphics.HUD;
 import com.FBLA.businesssim.graphics.Screen;
@@ -339,7 +337,11 @@ public class BusinessSim extends Canvas implements Runnable {
         // multiple choice is updated
         int MC = td.updateMultipleChoice(mouse.lastMouseClicked, mouse.mouseHeld, mouse.xPos, mouse.yPos);
         if(MC == TextDisplayer.RIGHT_ANSWER_CLICKED) {
+            td.addLine("Good Job!");
             score += 10;
+        }
+        if(MC == TextDisplayer.WRONG_ANSWER_CLICKED){
+            td.addLine("Too bad, better luck on the next question.");
         }
         
         // dialogue displayer is cleared
