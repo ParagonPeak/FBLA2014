@@ -59,7 +59,7 @@ public class Question {
     {
         for(int topicNum = 0; topicNum < questions[floor].length; topicNum++)
         {
-            if(questions[floor][topicNum].equals(topic))
+            if(questions[floor][topicNum][0][0].equalsIgnoreCase(topic))
                 return(questions[floor][topicNum][(int)(Math.random() * questions[floor][topicNum].length)]);
         }
         return new String[]{"Error"};
