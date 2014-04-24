@@ -383,7 +383,7 @@ public class BusinessSim extends Canvas implements Runnable {
                             MusicPlayer o = new MusicPlayer();
                             o.init();
                             o.changeTrack(5);
-                        } else if (elevatorPointer == ep_DOWN) {
+                        } else if (elevatorPointer == ep_DOWN && currentLevel != 0) {
                             switchLevel(currentLevel + elevatorPointer);
                             MusicPlayer o = new MusicPlayer();
                             o.init();
@@ -587,10 +587,10 @@ public class BusinessSim extends Canvas implements Runnable {
      * Moves the pointer for the elevator prompt to switch floors 
      */
     public void updateElevatorPointer() {
-        if(Math.sqrt(Math.pow(mouse.xPos - buttonX, 2) + Math.pow(mouse.yPos - (panelTop + panelHeight / 3), 2)) < buttonR) { // over up button
+        if(Math.sqrt(Math.pow(mouse.xPos - buttonX, 2) + Math.pow(mouse.yPos - (panelTop + panelHeight / 3), 2)) < buttonR && currentLevel != 5) { // over up button
             elevatorPointer = ep_UP;
         }
-        else if(Math.sqrt(Math.pow(mouse.xPos - buttonX, 2) + Math.pow(mouse.yPos - (panelTop + panelHeight*2/3), 2)) < buttonR) { // over down button
+        else if(Math.sqrt(Math.pow(mouse.xPos - buttonX, 2) + Math.pow(mouse.yPos - (panelTop + panelHeight*2/3), 2)) < buttonR && currentLevel != 0) { // over down button
             elevatorPointer = ep_DOWN;
         }
         else if(mouse.xPos < panelLeft || mouse.xPos > panelLeft + panelWidth || mouse.yPos < panelTop || mouse.yPos > panelTop + panelHeight) {
