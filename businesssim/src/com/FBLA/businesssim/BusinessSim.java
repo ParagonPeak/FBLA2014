@@ -12,6 +12,7 @@ import com.FBLA.businesssim.input.Mouse;
 import com.FBLA.businesssim.level.Level;
 import static com.FBLA.businesssim.level.Level.hunt;
 import com.FBLA.businesssim.sound.MusicPlayer;
+import com.FBLA.businesssim.util.Question;
 import com.FBLA.businesssim.util.Vector2d;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -142,6 +143,7 @@ public class BusinessSim extends Canvas implements Runnable {
         mouse = new Mouse();
         addMouseListener(mouse);
         addMouseMotionListener(mouse);
+        Question.loadQuestionsFromFiles();
         screen = new Screen(width, height);
         td = new TextDisplayer(screen);
         //The user will be shown this text when first entering the game.

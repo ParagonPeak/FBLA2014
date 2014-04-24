@@ -39,8 +39,8 @@ public class Keyboard implements KeyListener{
         pause = keys[KeyEvent.VK_P];
         if(escape && !last_escape) BusinessSim.bs.promptExit();
         keys[KeyEvent.VK_ESCAPE] = false;
-        if(keys[KeyEvent.VK_F11] && !last_full) BusinessSim.bs.setFullScreen(!BusinessSim.isFullScreen);
-        last_full = keys[KeyEvent.VK_F11];
+//        if(keys[KeyEvent.VK_F11] && !last_full) BusinessSim.bs.setFullScreen(!BusinessSim.isFullScreen);
+//        last_full = keys[KeyEvent.VK_F11];
     }
     
     /**
