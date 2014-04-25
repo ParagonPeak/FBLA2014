@@ -19,10 +19,13 @@ public class Sprite {
     public int[] pixels;
     private SpriteSheet sheet;
     public static ArrayList<Sprite> sprites = new ArrayList<>();
-    public static Sprite voidSprite = new Sprite(32, 32, 0x121212);
+    public static Sprite voidSprite = new Sprite(32, 32, 0xf7f7f7);
     public static Sprite smallRedSprite = new Sprite(2, 2, 0xff0000);
     public static Sprite smallYellowSprite = new Sprite(2, 2, 0xffff00);
     public static Sprite emptySprite = new Sprite(32, 32, 0xFFFF00FF);
+    
+    public static Sprite background = new Sprite(960, 507, 0, 0, SpriteSheet.background, 1);
+    
     public static Sprite playerSprite = new Sprite(32,64,0,0,SpriteSheet.player, 4, 8);
     public static Sprite playerSpriteFlip = new Sprite(playerSprite);
     public static Sprite backwardsPlayerSprite = new Sprite(32,64,0,1,SpriteSheet.player, 4, 8);
@@ -122,6 +125,7 @@ public class Sprite {
         pixels = new int[W * H];
         if(frames < 1) frames = 1;
         MAX_FRAMES = frames - 1;
+        // frame = (int)(Math.random() * MAX_FRAMES);
         sheet = ss;
         load();
         sprites.add(this);

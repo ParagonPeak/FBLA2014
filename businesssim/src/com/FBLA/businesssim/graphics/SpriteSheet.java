@@ -21,6 +21,7 @@ public class SpriteSheet {
     public int[] pixels;
     public static SpriteSheet penguinGray = new SpriteSheet("/Textures/Characters/Penguins_Gray.png");
     public static SpriteSheet penguinBlue = new SpriteSheet("/Textures/Characters/Penguins_Blue.png");
+    public static SpriteSheet background = new SpriteSheet("/Textures/backAndForeground/background.jpg");
     public static SpriteSheet player = new SpriteSheet("/Textures/Characters/Player.png");
     public static SpriteSheet huntObj = new SpriteSheet("/Textures/Pickups/Pickups.png");
     public static SpriteSheet sample = new SpriteSheet("/Textures/Tiles/sample.gif");

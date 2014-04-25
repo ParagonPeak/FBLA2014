@@ -1,5 +1,6 @@
 package com.FBLA.businesssim.graphics;
 
+import com.FBLA.businesssim.BusinessSim;
 import java.awt.Graphics;
 
 /**
@@ -61,6 +62,18 @@ public class Screen {
             pixels[i] = voidColor;
         }
     }
+    
+    /**
+     * Renders the background sprite
+     * Called after clear
+     */
+    public void renderBackground() {
+        Sprite bgSprite = Sprite.background;
+        int bgScale = 3;
+        int bgWidth = bgSprite.W * bgScale;
+        int bgHeight = bgSprite.H * bgScale;
+        renderScaledSprite(-bgWidth/2 + 50 + BusinessSim.bs.level.levelNumber * 30, 50 + BusinessSim.bs.level.levelNumber * 30, bgSprite, bgScale);
+    }
 
     /**
      * @param xp is the Sprite's X position on the screen, not the map, and are
@@ -91,6 +104,46 @@ public class Screen {
                 int color = s.pixels[x + (y * w)];
                 if (color != 0xffFF00FF) {
                     pixels[xa + (ya * width)] = color;
+                }
+            }
+        }
+    }
+    
+    /**
+     * Like sprite.render but renders a sprite with an integer scale
+     * Used for the background rendering
+     * @param xp is the Sprite's X position on the screen, not the map, and are
+     * without offset
+     * @param yp is the Sprite's Y position on the screen, not the map, and are
+     * without offset
+     */
+    public void renderScaledSprite(int xp, int yp, Sprite s, int scale) {
+        int w = s.W;
+        int h = s.H;
+        xp -= xOffs;
+        yp -= yOffs;
+
+        int[] iso = twoDToIso(xp, yp);
+        xp = iso[0];
+        yp = iso[1];
+
+        for (int y = 0; y < h; y++) {
+            int ya = y*scale + yp; // absolute position
+            for (int x = 0; x < w; x++) {
+                int xa = x*scale + xp;
+                if (xa < 0 || xa + scale >= width || ya < 0 || ya + scale >= height) {
+                    continue;
+                }
+                if (xa < 0) {
+                    xa = 0;
+                }
+                int color = s.pixels[x + (y * w)];
+                if (color != 0xffFF00FF) {
+                    for(int sx = 0; sx < scale; sx++) { // scalex
+                        for(int sy = 0; sy < scale; sy++) {
+                             pixels[xa + sx + ((ya + sy) * width)] = color;
+                        }
+                    }
                 }
             }
         }

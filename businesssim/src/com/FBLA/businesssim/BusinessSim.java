@@ -245,6 +245,7 @@ public class BusinessSim extends Canvas implements Runnable {
         }
         
         screen.clear();
+        screen.renderBackground();
         
         //Draws the level around the player
         level.render(xScroll, yScroll, screen, player);
