@@ -12,6 +12,7 @@ public class Question {
     public static String[][][][] questions = new String[5][][][];
     public static final int topicsPerFloor = 5;
     public static final int questionsPerTopic = 3;
+    public static final int reasonIndex = 6;
 
     public static void main(String args[]) {
         loadQuestionsFromFiles();
@@ -56,8 +57,7 @@ public class Question {
         }
     }
     
-    public static String[] getQuestion(String topic, int floor)
-    {
+    public static String[] getQuestion(String topic, int floor) {
         for(int topicNum = 0; topicNum < questions[floor].length; topicNum++)
         {
             if(questions[floor][topicNum][0][0].equalsIgnoreCase(topic))

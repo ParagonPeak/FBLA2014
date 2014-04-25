@@ -89,6 +89,32 @@ public class TextDisplayer {
     }
     
     /**
+     * Adds a line to be displayed immediately after what's currently displayed
+     * @param lines 
+     */
+    public void addInterruptingLine(String line) {
+        addInterruptingLines(new String[]{line}, TEXT);
+    }
+    
+    /**
+     * Add lines to be displayed
+     * immediately goes to the dialog box after the currently displayed text
+     * @param lines 
+     */
+    public void addInterruptingLines(String[] lines, boolean lineType) {
+        if (hasText) {
+            queue.add(0, lines);
+            isMC.add(0, lineType);
+        } else {
+            currentText = lines;
+            if(lineType == MULTIPLE_CHOICE) {
+                currentTextType = MULTIPLE_CHOICE;
+            }
+        }
+        hasText = true;
+    }
+    
+    /**
      * Add lines to be displayed
      * If nothing is currently displayed, immediately goes to the dialog box
      * Else it goes into the queue

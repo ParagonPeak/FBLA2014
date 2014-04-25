@@ -339,11 +339,11 @@ public class BusinessSim extends Canvas implements Runnable {
         // multiple choice is updated
         int MC = td.updateMultipleChoice(mouse.lastMouseClicked, mouse.mouseHeld, mouse.xPos, mouse.yPos);
         if(MC == TextDisplayer.RIGHT_ANSWER_CLICKED) {
-            td.addLine("Good Job!");
+            td.addInterruptingLine("Good Job!");
             score += 10;
         }
         if(MC == TextDisplayer.WRONG_ANSWER_CLICKED){
-            td.addLine("Too bad, better luck on the next question.");
+            td.addInterruptingLine("Too bad, better luck on the next question.");
         }
         
         // dialogue displayer is cleared

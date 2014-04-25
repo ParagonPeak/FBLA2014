@@ -53,6 +53,7 @@ public class QuestionTest {
 
     /**
      * Test of loadQuestionsFromFiles method, of class Question.
+     * This tests whether loadQuestionsFromFiles works by testing the length of every question on every floor. If they're length are all at least 7, they're golden.
      */
     @Test
     public void testLoadQuestionsFromFiles() {
@@ -64,7 +65,7 @@ public class QuestionTest {
                 for(int question = 0; question < Question.questionsPerTopic; question++) {
                     System.out.println("Floor: " + (floor + 1) + " topic: " + (topic + 1) + " question: " + (question + 1) + " lines: " + Question.questions[floor][topic][question].length);
                     String[] lines = Question.questions[floor][topic][question];
-                    if(lines.length != 7) {
+                    if(lines.length < 7) {
                         fail("Bad number of lines on floor: " + (floor + 1) + " topic: " + (topic + 1) + " question: " + (question + 1) + " lines: " + Question.questions[floor][topic][question].length);
                     }
                 }
