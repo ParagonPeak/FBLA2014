@@ -86,7 +86,7 @@ public class BusinessSim extends Canvas implements Runnable {
     private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
     //******
     
-    private static String title = "The Little Man", version = " v9.01";
+    private static String title = "The Little Man", version = " ";
     public String[] startText = {
         "Welcome to the Arctic branch of \"Pleasant Smells\" Glue Company.",
         "This room is used for promising applicants, such as yourself.",
@@ -205,7 +205,7 @@ public class BusinessSim extends Canvas implements Runnable {
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
                 FPS = frames;
-                frame.setTitle(((isPaused) ? "***PAUSED*** " : "") + title + version + " | FPS: " + frames);
+                frame.setTitle(((isPaused) ? "***PAUSED*** " : "") + title + version);// + " | FPS: " + frames);
                 frames = 0;
             }
         }
