@@ -1,6 +1,7 @@
 package com.FBLA.businesssim.util;
 
 import com.FBLA.businesssim.graphics.SpriteSheet;
+import com.FBLA.businesssim.level.Level;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -36,7 +37,7 @@ public class Question {
      */
     public static void loadQuestionsFromFiles() {
         String path = "";
-        for (int floor = 0; floor < 5; floor++) {
+        for (int floor = 0; floor < Level.levelAmount - 1; floor++) {
             path = "/Text/Questions/floor" + (floor + 1) + ".txt";
             try {
                 InputStream in = Question.class.getClass().getResourceAsStream(path);
