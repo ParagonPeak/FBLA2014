@@ -131,7 +131,7 @@ public class Screen {
             int ya = y*scale + yp; // absolute position
             for (int x = 0; x < w; x++) {
                 int xa = x*scale + xp;
-                if (xa < 0 || xa + scale >= width || ya < 0 || ya + scale >= height) {
+                if (xa < -scale || xa >= width || ya < -scale || ya >= height) {
                     continue;
                 }
                 if (xa < 0) {
@@ -141,7 +141,12 @@ public class Screen {
                 if (color != 0xffFF00FF) {
                     for(int sx = 0; sx < scale; sx++) { // scalex
                         for(int sy = 0; sy < scale; sy++) {
-                             pixels[xa + sx + ((ya + sy) * width)] = color;
+                            int xsp = xa + sx;
+                            int ysp = ya + sy;
+                            if(xsp < 0 || xsp >= width || ysp < 0 || ysp >= height) {
+                                continue;
+                            }
+                            pixels[xa + sx + ((ya + sy) * width)] = color;
                         }
                     }
                 }
