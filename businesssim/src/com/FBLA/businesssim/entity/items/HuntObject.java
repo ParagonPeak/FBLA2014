@@ -40,7 +40,9 @@ public class HuntObject extends Entity {
         String questionTopic = pickupText[0];//The first line
         question = Question.getQuestion(questionTopic, floor);
         reason = question[question.length - 1];
-        System.arraycopy(question, 0, question, 0, question.length - 1);
+        String[] temp = question;
+        question = new String[question.length - 1];
+        System.arraycopy(temp, 0, question, 0, question.length);
         this.pickupText = pickupText;
         
     }
