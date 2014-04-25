@@ -1,10 +1,10 @@
 package com.FBLA.businesssim.entity.mob;
 
 import com.FBLA.businesssim.BusinessSim;
-import com.FBLA.businesssim.util.Dialogue;
 import com.FBLA.businesssim.graphics.DialogueDisplayer;
 import com.FBLA.businesssim.graphics.Screen;
 import com.FBLA.businesssim.graphics.Sprite;
+import com.FBLA.businesssim.util.Dialogue;
 import com.FBLA.businesssim.util.Vector2d;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class NPC extends Mob {
 
-    public static String sayings[][][] = new String[6][0][0];
+    public static String sayings[][] = new String[0][0];
     private long timeout = 0, currentSayingTimeout = System.currentTimeMillis();
     private int dir = 0;
     private boolean isSpeaking = false;
@@ -38,7 +38,7 @@ public class NPC extends Mob {
     public NPC(Vector2d v) {
         super(v, "NPC");
         
-        if(sayings[0].length == 0) {
+        if(sayings.length == 0) {
             init();
         }
         
@@ -88,10 +88,10 @@ public class NPC extends Mob {
      * that can be accessed later by NPC's
      */
     public static void readFiles() {
-        for (int floor = 0; floor < 6; floor++) {
+        //for (int floor = 0; floor < 6; floor++) {
             try {
                 // get the floor's sayings file
-                String fileName = "/Text/NPC_Sayings/floor" + (floor + 1) + ".txt";
+                String fileName = "/Text/NPC_Sayings/sayings.txt";
                 InputStream in = com.FBLA.businesssim.level.Level.class.getClass().getResourceAsStream(fileName);
                 
                 // create a bufferedReader for reading the file's lines
@@ -106,7 +106,7 @@ public class NPC extends Mob {
                     line = br.readLine();
                 }
                 
-                sayings[floor] = floorsayings.toArray(new String[floorsayings.size()][]);
+                sayings = floorsayings.toArray(new String[floorsayings.size()][]);
                 
                 br.close();
             } catch (FileNotFoundException ex) {
@@ -117,7 +117,7 @@ public class NPC extends Mob {
                 Logger.getLogger(NPC.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
+//    }
 
     /**
      * Sets the script from an array of text
@@ -134,7 +134,7 @@ public class NPC extends Mob {
      * @param url Name of the file
      */
     public String[] getSaying() {
-        String[] s = sayings[BusinessSim.currentLevel][(int) (Math.random() * sayings[BusinessSim.currentLevel].length)];
+        String[] s = sayings[(int) (Math.random() * sayings.length)];
         if (s == null) {
             return new String[]{"Isn't this the best place ever?!", "", "(Save me...)"};
         }
