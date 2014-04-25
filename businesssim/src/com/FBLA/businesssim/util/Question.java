@@ -9,9 +9,9 @@ import java.util.logging.Logger;
 
 public class Question {
     //questions[floor][topic][QuestionNumber][displaytext]
-    private static String[][][][] questions = new String[5][][][];
-    private static final int topicsPerFloor = 5;
-    private static final int questionsPerTopic = 3;
+    public static String[][][][] questions = new String[5][][][];
+    public static final int topicsPerFloor = 5;
+    public static final int questionsPerTopic = 3;
 
     public static void main(String args[]) {
         loadQuestionsFromFiles();
