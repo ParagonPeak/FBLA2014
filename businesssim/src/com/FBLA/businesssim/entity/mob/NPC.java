@@ -97,7 +97,7 @@ public class NPC extends Mob {
                 // create a bufferedReader for reading the file's lines
                 BufferedReader br = new BufferedReader(new InputStreamReader(in));
                 
-                ArrayList<String[]> floorsayings = new ArrayList<>(4); // because every level has at least 4 sayings
+                ArrayList<String[]> floorsayings = new ArrayList<String[]>(4); // because every level has at least 4 sayings
                 
                 // store the sayings in the sayings array
                 String line = br.readLine();

@@ -90,7 +90,7 @@ public class Level {
 //                                                         Question.getLevelQuestions(4), 
 //                                                         Question.getLevelQuestions(5)};
 
-    public static int defaultNPCAmount = 10;
+    public static int defaultNPCAmount = 15;
     
     // stores all NPCs that are in the level
     ArrayList<NPC> npcArray = new ArrayList<>();
@@ -289,9 +289,6 @@ public class Level {
                 }
             }
         } else {
-            if(finished[levelNumber] && !BusinessSim.bs.td.hasText) {
-                BusinessSim.bs.changeGameState(BusinessSim.gs_startScreen);
-            }
             if(!lastLevelText)
             {
             BusinessSim.bs.td.addLines(new String[]{"Thank you, kind applicant!",
@@ -300,7 +297,7 @@ public class Level {
                 "With the glue of course!", 
                 "We can use your skills to make our special, patented glue which people won't be able to resist!", 
                 "No one can stop us now!"}, TextDisplayer.TEXT);
-            BusinessSim.bs.td.addLines(new String[]{"","","Game over", "Join FBLA and have a great time!"}, TextDisplayer.TEXT);
+            BusinessSim.bs.td.addLines(new String[]{"","","Game over", "Join FBLA and have a great time!","To play again, return to the main menu from the pause screen"}, TextDisplayer.TEXT);
             lastLevelText = true;
             }
             finished[levelNumber] = true;

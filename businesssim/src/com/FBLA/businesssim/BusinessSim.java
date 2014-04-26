@@ -47,46 +47,43 @@ public class BusinessSim extends Canvas implements Runnable {
 
     //These are all the variables we found it neccessary to write our game
     private final int normWidth, normHeight, fullWidth, fullHeight; //These are used in scaling images and changing the game to full screen
-    public int height = 500, 
+    public int height = 500,
             width = 800,
-            FPS = 0, 
+            FPS = 0,
             score = 0;
-    private int mainScreenPointerPosition = gs_inGame, 
+    private int mainScreenPointerPosition = gs_inGame,
             elevatorPointer = 0, ep_UP = 1, ep_DOWN = -1, ep_NOCHANGE = 0,
             pausePointer = 0;
-    public static final int gs_inGame = 0, 
-            gs_about = 1, 
-            gs_controls = 2, 
+    public static final int gs_inGame = 0,
+            gs_about = 1,
+            gs_controls = 2,
             gs_credit = 3, mspp_quit = 3,
             gs_startScreen = 5;
     public static int gameState = gs_startScreen,
             currentLevel = 0;
-    public double scale = 1, 
+    public double scale = 1,
             fullScale = 1; //Also used with scaling
-    private boolean running, 
+    private boolean running,
             newGame = true;
-    public boolean actionClicked = false, 
+    public boolean actionClicked = false,
             nearElevator = false;
     private Thread mThread; //Main Game Thread
-    
     // elevator panel
     private int panelLeft = (int) (((width - 100 * scale) / 2)),
-                panelTop = (int) (((height - 250 * scale) / 2)),
-                panelWidth = (int) (60 * scale),
-                panelHeight = (int) (110 * scale);
+            panelTop = (int) (((height - 250 * scale) / 2)),
+            panelWidth = (int) (60 * scale),
+            panelHeight = (int) (110 * scale);
     // elevator buttons
     private int buttonX = panelLeft + panelWidth / 2,
-                buttonR = 10;
-    
+            buttonR = 10;
     //*******
     //The bits used to pull the image from the JFrame for editing
     private JFrame frame = new JFrame();
-    private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB), 
+    private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB),
             screenImage = image;
     private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
     //******
-    
-    private static String title = "The Little Man", version = " ";
+    private static String title = "The Little Guy", version = " ";
     public String[] startText = {
         "Welcome to the Arctic branch of \"Pleasant Smells\" Glue Company.",
         "This room is used for promising applicants, such as yourself.",
@@ -106,8 +103,7 @@ public class BusinessSim extends Canvas implements Runnable {
     public Player player;
     public Level level;
     public static BusinessSim bs;
-    
-    
+
     //The main loop. This starts the game and is used for the frame's set up
     public static void main(String[] args) {
         bs = new BusinessSim();
@@ -119,15 +115,14 @@ public class BusinessSim extends Canvas implements Runnable {
         bs.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         bs.frame.setFocusable(true);
         bs.frame.setLocationRelativeTo(null);
-        bs.setFullScreen(isFullScreen);
         bs.start();
     }
 
     /**
-     * The constructor of the game.
-     * Used to calculate the full screen numbers and do final set up of the 
-     * frame used for the game. It also initializes the key components such as
-     * the Keyboard and Mouse interaction and the actual player.
+     * The constructor of the game. Used to calculate the full screen numbers
+     * and do final set up of the frame used for the game. It also initializes
+     * the key components such as the Keyboard and Mouse interaction and the
+     * actual player.
      */
     public BusinessSim() {
         // setCursor(Toolkit.getDefaultToolkit().createCustomCursor(createImage(new MemoryImageSource(16, 16, new int[16 * 16], 0, 16)), new Point(0, 0), ""));
@@ -178,8 +173,7 @@ public class BusinessSim extends Canvas implements Runnable {
 
     @Override
     /**
-     * Main game loop.
-     * Used to update, render the game and record the FPS 
+     * Main game loop. Used to update, render the game and record the FPS
      */
     public void run() {
         long time = System.nanoTime();
@@ -243,10 +237,10 @@ public class BusinessSim extends Canvas implements Runnable {
             bs.show();
             return;
         }
-        
+
         screen.clear();
         screen.renderBackground();
-        
+
         //Draws the level around the player
         level.render(xScroll, yScroll, screen, player);
         System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
@@ -256,9 +250,9 @@ public class BusinessSim extends Canvas implements Runnable {
             //Antialiasing, makes the lines smoother
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            
+
             int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - fullWidth;
-            
+
             //Draws a pillarbox around the screen if it's in full screen mode to
             //keep the images from looking stretched. Also scales the game screens
             //to fill the actual screen.
@@ -270,7 +264,7 @@ public class BusinessSim extends Canvas implements Runnable {
                 g.drawImage(image, 0, 0, null);
             }
             g.setColor(Color.WHITE);
-            
+
             // dialogue is displayed
             DialogueDisplayer.displayDialogue(g);
 
@@ -280,10 +274,12 @@ public class BusinessSim extends Canvas implements Runnable {
             // Heads Up Display, shows the overlay of text on the screen for
             // things like FPS. See HUD class for more.
             HUD.displayHUD(g);
-            
+
             //Displays the elevator controls if player is close and interacts with them
-            if (nearElevator && isPrompting) g = promptFloorSwitch(g);
-            
+            if (nearElevator && isPrompting) {
+                g = promptFloorSwitch(g);
+            }
+
             //Draws lines to the objects in the game if the player is close enough
             //Makes the game slightly easier if one of the items is hard to find
             g = drawLineToObjects(g);
@@ -291,7 +287,7 @@ public class BusinessSim extends Canvas implements Runnable {
             //Draws the pause overlay if paused
             if (isPaused) {
                 try {
-                    g.drawImage((screenImage == null)?screenImage = ImageIO.read(this.getClass().getResourceAsStream("/Textures/Screens/Pause.png")): screenImage, (isFullScreen) ? screenWidth : 0, 0, width, height, 0, 0, normWidth, normHeight, null);
+                    g.drawImage((screenImage == null) ? screenImage = ImageIO.read(this.getClass().getResourceAsStream("/Textures/Screens/Pause.png")) : screenImage, (isFullScreen) ? screenWidth : 0, 0, width, height, 0, 0, normWidth, normHeight, null);
                 } catch (IOException ex) {
                     Logger.getLogger(BusinessSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 }
@@ -302,9 +298,10 @@ public class BusinessSim extends Canvas implements Runnable {
     }
 
     /**
-     * Draws a line between the player and hunt objects.
-     * Takes the current graphics and draws lines between the player and the object
-     * if the object is within 300 scaled pixels of the player.
+     * Draws a line between the player and hunt objects. Takes the current
+     * graphics and draws lines between the player and the object if the object
+     * is within 300 scaled pixels of the player.
+     *
      * @param g is the current graphics to overlay lines on.
      * @return the graphics with the lines overlaid.
      */
@@ -327,26 +324,25 @@ public class BusinessSim extends Canvas implements Runnable {
     }
 
     /**
-     * Manages the updating of components of the game.
-     * Allows for certain aspects to update in an average interval of 60 times 
-     * per second (handled in game loop on line 188). Updates items like the mouse
-     * and keyboard.
+     * Manages the updating of components of the game. Allows for certain
+     * aspects to update in an average interval of 60 times per second (handled
+     * in game loop on line 188). Updates items like the mouse and keyboard.
      */
     public void update() {
         // mouse is updated
         mouse.update();
-        actionClicked = (key.action && !key.last_action) || mouse.lastMouseClicked;
-        
+        actionClicked = (key.action && !key.last_action) || (mouse.lastMouseClicked);
+
         // multiple choice is updated
         int MC = td.updateMultipleChoice(mouse.lastMouseClicked, mouse.mouseHeld, mouse.xPos, mouse.yPos);
-        if(MC == TextDisplayer.RIGHT_ANSWER_CLICKED) {
+        if (MC == TextDisplayer.RIGHT_ANSWER_CLICKED) {
             td.addInterruptingLine("Good Job!");
             score += 10;
         }
-        if(MC == TextDisplayer.WRONG_ANSWER_CLICKED){
+        if (MC == TextDisplayer.WRONG_ANSWER_CLICKED) {
             td.addInterruptingLine("Too bad, better luck on the next question.");
         }
-        
+
         // dialogue displayer is cleared
         DialogueDisplayer.clearDialogue();
         //DialogueDisplayer.addDialogue(new Dialogue(new String[]{"Yes", "Hi"}, fullWidth/2 + player.v.getiX(), fullHeight/2));
@@ -364,11 +360,10 @@ public class BusinessSim extends Canvas implements Runnable {
 
             // ingame actions
             if (!key.inc && key.last_inc) { // text has priority over action button
-                if(!td.inMultipleChoice()) { // can't skip multiple choice
+                if (!td.inMultipleChoice()) { // can't skip multiple choice
                     td.moveOn();
                 }
-            }
-            else if (actionClicked) {
+            } else if (actionClicked) {
                 // level changing 
                 if (Level.isNearHunt) {
                     for (int i = 0; i < hunt[currentLevel].length; i++) {
@@ -417,7 +412,7 @@ public class BusinessSim extends Canvas implements Runnable {
         if ((actionClicked) || (mouse.lastMouseClicked)) {
             //If in menu and on quit has been selected, exit the game.
             if (mainScreenPointerPosition == mspp_quit) {
-                System.exit(3); 
+                System.exit(3);
             }
             int localGameState = gameState;
             changeGameState();
@@ -433,63 +428,34 @@ public class BusinessSim extends Canvas implements Runnable {
         if ((key.pause && !key.last_pause) && gameState == gs_inGame) {
             isPaused = !isPaused;
         }
-        if(isPaused)
-        {
-            if(mouse.yPos > 360 && mouse.yPos < 420)
+        if (isPaused) {
+            if (mouse.yPos > 360 && mouse.yPos < 420) {
                 pausePointer = 1;
-            else if(mouse.yPos >420)
+            } else if (mouse.yPos > 420) {
                 pausePointer = 2;
-            else
+            } else {
                 pausePointer = 0;
-            if(mouse.lastMouseHeld && mouse.mouseHeld && pausePointer == 1)
+            }
+            if (mouse.lastMouseHeld && mouse.mouseHeld && pausePointer == 1) {
                 isPaused = false;
-            else if(mouse.lastMouseHeld && mouse.mouseHeld && pausePointer == 2)
+            } else if (mouse.lastMouseHeld && mouse.mouseHeld && pausePointer == 2) {
+                isPaused = false;
                 changeGameState(gs_startScreen);
+                loaded = true;
+            }
+
         }
     }
 
-    
     /**
-     * Set the screen to either full screen or our default size.
-     * @param b is the state we want the screen to be as true is full screen and
-     *          false is our default size.
-     */
-    public void setFullScreen(boolean b) {
-        frame.setVisible(true);
-        frame.dispose();
-        frame.setUndecorated(b);
-        if (b) {
-            frame.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
-            scale = fullScale;
-            width = fullWidth;
-            height = fullHeight;
-            frame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
-            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            frame.setLocationRelativeTo(null);
-        } else {
-            width = normWidth;
-            height = normHeight;
-            frame.setPreferredSize(new Dimension(width, height));
-            frame.setSize(new Dimension(width, height + 15));
-            frame.setLocationRelativeTo(null);
-            scale = 1;
-        }
-        tahoma = new Font("Tahoma", Font.ITALIC, (int) (36 * scale));
-        isFullScreen = b;
-        frame.addKeyListener(key);
-        frame.requestFocus();
-        frame.setFocusable(true);
-        frame.setVisible(true);
-    }
-
-    /**
-     * Displays a graphic to have the player decide which floor to visit.
-     * Floors unlock as the previous floor is finished. Interacts with Level to 
-     * decide which floors to have unlocked. Displays a default prompt if the player
+     * Displays a graphic to have the player decide which floor to visit. Floors
+     * unlock as the previous floor is finished. Interacts with Level to decide
+     * which floors to have unlocked. Displays a default prompt if the player
      * has yet to complete floor one
+     *
      * @param g the graphic as it stands before the prompt
-     * @return the graphic with the prompt now overlaid if the player has completed
-     *          floor one, otherwise returns the old prompt.
+     * @return the graphic with the prompt now overlaid if the player has
+     * completed floor one, otherwise returns the old prompt.
      */
     private Graphics2D promptFloorSwitch(Graphics2D g) {
         //If there is another prompt up, keeps the prompts from layering.
@@ -510,61 +476,62 @@ public class BusinessSim extends Canvas implements Runnable {
         panelWidth = (int) (60 * scale);
         panelHeight = (int) (110 * scale);
         g.fillRoundRect(panelLeft, panelTop, panelWidth, panelHeight, 10, 10);
-        
+
         // label
         g.setColor(Color.black);
         g.setFont(new Font("Tahoma", Font.PLAIN, (int) (12 * scale)));
         panelTop += 15;
         g.drawString("FLOOR", (int) (panelLeft + panelWidth / 2 - 18), panelTop + 15);
-        
+
         // buttons
         buttonX = panelLeft + panelWidth / 2;
         buttonR = 10;
         g.setColor(Color.BLACK);
-        if(currentLevel != 5) { // up button
+        if (currentLevel != 5) { // up button
             g.fillOval(buttonX - buttonR, panelTop + panelHeight / 3, buttonR * 2, buttonR * 2);
             if (Level.finished[currentLevel]) {
                 g.setColor(Color.white);
-                if(elevatorPointer == ep_UP) {
+                if (elevatorPointer == ep_UP) {
                     g.setColor(Color.YELLOW);
-                    if(mouse.lastMouseHeld) {
+                    if (mouse.lastMouseHeld) {
                         g.setColor(Color.GREEN);
                     }
                 }
             } else {
                 g.setColor(Color.DARK_GRAY);
-                if(elevatorPointer == ep_UP) {
+                if (elevatorPointer == ep_UP) {
                     g.setColor(new Color(100, 100, 0));
                 }
             }
-            
-            g.fillOval(buttonX - buttonR, panelTop + panelHeight / 3, buttonR * 9/5, buttonR * 9/5);
-            
+
+            g.fillOval(buttonX - buttonR, panelTop + panelHeight / 3, buttonR * 9 / 5, buttonR * 9 / 5);
+
             g.setColor(Color.black);
-            g.drawString("^", buttonX - buttonR/2, panelTop + panelHeight / 3 + buttonR);
+            g.drawString("^", buttonX - buttonR / 2, panelTop + panelHeight / 3 + buttonR);
         }
-        if(currentLevel != 0) { // down button
-            g.fillOval(buttonX - buttonR, panelTop + panelHeight*2/3, buttonR * 2, buttonR * 2);
+        if (currentLevel != 0) { // down button
+            g.fillOval(buttonX - buttonR, panelTop + panelHeight * 2 / 3, buttonR * 2, buttonR * 2);
             g.setColor(Color.white);
-            if(elevatorPointer == ep_DOWN) {
-                    g.setColor(Color.YELLOW);
-                    if(mouse.lastMouseHeld) {
-                        g.setColor(Color.GREEN);
-                    }
+            if (elevatorPointer == ep_DOWN) {
+                g.setColor(Color.YELLOW);
+                if (mouse.lastMouseHeld) {
+                    g.setColor(Color.GREEN);
                 }
-            g.fillOval(buttonX - buttonR, panelTop + panelHeight*2/3, buttonR * 9/5, buttonR * 9/5);
-            
+            }
+            g.fillOval(buttonX - buttonR, panelTop + panelHeight * 2 / 3, buttonR * 9 / 5, buttonR * 9 / 5);
+
             g.setColor(Color.black);
-            g.drawString("v", buttonX - buttonR/2, panelTop + panelHeight*2/3 + buttonR);
+            g.drawString("v", buttonX - buttonR / 2, panelTop + panelHeight * 2 / 3 + buttonR);
         }
-        
+
         return g;
     }
 
-/**
- * Switches the floor the player is on.
- * @param levelNum the level that we change to
- */    
+    /**
+     * Switches the floor the player is on.
+     *
+     * @param levelNum the level that we change to
+     */
     private void switchLevel(int levelNum) {
         currentLevel = levelNum;
         level = new Level(Level.levelTilePaths[levelNum], Level.levelObjPaths[levelNum], levelNum, player.v.getX(), player.v.getY());
@@ -589,49 +556,26 @@ public class BusinessSim extends Canvas implements Runnable {
     }
 
     /**
-     * Moves the pointer for the elevator prompt to switch floors 
+     * Moves the pointer for the elevator prompt to switch floors
      */
     public void updateElevatorPointer() {
-        if(Math.sqrt(Math.pow(mouse.xPos - buttonX, 2) + Math.pow(mouse.yPos - (panelTop + panelHeight / 3), 2)) < buttonR && currentLevel != 5) { // over up button
+        if (Math.sqrt(Math.pow(mouse.xPos - buttonX, 2) + Math.pow(mouse.yPos - (panelTop + panelHeight / 3), 2)) < buttonR && currentLevel != 5) { // over up button
             elevatorPointer = ep_UP;
-        }
-        else if(Math.sqrt(Math.pow(mouse.xPos - buttonX, 2) + Math.pow(mouse.yPos - (panelTop + panelHeight*2/3), 2)) < buttonR && currentLevel != 0) { // over down button
+        } else if (Math.sqrt(Math.pow(mouse.xPos - buttonX, 2) + Math.pow(mouse.yPos - (panelTop + panelHeight * 2 / 3), 2)) < buttonR && currentLevel != 0) { // over down button
             elevatorPointer = ep_DOWN;
-        }
-        else if(mouse.xPos < panelLeft || mouse.xPos > panelLeft + panelWidth || mouse.yPos < panelTop || mouse.yPos > panelTop + panelHeight) {
+        } else if (mouse.xPos < panelLeft || mouse.xPos > panelLeft + panelWidth || mouse.yPos < panelTop || mouse.yPos > panelTop + panelHeight) {
             elevatorPointer = ep_NOCHANGE;
-            if(mouse.lastMouseClicked) {
+            if (mouse.lastMouseClicked) {
                 isPrompting = false;
                 elevatorPointer = ep_NOCHANGE;
                 mouse.lastMouseClicked = false;
             }
         }
-        
-        //if (key.up && !key.last_up) {
-        //    if (elevatorPointer > 1) {
-        //        elevatorPointer -= 2; //moves the pointer up one in the grid selection in the same panelLeft-panelWidth spot.
-        //    } else {
-        //        elevatorPointer += 4; //moves the pointer to the panelHeight row in the same panelLeft-panelWidth spot.
-        //    }
-        //} else if (key.down && !key.last_down) {
-        //    if (elevatorPointer < 4) {
-        //        elevatorPointer += 2; //Moves the pointer down one y spot in the grid selection in same panelLeft-panelWidth spot.
-        //    } else {
-        //        elevatorPointer %= 2; //Moves the pointer to the panelTop row in the same panelLeft-panelWidth spot.
-        //    }
-        //} else if ((key.right && !key.last_right) || (key.left && !key.last_left)) {
-        //    if (elevatorPointer % 2 == 0) {
-        //        elevatorPointer += 1; //Changes the panelLeft panelWidth position, but won't change the up, down position;
-        //    } else {
-        //        elevatorPointer -= 1; //Changes the panelLeft panelWidth position, but won't change the up, down position;
-        //    }
-        //}
     }
 
     /**
-     * Changes the pointer on the main screen.
-     * Uses the keyboard and mouse to select options on what screen to move 
-     * to or to start the game.
+     * Changes the pointer on the main screen. Uses the keyboard and mouse to
+     * select options on what screen to move to or to start the game.
      */
     private void updateMainPointer() {
         if (mouse.xPos > 600 * scale && mouse.yPos > 310 * scale) {
@@ -658,7 +602,7 @@ public class BusinessSim extends Canvas implements Runnable {
                 mainScreenPointerPosition = gs_inGame;
             }
         }
-        
+
         //Changes the volume using panelLeft or panelWidth.
         if ((key.left && !key.last_left) | (key.right && !key.last_right)) {
             if (key.left) {
@@ -669,13 +613,14 @@ public class BusinessSim extends Canvas implements Runnable {
             }
         }
     }
-    
+
     public void setGameState(int i) {
         gameState = i;
     }
 
     /**
      * Change the gamestate to a certain state
+     *
      * @param gs the state to change to
      */
     public void changeGameState(int gs) {
@@ -740,8 +685,8 @@ public class BusinessSim extends Canvas implements Runnable {
     }
 
     /**
-     * Will be used to reset the game to the starting position so the game
-     * can be reset from the beginning to play again
+     * Will be used to reset the game to the starting position so the game can
+     * be reset from the beginning to play again
      */
     private void reset() {
         currentLevel = 0;
@@ -760,8 +705,8 @@ public class BusinessSim extends Canvas implements Runnable {
     }
 
     /**
-     * Asks the user if they want to quit to make sure they aren't quitting 
-     * on accident during game play
+     * Asks the user if they want to quit to make sure they aren't quitting on
+     * accident during game play
      */
     public void promptExit() {
         if (JOptionPane.showConfirmDialog(null, "Do you really want to quit?", "Quit", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
